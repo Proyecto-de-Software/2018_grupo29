@@ -52,12 +52,13 @@ a{
 }
 
 .topnav input[type=text] {
-    float: right;
     padding: 6px;
     border: none;
     margin-top: 8px;
-    margin-right: 16px;
     font-size: 17px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 .topnav select {
@@ -69,6 +70,15 @@ a{
     position: relative;
 }
 
+.topnav form {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.topnav input[type=image]{
+    height: 30px;
+    width: 30px;
+}
 
 footer{
     position: fixed;
