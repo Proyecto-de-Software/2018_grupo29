@@ -65,7 +65,7 @@ a{
     color: white;
 }
 
-.topnav input[type=text] {
+.topnav input[type=search] {
     padding: 6px;
     border: none;
     margin-top: 8px;
@@ -87,11 +87,6 @@ a{
 .topnav form {
     display: inline-block;
     margin-right: 20px;
-}
-
-.topnav input[type=image]{
-    height: 30px;
-    width: 30px;
 }
 
 footer{
