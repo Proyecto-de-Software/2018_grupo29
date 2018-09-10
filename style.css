@@ -1,10 +1,18 @@
 body {
     font-family: Verdana;
+    margin: 0px;
+    margin-bottom: 30px;
 }
 
+a{
+    text-decoration: none;
+    color: grey;
+}
 .topnav {
     background-color: #333;
     overflow: hidden;
+    width: 100%;
+    margin-bottom: 100px;
 }
 
 .topnav a {
@@ -16,7 +24,24 @@ body {
     font-size: 17px;
 }
 
-.topnav a:hover {
+.topnavLeft {
+    float: left;
+}
+
+.topnavRight {
+    float: right;
+}
+
+.topnavRight a {
+    float: right;
+}
+
+.topnav a:hover  {
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav select:hover {
     background-color: #ddd;
     color: black;
 }
@@ -34,6 +59,16 @@ body {
     margin-right: 16px;
     font-size: 17px;
 }
+
+.topnav select {
+    height: 50px;
+    background-color: #333;
+    color: white;
+    border-color: transparent transparent transparent transparent;
+    font-size: 17px;
+    position: relative;
+}
+
 
 footer{
     position: fixed;
@@ -57,6 +92,15 @@ footer{
     margin-right: 20px;
 }
 
+.cuerpo {
+    width: 100%;
+}
+
+.cuerpo article {
+    width: 33%;
+    display: inline-block;
+    text-align: center;
+}
 /* Estilos del Login*/
 
 .contenedor_login {
