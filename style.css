@@ -24,6 +24,20 @@ a{
     font-size: 17px;
 }
 
+.aImg{
+    vertical-align: top;
+    display: inline-block;
+    height: 21px;
+    width: 40px;
+}
+
+.imagen {
+    height: auto;
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
 .topnavLeft {
     float: left;
 }
