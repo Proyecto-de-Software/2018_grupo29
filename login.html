@@ -6,19 +6,20 @@
 		Hospital Dr. Alejandro Korn
 	</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
+	<script type='text/javascript' src="javascript.js"></script>
 </head>
 <body>
 	<div class="topnav">
 		<div class="topnavLeft">
-  			<a href="index.html"><img alt="Logo del Hospital" src=*></a>
-  			<a href="index.html" class="nombreSitio">Hospital Dr. Alejandro Korn</a>
+  			<a href="#home" class="aImg"><img class="imagen" alt="Logo del Hospital" src="logo.png"></a>
+  			<a href="index.html">Hospital Dr. Alejandro Korn</a>
   		</div>
 	</div>
 	<div class="contenedor_login">
 		<form>
-			<p>Usuario</p><input type="text" name="usuario" size="40" required="">
-			<p>Contraseña</p><input type="password" name="password" size="40" required="">
-			<p><input type="submit" name="enviar" value="Aceptar"></p>
+			<p>Usuario</p><input id="nombre" type="text" name="usuario" size="40" required>
+			<p>Contraseña</p><input type="password" name="password" size="40" id="contra" required>
+			<p><input type="submit" name="enviar" value="Aceptar" onclick='login()'></p>
 		</form>
 	</div>
 	<footer>
