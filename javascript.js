@@ -2,18 +2,25 @@ function login(){
 	nombreUsuario = document.getElementById("nombre").value;
 	contraUsuario = document.getElementById("contra").value;
 	if(nombreUsuario == "admin"){
-		window.location.href = 'administracion.html';
-		//console.log(window.location);
-		//window.location = '/ProyectoSoftware/administracion.html';
-		//window.location.pathname = 'administracion.html'
-		//window.location.replace('http://www.google.com');
-		//window.location.href = 'D:/ProgrammingPrograms/xampp/htdocs/ProyectoSoftware/administracion.html';
-		//window.location = './administracion.html';
+		openNewURLInTheSameWindow('administracion.html');
 	} else {
-		if(nombreUsuario == 'Jorge'){
-			alert("aca se redirige al menu normal");
-		} else {
-			alert("Nombre de usuario incorrecto");
-		}
+		alert("Nombre de usuario incorrecto");
 	}
+}
+
+
+function fireClickEvent(element) {
+    var evt = new window.MouseEvent('click', {
+        view: window,
+        bubbles: true,
+        cancelable: true
+    });
+
+    element.dispatchEvent(evt);
+}
+
+function openNewURLInTheSameWindow(targetURL) {
+    var a = document.createElement('a');
+    a.href = targetURL;
+    fireClickEvent(a);
 }
