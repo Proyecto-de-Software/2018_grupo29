@@ -8,6 +8,7 @@ a{
     text-decoration: none;
     color: grey;
 }
+
 .topnav {
     background-color: #333;
     overflow: hidden;
@@ -87,6 +88,10 @@ a{
 .topnav form {
     display: inline-block;
     margin-right: 20px;
+}
+
+article{
+    vertical-align: top;
 }
 
 footer{
