@@ -90,6 +90,10 @@ a{
     margin-right: 20px;
 }
 
+label {
+    color: white;
+}
+
 article{
     vertical-align: top;
 }

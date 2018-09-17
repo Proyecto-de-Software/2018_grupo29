@@ -10,12 +10,17 @@
 <body>
 	<div class="topnav">
 		<div class="topnavLeft">
-  			<a href="#home" class="aImg"><img class="imagen" alt="Logo del Hospital" src="logo.png"></a>
-  			<a href="#home">Hospital Dr. Alejandro Korn</a>
+  			<a href="#" class="aImg"><img class="imagen" alt="Logo del Hospital" src="logo.png"></a>
+  			<a href="#">Inicio</a>
+  			<a href="#">Consultas</a>
+  			<a href="#">Pacientes</a>
   		</div>
   		<div class="topnavRight">
   			<a href="#"> Juan Perez </a>
-  			<input type="text" name="busqueda" placeholder="Escriba aquí">
+  			<label for="busqueda">Busqueda: 
+  				<input id="busqueda" type="text" name="busqueda" placeholder="Escriba aquí">
+  			</label>
+  			<input type="Submit" name="enviarBusqueda" value="Buscar!">
   			<select>
 				<option selected hidden value="Administracion">Administracion</option>
 				<option value="Usuarios">Usuarios</option>
