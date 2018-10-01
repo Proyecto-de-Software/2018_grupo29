@@ -11,7 +11,7 @@ require_once('view/TwigView.php');
 require_once('view/SimpleResourceList.php');
 require_once('view/Home.php');
 
-
+//esto se va a modificar a los actions que tengamos 
 if(isset($_GET["action"]) && $_GET["action"] == 'listResources'){
     ResourceController::getInstance()->listResources();
 }else{
