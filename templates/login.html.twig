@@ -6,11 +6,28 @@ Iniciar Sesión
 
 
 {% block content %}
-	<div>
-		<h2> Iniciar sesión</h2>
-		<form>
-			Nombre: <input type="text" name="name">
-			Contraseña: <input type="password" name="password">
-		</form>
-	</div>
+
+ <div class="row alMedio">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
+  	<div class="alMedio">
+	<form action="login.php">
+  		<div class="form-group">
+    		<label for="name">Nombre de usuario</label>
+    		<input type="text" class="form-control">
+  		</div>
+  		<div class="form-group">
+    		<label for="pwd">Contraseña:</label>
+    		<input type="password" class="form-control">
+  		</div>
+  		<button type="submit" class="btn btn-default">Entrar</button>
+	</form> 
+</div>
+  </div>
+  <div class="col-sm-4"></div>
+</div> 
+
+
+
+
 {% endblock %}
