@@ -11,32 +11,26 @@ Iniciar Sesión
 
 {% block content %}
 <div class="container-fluid">
-
-
- <div class="row alMedio">
-  <div class="col-sm-4"></div>
-  <div class="col-sm-4">
-  	<div class="alMedio">
-  	<p id="campo_error" class="text-danger"></p>
-	<form name="login" method="POST" action="./?action=inicioSesion" onsubmit="return validarLogin()">
-  		<div class="form-group">
-    		<label for="name">Nombre de usuario</label>
-    		<input name="nombre" type="text" class="form-control" required>
-  		</div>
-  		<div class="form-group">
-    		<label for="pwd">Contraseña</label>
-    		<input name="contra" type="password" class="form-control" required>
-  		</div>
-  		<button type="submit" class="btn btn-default">Entrar</button>
-	</form> 
+	<div class="row alMedio">
+  		<div class="col-sm-4"></div>
+  		<div class="col-sm-4">
+  			<div class="alMedio">
+  				<p id="campo_error" class="text-danger"> </p>
+				<form name="login" method="POST" action="./?action=inicioSesion" onsubmit="return validarLogin()">
+			  		<div class="form-group">
+			    		<label for="name">Nombre de usuario</label>
+			    		<input name="nombre" type="text" class="form-control" required>
+	  				</div>
+	  				<div class="form-group">
+	    			<label for="pwd">Contraseña</label>
+	    			<input name="contra" type="password" class="form-control" required>
+	  				</div>
+	  				<button type="submit" class="btn btn-default">Entrar</button>
+				</form> 
+			</div>
+		</div>
+  		<div class="col-sm-4"></div>
+	</div> 
 </div>
-  </div>
-  <div class="col-sm-4"></div>
-</div> 
-
-</div>
-
-
-
 
 {% endblock %}
