@@ -22,15 +22,9 @@ class ResourceController {
         
     }
     
-    
-    public function login(){
+    public function mostrarHTML($html){
         $view = new Home();
-        $view->show('login.html.twig');
-    }
-    
-    public function home(){
-        $view = new Home();
-        $view->show('home.html.twig');
+        $view->show($html);
     }
     
 }

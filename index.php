@@ -12,9 +12,11 @@ require_once('view/SimpleResourceList.php');
 require_once('view/Home.php');
 
 //esto se va a modificar a los actions que tengamos 
-if(isset($_GET["action"]) && $_GET["action"] == 'login'){
-    ResourceController::getInstance()->login();
+if(!(isset($_GET["action"]))) {
+    ResourceController::getInstance()->mostrarHTML('home.html.twig');
+}elseif ($_GET["action"] == 'login'){
+    ResourceController::getInstance()->mostrarHTML('login.html.twig');
 }else{
-    ResourceController::getInstance()->home();
+	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }
 
