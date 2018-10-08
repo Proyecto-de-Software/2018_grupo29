@@ -4,21 +4,28 @@
 Iniciar Sesión
 {% endblock %}
 
+{% block javascript %}
+	<script type="text/javascript" src="./templates/js/login.js"></script>
+{% endblock %}
+
 
 {% block content %}
+<div class="container-fluid">
+
 
  <div class="row alMedio">
   <div class="col-sm-4"></div>
   <div class="col-sm-4">
   	<div class="alMedio">
-	<form action="login.php">
+  	<p id="campo_error" class="text-danger"></p>
+	<form name="login" method="POST" action="./?action=inicioSesion" onsubmit="return validarLogin()">
   		<div class="form-group">
     		<label for="name">Nombre de usuario</label>
-    		<input type="text" class="form-control">
+    		<input name="nombre" type="text" class="form-control" required>
   		</div>
   		<div class="form-group">
-    		<label for="pwd">Contraseña:</label>
-    		<input type="password" class="form-control">
+    		<label for="pwd">Contraseña</label>
+    		<input name="contra" type="password" class="form-control" required>
   		</div>
   		<button type="submit" class="btn btn-default">Entrar</button>
 	</form> 
@@ -26,6 +33,8 @@ Iniciar Sesión
   </div>
   <div class="col-sm-4"></div>
 </div> 
+
+</div>
 
 
 
