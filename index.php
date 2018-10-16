@@ -16,7 +16,10 @@ if(!(isset($_GET["action"]))) {
     ResourceController::getInstance()->mostrarHTML('home.html.twig');
 }elseif ($_GET["action"] == 'login'){
     ResourceController::getInstance()->mostrarHTML('login.html.twig');
-}else{
+}elseif ($_GET["action"] == 'inicioSesion'){
+    ResourceController::getInstance()->mostrarHTML('home.html.twig');
+}
+else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }
 
