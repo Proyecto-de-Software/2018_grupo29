@@ -8,8 +8,30 @@ Hospital Dr. Alejandro Korn
   <script type="text/javascript" src="./templates/js/manejoSesiones.js"></script>
 {% endblock %}
 
-
-{% block busquedaNavbar %}
+{% block botones %}
+{% if datos is defined %}
+  
+  <li class="nav-item .hidden-lg-down">
+            <a class="nav-link d-none d-xl-block" href="#">Pacientes</a>
+  </li>
+  <li class="nav-item .hidden-lg-down">
+            <a class="nav-link d-none d-xl-block" href="#">Consultas</a>
+  </li>
+  <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+        Administración
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Usuarios</a>
+        <a class="dropdown-item" href="#">Roles</a>
+        <a class="dropdown-item" href="#">Permisos</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Configuración</a>
+      </div>
+    </li>  
+{% endif %}
+{% endblock %}
+{% block busquedaNavbar %} 
 <form class="form-inline my-2 my-lg-0">
 	<input class="form-control mr-sm-2" type="search" placeholder="Buscar..." aria-label="Search">
 	<button class="btn btn-outline-secondary text-white btn my-2 my-sm-0" type="submit">Buscar</button>
@@ -17,15 +39,15 @@ Hospital Dr. Alejandro Korn
 {% endblock %}
 
 {% block sesionNavbar %}
-<ul class="navbar-nav mr-right">
+
 		 {% if datos is defined %}
-      <li class="hidden-lg-down"><p class="nav-link"> Bienvenido {{ datos.first_name }} <span class="sr-only">(current)</span></p></li>
+      <li class="hidden-lg-down"><a class="nav-link "> Bienvenido {{ datos.first_name }} <span class="sr-only">(current)</span></a></li>
       <a class="nav-link" href="index.php?action=logout" onclick="return confirmacion()">Cerrar Sesión <span class="sr-only">(current)</span></a>
       
     {% else %}
       <a class="nav-link" href="index.php?action=login">Iniciar Sesión <span class="sr-only">(current)</span></a>
     {% endif %}
-</ul>
+
 {% endblock %}
 
 {% block content %}
