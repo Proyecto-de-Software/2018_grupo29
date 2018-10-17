@@ -11,3 +11,13 @@ function validarLogin() {
         return false;
     }
 }
+
+
+function confirmacion() {
+  if (confirm('¿Está seguro que quiere cerrar sesión?')){
+       document.tuformulario.submit()
+    }
+else {
+        return false;
+    }
+}

@@ -5,7 +5,7 @@ Iniciar Sesión
 {% endblock %}
 
 {% block javascript %}
-	<script type="text/javascript" src="./templates/js/login.js"></script>
+	<script type="text/javascript" src="./templates/js/manejoSesiones.js"></script>
 {% endblock %}
 
 
@@ -16,6 +16,9 @@ Iniciar Sesión
   		<div class="col-sm-4">
   			<h2> <p class="text-center">Iniciar sesión </p></h2> 
   			<div class="alMedio">
+  				{% if datos is defined %} 
+  					<p class="text-danger">{{ datos.mensaje }}  </p>
+  				{% endif %}
   				<p id="campo_error" class="text-danger"> </p>
 				<form name="login" method="POST" action="./?action=inicioSesion" onsubmit="return validarLogin()">
 			  		<div class="form-group">

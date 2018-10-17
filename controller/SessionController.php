@@ -31,8 +31,8 @@ class SessionController {
             $usuario = SessionRepository::getInstance()->existeUsuario($user);
             if(count($usuario)==0){
                 //no existe el usuario
-                $parametros['mensaje'] = "Error al iniciar sesion";
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                $parametros['mensaje'] = "¡Error! Nombre de usuario o contraseña incorrecto";
+                ResourceController::getInstance()->mostrarHTMLConParametros('login.html.twig', $parametros);
             }
             else{
                 $_SESSION['nombre'] = $usuario[0]['username'];

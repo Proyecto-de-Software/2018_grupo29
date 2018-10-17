@@ -4,6 +4,11 @@
 Hospital Dr. Alejandro Korn
 {% endblock %}
 
+{% block javascript %}
+  <script type="text/javascript" src="./templates/js/manejoSesiones.js"></script>
+{% endblock %}
+
+
 {% block busquedaNavbar %}
 <form class="form-inline my-2 my-lg-0">
 	<input class="form-control mr-sm-2" type="search" placeholder="Buscar..." aria-label="Search">
@@ -13,14 +18,13 @@ Hospital Dr. Alejandro Korn
 
 {% block sesionNavbar %}
 <ul class="navbar-nav mr-right">
-	<li class="nav-item">
 		 {% if datos is defined %}
-      <p class="nav-link"> Bienvenido {{ datos.username }} <span class="sr-only">(current)</span></p>
-      <a class="nav-link" href="index.php?action=logout">Cerrar Sesión <span class="sr-only">(current)</span></a>
+      <li class="hidden-lg-down"><p class="nav-link"> Bienvenido {{ datos.first_name }} <span class="sr-only">(current)</span></p></li>
+      <a class="nav-link" href="index.php?action=logout" onclick="return confirmacion()">Cerrar Sesión <span class="sr-only">(current)</span></a>
+      
     {% else %}
       <a class="nav-link" href="index.php?action=login">Iniciar Sesión <span class="sr-only">(current)</span></a>
     {% endif %}
-	</li>	
 </ul>
 {% endblock %}
 
