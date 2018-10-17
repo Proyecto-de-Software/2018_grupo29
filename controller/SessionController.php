@@ -33,9 +33,11 @@ class SessionController {
                 //no existe el usuario
                 $parametros['mensaje'] = "Error al iniciar sesion";
                 ResourceController::getInstance()->mostrarHTML('error.html.twig');
-            }else{
+            }
+            else{
                 session_start();
-                $_SESSION['nombre'] = $user['nombre'];
+                $_SESSION['nombre'] = $usuario[0]['username'];
+                $_SESSION['id'] = $usuario[0]['id'];
                 var_dump($_SESSION);
                 ResourceController::getInstance()->mostrarHTMLConParametros('homeUsuarioLogueado.html.twig',$usuario[0]);
             }

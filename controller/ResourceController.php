@@ -27,4 +27,8 @@ class ResourceController {
         $view->show($html);
     }
     
+    public function mostrarHTMLConParametros($html, $datos){
+        $view = new Home();
+        $view->showConParametros($html, $datos);
+    }
 }
