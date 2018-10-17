@@ -9037,3 +9037,11 @@ a.text-dark:hover, a.text-dark:focus {
 .footerSinTapar {
   margin-bottom: 50px;
 }
+
+.divider-vertical {
+height: 40px;
+margin: 0 9px;
+border-left: 1px solid #f2f2f2;
+border-right: 1px solid #ffffff;
+border-color: grey;
+}

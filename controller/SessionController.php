@@ -36,6 +36,7 @@ class SessionController {
             }
             else{
                 $_SESSION['nombre'] = $usuario[0]['username'];
+                $_SESSION['first_name'] = $usuario[0]['first_name'];
                 $_SESSION['id'] = $usuario[0]['id'];
                 ResourceController::getInstance()->mostrarHTMLConParametros('home.html.twig',$usuario[0]);
             }
