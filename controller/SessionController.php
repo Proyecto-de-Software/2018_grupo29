@@ -37,7 +37,7 @@ class SessionController {
                 session_start();
                 $_SESSION['nombre'] = $user['nombre'];
                 var_dump($_SESSION);
-                ResourceController::getInstance()->mostrarHTML('homeUsuarioLogueado.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('homeUsuarioLogueado.html.twig',$usuario[0]);
             }
         }
         //ResourceController::getInstance()->mostrarHTML('home.html.twig'); //parametros
