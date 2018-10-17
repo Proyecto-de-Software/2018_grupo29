@@ -35,13 +35,20 @@ class SessionController {
                 ResourceController::getInstance()->mostrarHTML('error.html.twig');
             }
             else{
-                session_start();
                 $_SESSION['nombre'] = $usuario[0]['username'];
                 $_SESSION['id'] = $usuario[0]['id'];
                 ResourceController::getInstance()->mostrarHTMLConParametros('home.html.twig',$usuario[0]);
             }
         }
         //ResourceController::getInstance()->mostrarHTML('home.html.twig'); //parametros
+    }
+
+    public function cerrarSesion(){
+        if(isset($_SESSION)){
+            session_unset();
+            session_destroy();
+            ResourceController::getInstance()->menuPrincipal('home.html.twig');
+        }
     }
     
 }

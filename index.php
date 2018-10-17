@@ -21,8 +21,8 @@ if(!(isset($_GET["action"]))) {
 }elseif ($_GET["action"] == 'inicioSesion'){
     SessionController::getInstance()->iniciarSesion();
     //ResourceController::getInstance()->mostrarHTML('home.html.twig');
-}elseif ($_GET["action"] == ''){
-	ResourceController::getInstance()->menuPrincipal('home.html.twig');
+}elseif ($_GET["action"] == 'logout'){
+	SessionController::getInstance()->cerrarSesion();
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }

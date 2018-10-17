@@ -14,16 +14,18 @@ Hospital Dr. Alejandro Korn
 {% block sesionNavbar %}
 <ul class="navbar-nav mr-right">
 	<li class="nav-item">
-		{#{% if sesion %}#}
-      <a class="nav-link" href="index.php?action=login">Iniciar Sesión <span class="sr-only">(current)</span></a>
-    {#{% else %}#}
-      <p class="nav-link">{% if datos is defined %} Bienvenido {{ datos.username }} {% endif %} <span class="sr-only">(current)</span></p>
+		 {% if datos is defined %}
+      <p class="nav-link"> Bienvenido {{ datos.username }} <span class="sr-only">(current)</span></p>
       <a class="nav-link" href="index.php?action=logout">Cerrar Sesión <span class="sr-only">(current)</span></a>
+    {% else %}
+      <a class="nav-link" href="index.php?action=login">Iniciar Sesión <span class="sr-only">(current)</span></a>
+    {% endif %}
 	</li>	
 </ul>
 {% endblock %}
 
 {% block content %}
+{% if datos is not defined %}
 <div class="row container-fluid alMedio">
   	<div class="col-sm-4">
   		<h2 class="text-center">Avances y seguridad de las vacunas y su contribución a la salud pública</h2>
@@ -41,4 +43,5 @@ Hospital Dr. Alejandro Korn
   		<a href="#"> <p class="text-center text-muted"> Ver detalles </p></a>
   	</div>
 </div>
+{% endif %}
 {% endblock %}
