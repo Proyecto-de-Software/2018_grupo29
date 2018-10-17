@@ -16,7 +16,6 @@ class Home extends TwigView {
     }
 
     public function showConParametros($html, $datos) {
-        
         echo self::getTwig()->render($html, array("datos" => $datos));
           
     }
