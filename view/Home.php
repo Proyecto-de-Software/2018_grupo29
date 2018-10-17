@@ -14,5 +14,6 @@ class Home extends TwigView {
         echo self::getTwig()->render($html);
           
     }
+
     
 }
