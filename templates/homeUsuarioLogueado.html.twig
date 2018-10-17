@@ -14,9 +14,13 @@ Hospital Dr. Alejandro Korn
 {% block sesionNavbar %}
 <ul class="navbar-nav mr-right">
 	<li class="nav-item">
-		<p class="nav-link">Bienvenido! <span class="sr-only">(current)</span></p>
-	</li>	
+		<p class="nav-link">{% if datos is defined %} Bienvenido {{ datos.username }} {% endif %} <span class="sr-only">(current)</span></p>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" href="#">Cerrar sesion</a>
+	</li>
 </ul>
+
 {% endblock %}
 
 {% block content %}
