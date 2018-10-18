@@ -5,7 +5,10 @@
  *
  * @author fede
  */
-class ResourceRepository extends PDORepository {
+
+require_once('model/PDORepository.php');
+
+class UserRepository extends PDORepository {
 
     private static $instance;
 
@@ -23,12 +26,8 @@ class ResourceRepository extends PDORepository {
     }
 
     public function listAll() {
-        $answer = $this->queryList("select * from usuarios where estado=?;", ['Confirmado']);
-        $final_answer = [];
-        foreach ($answer as &$element) {
-            $final_answer[] = new Resource($element['apellido'].", ".$element['nombre'], $element['id']);
-        }
-        return $final_answer;
+        $answer = $this->queryList("select * from usuario",[]);
+        return $answer;
     }
 
 }

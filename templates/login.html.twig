@@ -1,15 +1,14 @@
-{% extends "layout.html.twig" %}
+{% include "header.html.twig" %}
 
-{% block title %}
-Iniciar Sesión
-{% endblock %}
+<title> Login </title>
 
-{% block javascript %}
-	<script type="text/javascript" src="./templates/js/manejoSesiones.js"></script>
-{% endblock %}
+{% include "styles.html.twig" %}
 
+<script type="text/javascript" src="./templates/js/manejoSesiones.js"></script>
+</head>
 
-{% block content %}
+{% include "navBar.html.twig" %}
+
 <div class="container-fluid">
 	<div class="row alMedio">
   		<div class="col-sm-4"></div>
@@ -37,4 +36,4 @@ Iniciar Sesión
 	</div> 
 </div>
 
-{% endblock %}
+{% include "footer.html.twig" %}
