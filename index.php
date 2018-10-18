@@ -6,6 +6,7 @@ error_reporting(-1);
 
 require_once('controller/ResourceController.php');
 require_once('controller/SessionController.php');
+require_once('controller/PatientController.php');
 require_once('model/PDORepository.php');
 require_once('model/ResourceRepository.php');
 require_once('model/Resource.php');
@@ -23,7 +24,10 @@ if(!(isset($_GET["action"]))) {
     //ResourceController::getInstance()->mostrarHTML('home.html.twig');
 }elseif ($_GET["action"] == 'logout'){
 	SessionController::getInstance()->cerrarSesion();
-}else{
+}elseif ($_GET["action"] == 'moduloPacientes'){
+	PatientController::getInstance()->menuPacientes('pacientes.html.twig');
+}
+else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }
 
