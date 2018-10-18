@@ -38,7 +38,9 @@ class SessionController {
                 $_SESSION['nombre'] = $usuario[0]['username'];
                 $_SESSION['first_name'] = $usuario[0]['first_name'];
                 $_SESSION['id'] = $usuario[0]['id'];
-                ResourceController::getInstance()->mostrarHTMLConParametros('home.html.twig',$usuario[0]);
+                $parametrosAMandar['usuario'] = $usuario[0];
+                $parametrosAMandar['permisos'] = UserController::getInstance()->obtenerPermisos($_SESSION['id']);
+                ResourceController::getInstance()->mostrarHTMLConParametros('home.html.twig',$parametrosAMandar);
             }
         }
         //ResourceController::getInstance()->mostrarHTML('home.html.twig'); //parametros
@@ -48,7 +50,7 @@ class SessionController {
         if(isset($_SESSION)){
             session_unset();
             session_destroy();
-            ResourceController::getInstance()->menuPrincipal('home.html.twig');
+            ResourceController::getInstance()->mostrarHTML('home.html.twig');
         }
     }
     

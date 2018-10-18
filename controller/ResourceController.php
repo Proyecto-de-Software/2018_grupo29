@@ -35,8 +35,7 @@ class ResourceController {
     public function menuPrincipal($html){
         $view = new Home();
         if(isset($_SESSION['id'])){
-            $user["first_name"] = $_SESSION['first_name'];
-            $view->showConParametros($html,$user);
+            $view->showConParametros($html,$_SESSION);
         }else{
             $view->show($html);
         }

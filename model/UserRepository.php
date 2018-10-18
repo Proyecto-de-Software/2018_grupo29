@@ -30,4 +30,21 @@ class UserRepository extends PDORepository {
         return $answer;
     }
 
+    public function getPermisos($id) {
+        $answer = $this->queryList("
+            SELECT p.nombre
+            FROM
+                usuario u
+            INNER JOIN usuario_tiene_rol utr ON
+                u.id = utr.usuario_id
+            INNER JOIN rol r ON
+                r.id = utr.rol_id
+            INNER JOIN rol_tiene_permiso rtp ON
+                r.id = rtp.rol_id
+            INNER JOIN permiso p ON
+                p.id = rtp.permiso_id
+            WHERE u.id = :id",["id"=>$id]);
+        return $answer;
+    }
+
 }

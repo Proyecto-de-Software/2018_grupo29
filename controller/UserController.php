@@ -27,4 +27,9 @@ class UserController {
     public function getAllUsers($html){
     	$users = UserRepository::getInstance()->listAll();
     }
+
+    public function obtenerPermisos($id){
+    	$permisos = UserRepository::getInstance()->getPermisos($id);
+    	var_dump($permisos);
+    }
 }
