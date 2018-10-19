@@ -10,6 +10,7 @@ require_once('controller/UserController.php');
 require_once('controller/PatientController.php');
 require_once('model/PDORepository.php');
 require_once('model/UserRepository.php');
+require_once('model/PatientRepository.php');
 require_once('model/Resource.php');
 require_once('view/TwigView.php');
 require_once('view/SimpleResourceList.php');
@@ -28,6 +29,12 @@ if(!(isset($_GET["action"]))) {
 	UserController::getInstance()->getAllUsers('listaUsuarios.html.twig');
 }elseif ($_GET["action"] == 'moduloPacientes'){
 	PatientController::getInstance()->menuPacientes('pacientes.html.twig');
+}elseif ($_GET["action"] == 'listarPacientes'){
+	PatientController::getInstance()->obtenerPacientes();
+}elseif ($_GET["action"] == 'formularioBusqueda'){
+	PatientController::getInstance()->mostrarFormulario();
+}elseif ($_GET["action"] == 'buscarPaciente'){
+	PatientController::getInstance()->buscarPaciente();
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }

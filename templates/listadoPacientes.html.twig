@@ -1,0 +1,41 @@
+{% include 'home.html.twig' %}
+
+{% block content %}
+	<h2 class="alMedio text-center"> Pacientes del Hospital</h2>
+	<br>
+	<div class="row container-fluid">
+	<ul class="list-group">
+		<li  class="list-group-item row d-flex text-center">
+			<div class="col-1 text-info">Nombre y apellido</div>
+			<div class="col-1 text-info">Fecha y lugar de nacimiento</div>
+			<div class="col-1 text-info">Localidad </div>
+			<div class="col-1 text-info">Región sanitaria</div>
+			<div class="col-1 text-info">Domicilio y teléfono</div>
+			<div class="col-1 text-info">Género</div>
+			<div class="col-1 text-info">Tipo y número de documento</div>
+			<div class="col-1 text-info">Número de historia clínica</div>
+			<div class="col-1 text-info">Número de carpeta</div>
+			<div class="col-1 text-info">Obra social</div>	
+		</li>
+	{% for paciente in datos.pacientes %}
+         
+  		<li class="list-group-item row d-flex text-center">
+  			<div class="col-1">{{paciente.apellido}} {{paciente.nombre}} </div>
+  			<div class="col-1">{{paciente.fecha_nac}} {{paciente.lugar_nac}}</div>
+  			<div class="col-1">{{paciente.nombre_localidad}}</div>		
+  			<div class="col-1">{{paciente.nombre_region_sanitaria}}</div>
+  			<div class="col-1">{{paciente.domicilio}} {{paciente.telefono}} </div>
+  			<div class="col-1">{{paciente.nombre_genero}}</div>
+  			<div class="col-1">{{paciente.nombre_tipo_documento}} {{paciente.numero}} </div>
+  			<div class="col-1">{{paciente.nro_historia_clinica}}</div>
+  			<div class="col-1">{{paciente.nro_carpeta}}</div>
+  			<div class="col-1">{{paciente.nombre_obra_social}}</div>
+  			<div class="col-1"> <a href="#" class="btn btn-danger"> Eliminar </a> </div>
+  			<div class="col-1"> <a href="#" class="btn btn-warning"> Editar </a> </div>
+  			
+  		</li>
+
+    {% endfor %}
+    </ul> 
+</div>
+{% endblock %}
