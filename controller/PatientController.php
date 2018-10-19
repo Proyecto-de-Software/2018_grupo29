@@ -26,10 +26,7 @@ class PatientController {
 
     public function menuPacientes(){
         if (isset($_SESSION['id'])) {
-            $parametros['nombre'] = $_SESSION['nombre'];
-            $parametros['first_name'] = $_SESSION['first_name'] ;
-            $parametros['id'] = $_SESSION['id'] ;
-            ResourceController::getInstance()->mostrarHTMLConParametros('pacientes.html.twig', $parametros);
+            ResourceController::getInstance()->mostrarHTMLConParametros('pacientes.html.twig', $_SESSION);
         }
         else {
             ResourceController::getInstance()->mostrarHTML('error.html.twig');
