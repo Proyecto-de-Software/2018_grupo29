@@ -1,0 +1,3 @@
+{if 'user_index' in user.permissions}
+	aca va el boton de listar usuarios
+{endif}

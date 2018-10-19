@@ -1,0 +1,5 @@
+{% if ("consulta_index" in datos.permisos) or ("consulta_new" in datos.permisos) or ("consulta_update" in datos.permisos) or ("consulta_destroy" in datos.permisos) or ("consulta_show" in datos.permisos) %}
+	<li class="nav-item .hidden-lg-down">
+		<a class="nav-link d-none d-xl-block" href="#">Consultas</a>
+	</li>
+{% endif %}

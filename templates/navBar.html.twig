@@ -1,3 +1,4 @@
+</head>
 <body class="footerSinTapar">
 	<nav class="navbar navbar-expand-sm navbar-expand-lg bg-dark navbar-dark navbar-default navbar-static-top">
 		<a class="navbar-brand navbar-left" href="index.php"><img class="img-responsive" src="./templates/img/logo.png"></a>
@@ -6,33 +7,37 @@
 		    	<li class="nav-item .hidden-lg-down">
 		    		<a class="nav-link d-none d-xl-block" href="index.php">Hospital Dr. Alejandro Korn <span class="sr-only">(current)</span></a>
 		    	</li>
-		    	{% if datos is defined %}
-  					<div class="divider-vertical"></div>
+		    	<div class="divider-vertical"></div>
+		    	{% include "pacientes.html.twig" %}
+		    	{% include "consultas.html.twig" %}
+		    	{% include "administracion.html.twig" %}
+		    	{#{% if datos is defined %}
+						<div class="divider-vertical"></div>
 					<li class="nav-item .hidden-lg-down">
-    					<a class="nav-link d-none d-xl-block" href="#">Pacientes</a>
+						<a class="nav-link d-none d-xl-block" href="./index.php?action=moduloPacientes">Pacientes</a>
 					</li>
 					<li class="nav-item .hidden-lg-down">
-    					<a class="nav-link d-none d-xl-block" href="#">Consultas</a>
+						<a class="nav-link d-none d-xl-block" href="#">Consultas</a>
 					</li>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Administración</a>
-  					<div class="dropdown-menu">
-    					<a class="dropdown-item" href="index.php?action=listarUsuarios">Usuarios</a>
-    					<a class="dropdown-item" href="#">Roles</a>
-    					<a class="dropdown-item" href="#">Permisos</a>
-  			  			<div class="dropdown-divider"></div>
-    					<a class="dropdown-item" href="#">Configuración</a>
-  					</div>
+						<div class="dropdown-menu">
+						<a class="dropdown-item" href="index.php?action=listarUsuarios">Usuarios</a>
+						<a class="dropdown-item" href="#">Roles</a>
+						<a class="dropdown-item" href="#">Permisos</a>
+				  		<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#">Configuración</a>
+						</div>
 				</li>  
-				{% endif %}
+				{% endif %}#}
 			</ul>
 			<ul class="navbar-nav mr-right">
 			{% if datos is defined %}
-      			<li class="hidden-lg-down"><a class="nav-link "> Bienvenido {{ datos.first_name }} <span class="sr-only">(current)</span></a></li>
-      			<a class="nav-link btn btn-primary text-white" href="index.php?action=logout" onclick="return confirmacion()">Cerrar Sesión <span class="sr-only">(current)</span></a>
-      	    {% else %}
-      			<a class="nav-link btn btn-primary ml-1 text-white" href="index.php?action=login"> Iniciar Sesión <span class="sr-only">(current)</span></a>
-    		{% endif %}
+	  			<li class="hidden-lg-down"><a class="nav-link "> Bienvenido {{ datos.first_name }} <span class="sr-only">(current)</span></a></li>
+	  			<a class="nav-link btn btn-primary text-white" href="index.php?action=logout" onclick="return confirmacion()">Cerrar Sesión <span class="sr-only">(current)</span></a>
+	  	    {% else %}
+	  			<a class="nav-link btn btn-primary ml-1 text-white" href="index.php?action=login"> Iniciar Sesión <span class="sr-only">(current)</span></a>
+			{% endif %}
 			</ul>
 		</div>
 	</nav>	
