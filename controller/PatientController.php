@@ -58,7 +58,7 @@ class PatientController {
 
     public function mostrarFormulario(){
         if (isset($_SESSION['id'])) {
-            if (in_array('paciente_search', $_SESSION['permisos'])) {
+            if (in_array('paciente_index', $_SESSION['permisos'])) {
                 $historiasClinicas = PatientRepository::getInstance()->getHistoriasClinicas();
                 $i = 0;
                 $numerosHistoriasClinicas = array();
@@ -132,6 +132,7 @@ class PatientController {
     public function crearPaciente() {
         if (isset($_SESSION['id'])) {
             if (in_array('paciente_new', $_SESSION['permisos'])){
+                $_SESSION['listaPartidos'] = $this->obtenerPartidos();
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
             }
             else {
@@ -143,5 +144,38 @@ class PatientController {
         }
     }
     
+    public function eliminarPaciente() {
+        if (isset($_SESSION['id'])){
+            if (in_array('paciente_destroy', $_SESSION['permisos'])){
+                PatientRepository::getInstance()->eliminarPaciente($_POST['id_paciente']);
+                PatientController::getInstance()->obtenerPacientes();
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function obtenerPartidos() {
+        if (isset($_SESSION['id'])){
+            return PatientRepository::getInstance()->getPartidos();
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function obtenerLocalidades() {
+        if (isset($_SESSION['id'])){
+            $idLocalidad = $_POST['id_partido'];
+            return PatientRepository::getInstance()->getLocalidades($idLocalidad);
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
 
 }

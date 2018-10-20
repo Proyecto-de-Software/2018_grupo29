@@ -29,6 +29,21 @@
 				 	<label for="domicilio">Domicilio actual*</label>
 				    <input type="text" class="form-control" required>
 				 </div>
+				 <div class="form-group">
+				 	<label for="partidos">Partido</label>
+				 	<select class="form-control" name="partidos" id="partidos" onchange="mostrarLocalidades(this.value)">
+				 		<option value="">Seleccionar partido</option>
+				 		{% for partido in datos.listaPartidos %}
+				 			<option name="id_partido" value="{{ partido.id }}"> {{ partido.nombre }} </option>
+				 		{% endfor %}
+				 	</select>
+				 </div>
+				 <div class="form-group">
+				 	<label for="partidos">Localidad</label>
+				 	<select class="form-control" name="localidades" id="localidades">
+				 		<option value="">Seleccionar localidad</option>
+				 	</select>
+				 </div>
 			</div>
 			<div class="col-sm-6">
 				 <div class="form-group">
