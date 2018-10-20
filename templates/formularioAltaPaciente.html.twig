@@ -1,0 +1,77 @@
+{% include 'home.html.twig' %}
+
+{% block content %}
+	<div class="row container-fluid alMedio">
+		<div class="col-sm-4"> </div>
+		<div class="col-sm-4">
+			<h1 class="alMedio text-center">Nuevo Paciente</h1>
+			<p class="text-center"> Nota: los campos que tienen (*) son obligatorios</p>
+			<br>
+		</div>
+		<div class="col-sm-4"></div>
+	</div>
+		<div class="row container-fluid">
+			<div class="col-sm-6">
+				<form method="POST" action="">
+				 <div class="form-group">
+				 	<label for="first_name">Nombre*</label>
+				    <input type="text" class="form-control" required>
+				 </div>
+				 <div class="form-group">
+				    <label for="last_name">Apellido*</label>
+				    <input type="text" class="form-control" required>
+				 </div>
+				 <div class="form-group">
+				 	<label for="lugar_nacimiento">Lugar de nacimiento </label>
+				    <input type="text" class="form-control">
+				 </div>
+				 <div class="form-group">
+				 	<label for="domicilio">Domicilio actual*</label>
+				    <input type="text" class="form-control" required>
+				 </div>
+			</div>
+			<div class="col-sm-6">
+				 <div class="form-group">
+				 	<label for="genero">Género*</label>
+				 	<select class="form-control" required>
+				 		<option>Masculino</option>
+				 		<option>Femenino</option>
+				 		<option>Otro</option>
+				 	</select>
+				 </div>
+				 <div class="form-group">
+				 	<label for="tipo_doc">Tipo de Documento*</label>
+				 	<select class="form-control" required>
+				 		<option>DNI</option>
+				 		<option>LC</option>
+				 		<option>LE</option>
+				 		<option>CI</option>
+				 	</select>
+				 </div>
+				 <div class="form-group">
+				 	<label for="fecha_nac">Fecha de nacimiento*</label>
+				 	<input type="date" name="fecha_nac" class="form-control" required>
+				 </div>
+				 <div class="form-group">
+				 	<label for="numero">Número de documento*</label>
+				 	<input type="text" class="form-control" name="numero" required>
+				 </div>
+				 <div class="form-group">
+				    <label for="numeroHistoriaClinica">Número de historia clínica</label>
+				    <input type="text" class="form-control">
+				 </div>
+				 <div class="form-group">
+				    <label for="numeroCarpeta">Número de carpeta</label>
+				    <input type="text" class="form-control">
+				 </div>
+			</div>
+			<div class="row container-fluid">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4 text-center"><button class="btn btn-outline-primary text-black btn my-2 my-sm-0 btn-lg" type="submit">¡Listo!
+				</button></div>
+				</div>
+			</div>
+			</form> 
+		</div>
+	</div>
+{% endblock %}

@@ -8,7 +8,8 @@
 			{% if datos.historiaClinicaRandom != 0 %}
 				<p>¿No puede obtener ningún dato del paciente? <a href="./index.php?action=nuevoPacienteNN">Ingréselo como NN con historia clínica {{ datos.historiaClinicaRandom }}</a></p>
 			{% endif %}
-			<p class="text-danger">{{ datos.mensaje }}</p>
+				¿Quiere dar de alta un <a href="./index.php?action=nuevoPaciente" class="text-info">nuevo paciente</a>?
+			<p class="{{ datos.tipo_mensaje}}">{{ datos.mensaje }}</p>
 	 		<form method="POST" action="./index.php?action=buscarPaciente">
 				 <div class="form-group">
 				 	<label for="first_name">Nombre </label>

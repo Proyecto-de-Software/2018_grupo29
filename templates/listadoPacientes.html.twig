@@ -30,9 +30,8 @@
   			<div class="col-1">{{paciente.nro_historia_clinica}}</div>
   			<div class="col-1">{{paciente.nro_carpeta}}</div>
   			<div class="col-1">{{paciente.nombre_obra_social}}</div>
-  			<div class="col-1"> <a href="#" class="btn btn-danger"> Eliminar </a> </div>
   			<div class="col-1"> <a href="#" class="btn btn-warning"> Editar </a> </div>
-  			
+  			<div class="col-1"> <a href="./index.php?action=eliminarPaciente&id={{paciente.id_paciente}}" class="btn btn-danger" onclick="return confirmacion('¿Está seguro que quiere eliminar al paciente?')"> Eliminar </a> </div>			
   		</li>
 
     {% endfor %}
