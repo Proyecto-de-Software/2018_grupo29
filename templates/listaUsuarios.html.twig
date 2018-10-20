@@ -6,6 +6,27 @@
 
 {% include "navBar.html.twig" %}
 
-
+<h2 class="alMedio text-center"> Pacientes del Hospital</h2>
+<br>
+<div class="row container-fluid">
+	<ul class="list-group">
+		<li  class="list-group-item row d-flex text-center">
+			<div class="col-1 text-info">Nombre y apellido</div>
+			<div class="col-1 text-info">Nombre de usuario</div>
+			<div class="col-1 text-info">Fecha de creación</div>
+			<div class="col-1 text-info">Fecha de última modificación</div>
+			<div class="col-1 text-info">Estado</div>
+		</li>
+	{% for usuario in datos.usuarios %}
+         <li class="list-group-item row d-flex text-center">
+  			<div class="col-1">{{usuario.last_name}} {{usuario.last_name}} </div>
+  			<div class="col-1">{{usuario.username}}</div>
+  			<div class="col-1">{{usuario.created_at}}</div>		
+  			<div class="col-1">{{usuario.updated_at}}</div>
+  			<div class="col-1">{% if usuario.estado == 0 %} Activo {% else %} Bloqueado {% endif %}</div>
+  		</li>
+    {% endfor %}
+    </ul> 
+</div>
 
 {% include "footer.html.twig" %}

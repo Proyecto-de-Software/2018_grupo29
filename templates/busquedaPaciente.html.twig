@@ -1,42 +1,41 @@
 {% include 'home.html.twig' %}
 
-{% block content %}<div class="row container-fluid alMedio">
-		<div class="col-sm-4"> </div>
-		<div class="col-sm-4">
-			<h1 class="alMedio text-center">Búsqueda de Pacientes</h1>
-			<br>
-			{% if datos.historiaClinicaRandom != 0 %}
-				<p>¿No puede obtener ningún dato del paciente? <a href="./index.php?action=nuevoPacienteNN">Ingréselo como NN con historia clínica {{ datos.historiaClinicaRandom }}</a></p>
-			{% endif %}
-			<p class="text-danger">{{ datos.mensaje }}</p>
-	 		<form method="POST" action="./index.php?action=buscarPaciente">
-				 <div class="form-group">
-				 	<label for="first_name">Nombre </label>
-				    <input type="text" class="form-control" name="nombre">
-				 </div>
-				 <div class="form-group">
-				    <label for="last_name">Apellido</label>
-				    <input type="text" class="form-control" name="apellido">
-				 </div>
-				 <div class="form-group">
-				 	<label for="tipo_doc">Tipo de Documento</label>
-				 	<select class="form-control" name="nombre_tipo_documento">
-				 		<option value="">No seleccionado</option>
-				 		<option value="DNI">DNI</option>
-				 		<option value="LC">LC</option>
-				 	</select>
-				 </div>
-				 <div class="form-group">
-				 	<label for="numero">Número de documento</label>
-				 	<input type="text" class="form-control" name="numero_documento">
-				 </div>
-				 <div class="form-group">
-				    <label for="numeroHistoriaClinica">Número de historia clínica</label>
-				    <input type="text" class="form-control" name="nro_historia_clinica">
-				 </div>
-				 <button class="btn btn-outline-primary text-black btn my-2 my-sm-0" type="submit">Buscar</button>
-			</form> 
-		</div>
-		<div class="col-sm-4">
+<div class="row container-fluid alMedio">
+	<div class="col-sm-4"></div>
+	<div class="col-sm-4">
+		<h1 class="alMedio text-center">Búsqueda de Pacientes</h1>
+		<br>
+		{% if datos.historiaClinicaRandom != 0 %}
+			<p>¿No puede obtener ningún dato del paciente? <a href="./index.php?action=nuevoPacienteNN">Ingréselo como NN con historia clínica {{ datos.historiaClinicaRandom }}</a></p>
+		{% endif %}
+		<p class="text-danger">{{ datos.mensaje }}</p>
+ 		<form method="POST" action="./index.php?action=buscarPaciente">
+			 <div class="form-group">
+			 	<label for="first_name">Nombre </label>
+			    <input type="text" class="form-control" name="nombre">
+			 </div>
+			 <div class="form-group">
+			    <label for="last_name">Apellido</label>
+			    <input type="text" class="form-control" name="apellido">
+			 </div>
+			 <div class="form-group">
+			 	<label for="tipo_doc">Tipo de Documento</label>
+			 	<select class="form-control" name="nombre_tipo_documento">
+			 		<option value="">No seleccionado</option>
+			 		<option value="DNI">DNI</option>
+			 		<option value="LC">LC</option>
+			 	</select>
+			 </div>
+			 <div class="form-group">
+			 	<label for="numero">Número de documento</label>
+			 	<input type="text" class="form-control" name="numero_documento">
+			 </div>
+			 <div class="form-group">
+			    <label for="numeroHistoriaClinica">Número de historia clínica</label>
+			    <input type="text" class="form-control" name="nro_historia_clinica">
+			 </div>
+			 <button class="btn btn-outline-primary text-black btn my-2 my-sm-0" type="submit">Buscar</button>
+		</form> 
 	</div>
-{% endblock %}
+	<div class="col-sm-4"></div>
+</div>
