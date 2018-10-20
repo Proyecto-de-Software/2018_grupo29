@@ -31,7 +31,7 @@ if(!(isset($_GET["action"]))) {
 	PatientController::getInstance()->menuPacientes('pacientes.html.twig');
 }elseif ($_GET["action"] == 'listarPacientes'){
 	PatientController::getInstance()->obtenerPacientes();
-}elseif ($_GET["action"] == 'formularioBusqueda'){
+}elseif ($_GET["action"] == 'formularioBusquedaPaciente'){
 	PatientController::getInstance()->mostrarFormulario();
 }elseif ($_GET["action"] == 'buscarPaciente'){
 	PatientController::getInstance()->buscarPaciente();
@@ -39,6 +39,12 @@ if(!(isset($_GET["action"]))) {
 	PatientController::getInstance()->crearPacienteNN();
 }elseif ($_GET["action"] == 'nuevoPaciente'){
 	PatientController::getInstance()->crearPaciente();
+}elseif ($_GET["action"] == 'eliminarPaciente'){
+	PatientController::getInstance()->eliminarPaciente();
+}elseif ($_GET["action"] == 'obtenerPartidos'){
+	PatientController::getInstance()->obtenerPartidos();
+}elseif ($_GET["action"] == 'obtenerLocalidades'){
+	PatientController::getInstance()->obtenerLocalidades();
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }

@@ -69,7 +69,7 @@ class PatientRepository extends PDORepository {
     }
     
     public function crearPacienteNN($datos) {
-        $answer = $this->queryList("INSERT INTO `paciente` (`id`, `apellido`, `nombre`, `fecha_nac`, `lugar_nac`, `localidad_id`, `region_sanitaria_id`, `domicilio`, `genero_id`, `tiene_documento`, `tipo_doc_id`, `numero`, `tel`, `nro_historia_clinica`, `nro_carpeta`, `obra_social_id`) VALUES (NULL, 'NN', '', '', NULL, '1', '1', '', '1', '0', '1', '', '', :nro_historia_clinica, NULL, '1')",["nro_historia_clinica" => $datos['nro_historia_clinica']]);
+        $answer = $this->queryList("INSERT INTO `paciente` (`id_paciente`, `apellido`, `nombre`, `fecha_nac`, `lugar_nac`, `localidad_id`, `region_sanitaria_id`, `domicilio`, `genero_id`, `tiene_documento`, `tipo_doc_id`, `numero`, `tel`, `nro_historia_clinica`, `nro_carpeta`, `obra_social_id`) VALUES (NULL, 'NN', '', '', NULL, '1', '1', '', '1', '0', '1', '', '', :nro_historia_clinica, NULL, '1')",["nro_historia_clinica" => $datos['nro_historia_clinica']]);
         return $answer;
     }
 
@@ -78,6 +78,20 @@ class PatientRepository extends PDORepository {
         return $answer;
     }
 
+    public function eliminarPaciente($id) {
+        $this->queryList("DELETE FROM consulta WHERE paciente_id = :id",["id" => $id]);
+        $this->queryList("DELETE FROM paciente WHERE id_paciente = :id",["id" => $id]);
+    }
+
+    public function getPartidos(){
+        $answer = $this->queryList("SELECT id, nombre FROM partido",[]);
+        return $answer;
+    }
+
+    public function getLocalidades($idPartido) {
+        $answer = $this->queryList("SELECT id, nombre_localidad FROM localidad WHERE partido_id = :id",["id" => $idPartido['id_partido']]);
+        return $answer;
+    }
 }
 
 
