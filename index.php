@@ -35,6 +35,8 @@ if(!(isset($_GET["action"]))) {
 	PatientController::getInstance()->mostrarFormulario();
 }elseif ($_GET["action"] == 'buscarPaciente'){
 	PatientController::getInstance()->buscarPaciente();
+}elseif ($_GET["action"] == 'nuevoPacienteNN'){
+	PatientController::getInstance()->crearPacienteNN();
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }

@@ -45,8 +45,18 @@ class PatientController {
     }    
 
     public function mostrarFormulario(){
-        if (isset($_SESSION['id'])) { 
-            $_SESSION['historiaClinicaRandom'] = rand(1, 999999);
+        if (isset($_SESSION['id'])) {
+            $historiasClinicas = PatientRepository::getInstance()->getHistoriasClinicas();
+            $i = 0;
+            $numerosHistoriasClinicas = array();
+            foreach ($historiasClinicas as $historia) {
+                $numerosHistoriasClinicas[$i] = $historia['nro_historia_clinica'];
+                $i++;
+            }
+            do {
+                $numero = rand(1, 999999);
+            } while (in_array($numero, $numerosHistoriasClinicas));
+            $_SESSION['historiaClinicaRandom'] = $numero;
             if (isset($_SESSION['noHubo'])){
                 if ($_SESSION['noHubo'] == 1) {
                     $_SESSION['mensaje'] = 'No se ha encontrado ningún paciente con esos datos.';
@@ -90,5 +100,14 @@ class PatientController {
             ResourceController::getInstance()->mostrarHTML('error.html.twig');
         }
     }
+
+    public function crearPacienteNN(){
+        $parametro['nro_historia_clinica'] = $_SESSION['historiaClinicaRandom'];
+        PatientRepository::getInstance()->crearPacienteNN($parametro);
+        $_SESSION['mensaje'] = 'Se ha creado un NN con historia clínica '.$parametro['nro_historia_clinica'];
+        $_SESSION['historiaClinicaRandom'] = 0;
+        ResourceController::getInstance()->mostrarHTMLConParametros('busquedaPaciente.html.twig', $_SESSION);
+    }
     
+
 }
