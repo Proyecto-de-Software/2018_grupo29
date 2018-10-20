@@ -3,7 +3,7 @@
 		<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Administración</a>
 		<div class="dropdown-menu">
 			{% if ("usuario_index" in datos.permisos) or ("usuario_new" in datos.permisos) or ("usuario_update" in datos.permisos) or ("usuario_destroy" in datos.permisos) or ("usuario_show" in datos.permisos) %}
-			<a class="dropdown-item" href="index.php?action=listarUsuarios">Usuarios</a>	
+			<a class="dropdown-item" href="index.php?action=moduloUsuarios">Usuarios</a>	
 			{% endif %}
 			
 			{% if ("rol_index" in datos.permisos) or ("rol_new" in datos.permisos) or ("rol_update" in datos.permisos) or ("rol_destroy" in datos.permisos) or ("rol_show" in datos.permisos) %}

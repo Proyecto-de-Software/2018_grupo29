@@ -27,7 +27,19 @@ class PatientController {
 
     public function menuPacientes(){
         if (isset($_SESSION['id'])) { 
-            ResourceController::getInstance()->mostrarHTMLConParametros('pacientes.html.twig', $_SESSION);
+            if ( 
+                (in_array('paciente_search', $_SESSION['permisos'])) or
+                (in_array('paciente_show', $_SESSION['permisos'])) or 
+                (in_array('paciente_new', $_SESSION['permisos'])) or 
+                (in_array('paciente_update', $_SESSION['permisos'])) or
+                (in_array('paciente_index', $_SESSION['permisos'])) or 
+                (in_array('paciente_destroy', $_SESSION['permisos']))
+                 ){
+                ResourceController::getInstance()->mostrarHTMLConParametros('pacientes.html.twig', $_SESSION);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
         }
         else {
             ResourceController::getInstance()->mostrarHTML('error.html.twig');
@@ -46,27 +58,34 @@ class PatientController {
 
     public function mostrarFormulario(){
         if (isset($_SESSION['id'])) {
-            $historiasClinicas = PatientRepository::getInstance()->getHistoriasClinicas();
-            $i = 0;
-            $numerosHistoriasClinicas = array();
-            foreach ($historiasClinicas as $historia) {
-                $numerosHistoriasClinicas[$i] = $historia['nro_historia_clinica'];
-                $i++;
-            }
-            do {
-                $numero = rand(1, 999999);
-            } while (in_array($numero, $numerosHistoriasClinicas));
-            $_SESSION['historiaClinicaRandom'] = $numero;
-            if (isset($_SESSION['noHubo'])){
-                if ($_SESSION['noHubo'] == 1) {
-                    $_SESSION['mensaje'] = 'No se ha encontrado ningún paciente con esos datos.';
+            if (in_array('paciente_search', $_SESSION['permisos'])) {
+                $historiasClinicas = PatientRepository::getInstance()->getHistoriasClinicas();
+                $i = 0;
+                $numerosHistoriasClinicas = array();
+                foreach ($historiasClinicas as $historia) {
+                    $numerosHistoriasClinicas[$i] = $historia['nro_historia_clinica'];
+                    $i++;
                 }
+                do {
+                    $numero = rand(1, 999999);
+                } while (in_array($numero, $numerosHistoriasClinicas));
+                $_SESSION['historiaClinicaRandom'] = $numero;
+                if (isset($_SESSION['noHubo'])){
+                    if ($_SESSION['noHubo'] == 1) {
+                        $_SESSION['mensaje'] = 'No se ha encontrado ningún paciente con esos datos.';
+                        $_SESSION['tipo_mensaje'] = 'text-danger';
+                    }
+                }
+                else
+                {
+                    $_SESSION['mensaje'] = '';
+                }
+                ResourceController::getInstance()->mostrarHTMLConParametros('busquedaPaciente.html.twig', $_SESSION);
             }
-            else
-            {
-                $_SESSION['mensaje'] = '';
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
             }
-            ResourceController::getInstance()->mostrarHTMLConParametros('busquedaPaciente.html.twig', $_SESSION);
+
         }
         else {
             ResourceController::getInstance()->mostrarHTML('error.html.twig');
@@ -105,8 +124,23 @@ class PatientController {
         $parametro['nro_historia_clinica'] = $_SESSION['historiaClinicaRandom'];
         PatientRepository::getInstance()->crearPacienteNN($parametro);
         $_SESSION['mensaje'] = 'Se ha creado un NN con historia clínica '.$parametro['nro_historia_clinica'];
+        $_SESSION['tipo_mensaje'] = 'text-success';
         $_SESSION['historiaClinicaRandom'] = 0;
         ResourceController::getInstance()->mostrarHTMLConParametros('busquedaPaciente.html.twig', $_SESSION);
+    }
+
+    public function crearPaciente() {
+        if (isset($_SESSION['id'])) {
+            if (in_array('paciente_new', $_SESSION['permisos'])){
+                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
     }
     
 

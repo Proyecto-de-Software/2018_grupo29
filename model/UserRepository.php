@@ -47,4 +47,7 @@ class UserRepository extends PDORepository {
         return $answer;
     }
 
+    public function cambiarEstado($datos){
+        $this->queryList("UPDATE usuario SET activo=:estado WHERE id=:id ", ["estado"=> $datos['usuario_estado'],"id"=> $datos["usuario_id"]]);
+    }
 }

@@ -25,8 +25,12 @@ if(!(isset($_GET["action"]))) {
     SessionController::getInstance()->iniciarSesion();
 }elseif ($_GET["action"] == 'logout'){
 	SessionController::getInstance()->cerrarSesion();
+}elseif($_GET["action"] == 'moduloUsuarios'){
+	UserController::getInstance()->menuUsuarios('usuarios.html.twig');
 }elseif($_GET["action"] == 'listarUsuarios'){
 	UserController::getInstance()->getAllUsers('listaUsuarios.html.twig');
+}elseif ($_GET["action"] == 'cambiarEstadoUsuario') {
+	UserController::getInstance()->cambiarEstado($_POST);
 }elseif ($_GET["action"] == 'moduloPacientes'){
 	PatientController::getInstance()->menuPacientes('pacientes.html.twig');
 }elseif ($_GET["action"] == 'listarPacientes'){
@@ -37,6 +41,8 @@ if(!(isset($_GET["action"]))) {
 	PatientController::getInstance()->buscarPaciente();
 }elseif ($_GET["action"] == 'nuevoPacienteNN'){
 	PatientController::getInstance()->crearPacienteNN();
+}elseif ($_GET["action"] == 'nuevoPaciente'){
+	PatientController::getInstance()->crearPaciente();
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }

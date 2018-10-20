@@ -13,8 +13,8 @@ function validarLogin() {
 }
 
 
-function confirmacion() {
-  if (confirm('¿Está seguro que quiere cerrar sesión?')){
+function confirmacion($msj) {
+  if (confirm($msj)){
        document.tuformulario.submit()
     }
 else {

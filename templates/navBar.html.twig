@@ -15,7 +15,7 @@
 			<ul class="navbar-nav mr-right">
 			{% if datos is defined %}
 	  			<li class="hidden-lg-down"><a class="nav-link "> Bienvenido {{ datos.first_name }} <span class="sr-only">(current)</span></a></li>
-	  			<a class="nav-link btn btn-primary text-white" href="index.php?action=logout" onclick="return confirmacion()">Cerrar Sesión <span class="sr-only">(current)</span></a>
+	  			<a class="nav-link btn btn-primary text-white" href="index.php?action=logout" onclick="return confirmacion('¿Está seguro que quiere cerrar sesión?')">Cerrar Sesión <span class="sr-only">(current)</span></a>
 	  	    {% else %}
 	  			<a class="nav-link btn btn-primary ml-1 text-white" href="index.php?action=login"> Iniciar Sesión <span class="sr-only">(current)</span></a>
 			{% endif %}
