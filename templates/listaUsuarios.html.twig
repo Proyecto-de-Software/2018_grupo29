@@ -1,0 +1,51 @@
+{% include "header.html.twig" %}
+
+<title> Usuarios </title>
+
+{% include "styles.html.twig" %}
+
+{% include "navBar.html.twig" %}
+
+<h2 class="alMedio text-center">Usuarios</h2>
+<br>
+<div class="row container-fluid">
+	<div class="col-1"></div>
+	<div class="col-10">
+		<ul class="list-group">
+			<li  class="list-group-item row d-flex text-center">
+				<div class="col-2 text-info">Nombre y apellido</div>
+				<div class="col-1 text-info">Nombre de usuario</div>
+				<div class="col-2 text-info">Fecha de creación</div>
+				<div class="col-2 text-info">Fecha de última modificación</div>
+				<div class="col-1 text-info">Estado</div>
+			</li>
+		{% for usuario in datos.usuarios %}
+	        <li class="list-group-item row d-flex text-center">
+	  			<div class="col-2">{{usuario.last_name}} {{usuario.first_name}} </div>
+	  			<div class="col-1">{{usuario.username}}</div>
+	  			<div class="col-2">{{usuario.created_at}}</div>		
+	  			<div class="col-2">{{usuario.updated_at}}</div>
+	  			<div class="col-1">{% if usuario.activo == 0 %} Activo {% else %} Bloqueado {% endif %}</div>
+	  			<div class="col-2">{% if usuario.activo == 0 %}
+	  					<form method="POST" action="index.php?action=cambiarEstadoUsuario">
+	  						<input type="hidden" name="usuario_estado" value="{{ usuario.activo }}"> 
+	  						<input type="hidden" name="usuario_id" value="{{ usuario.id }}"> 
+	  						<input type="submit" class="btn btn-outline-warning" value="Bloquear">
+	  					</form> 
+	  				{% else %} 
+	  					<form method="POST" action="index.php?action=cambiarEstadoUsuario">
+	  						<input type="hidden" name="usuario_estado" value="{{ usuario.activo }}">  
+	  						<input type="hidden" name="usuario_id" value="{{ usuario.id }}"> 
+	  						<input type="submit" class="btn btn-outline-success" value="Desbloquear">
+	  					</form> 
+	  				{% endif %}</div>
+	  			<div class="col-1"> <a href="#" class="btn btn-warning"> Editar </a> </div>
+	  			<div class="col-1"> <a href="#" class="btn btn-danger"> Eliminar </a> </div>
+	  		</li>
+	    {% endfor %}
+	    </ul> 
+	</div>
+	<div class="col-1"></div>
+</div>
+
+{% include "footer.html.twig" %}

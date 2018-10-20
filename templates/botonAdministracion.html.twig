@@ -1,0 +1,23 @@
+{% if ("usuario_index" in datos.permisos) or ("usuario_new" in datos.permisos) or ("usuario_update" in datos.permisos) or ("usuario_destroy" in datos.permisos) or ("usuario_show" in datos.permisos) or ("rol_index" in datos.permisos) or ("rol_new" in datos.permisos) or ("rol_update" in datos.permisos) or ("rol_destroy" in datos.permisos) or ("rol_show" in datos.permisos) or ("permiso_index" in datos.permisos) or ("permiso_new" in datos.permisos) or ("permiso_update" in datos.permisos) or ("permiso_destroy" in datos.permisos) or ("permiso_show" in datos.permisos) or ("configuracion_index" in datos.permisos) or ("configuracion_new" in datos.permisos) or ("configuracion_update" in datos.permisos) or ("configuracion_destroy" in datos.permisos) or ("configuracion_show" in datos.permisos) %}
+	<li class="nav-item dropdown">
+		<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Administración</a>
+		<div class="dropdown-menu">
+			{% if ("usuario_index" in datos.permisos) or ("usuario_new" in datos.permisos) or ("usuario_update" in datos.permisos) or ("usuario_destroy" in datos.permisos) or ("usuario_show" in datos.permisos) %}
+			<a class="dropdown-item" href="index.php?action=moduloUsuarios">Usuarios</a>	
+			{% endif %}
+			
+			{% if ("rol_index" in datos.permisos) or ("rol_new" in datos.permisos) or ("rol_update" in datos.permisos) or ("rol_destroy" in datos.permisos) or ("rol_show" in datos.permisos) %}
+			<a class="dropdown-item" href="#">Roles</a>	
+			{% endif %}
+
+			{% if ("permiso_index" in datos.permisos) or ("permiso_new" in datos.permisos) or ("permiso_update" in datos.permisos) or ("permiso_destroy" in datos.permisos) or ("permiso_show" in datos.permisos) %}
+			<a class="dropdown-item" href="#">Permisos</a>	
+			{% endif %}
+
+			{% if ("configuracion_index" in datos.permisos) or ("configuracion_new" in datos.permisos) or ("configuracion_update" in datos.permisos) or ("configuracion_destroy" in datos.permisos) or ("configuracion_show" in datos.permisos) %}
+			<div class="dropdown-divider"></div>
+			<a class="dropdown-item" href="#">Configuración</a>	
+			{% endif %}
+		</div>
+	</li>
+{% endif %}
