@@ -47,7 +47,8 @@ class UserController {
     }
 
     public function getAllUsers($html){
-    	$_SESSION["usuarios"] = UserRepository::getInstance()->listAll();
+    	//acomodar session
+        $_SESSION["usuarios"] = UserRepository::getInstance()->listAll();
     	//galletita con paginas
     	//array_chunk magico
         ResourceController::getInstance()->mostrarHTMLConParametros($html,$_SESSION);

@@ -47,6 +47,8 @@ class PatientController {
     }
 
     public function obtenerPacientes(){
+        //acomodar session
+        //acomdar permisos? 
         if (isset($_SESSION['id'])) { 
             $_SESSION['pacientes'] = PatientRepository::getInstance()->getPacientes();
             ResourceController::getInstance()->mostrarHTMLConParametros('listadoPacientes.html.twig', $_SESSION);
@@ -57,6 +59,7 @@ class PatientController {
     }    
 
     public function mostrarFormulario(){
+        //acomodar session
         if (isset($_SESSION['id'])) {
             if (in_array('paciente_index', $_SESSION['permisos'])) {
                 $historiasClinicas = PatientRepository::getInstance()->getHistoriasClinicas();
@@ -93,6 +96,8 @@ class PatientController {
     }
 
     public function buscarPaciente(){
+        //acomodar session
+        //acomodar permisos?
         if (isset($_SESSION['id'])) {
             if ($_POST['nombre'] != NULL) {$parametro['nombre'] = $_POST['nombre'];}
             else {$parametro['nombre'] = '';}
@@ -121,6 +126,8 @@ class PatientController {
     }
 
     public function crearPacienteNN(){
+        //acomodar session
+        //acomodar permisos?
         $parametro['nro_historia_clinica'] = $_SESSION['historiaClinicaRandom'];
         PatientRepository::getInstance()->crearPacienteNN($parametro);
         $_SESSION['mensaje'] = 'Se ha creado un NN con historia clínica '.$parametro['nro_historia_clinica'];
@@ -162,6 +169,7 @@ class PatientController {
     }
 
     public function obtenerPartidos() {
+        //esta me parece que quedo al pedo
         if (isset($_SESSION['id'])){
             return PatientRepository::getInstance()->getPartidos();
         }
@@ -171,6 +179,7 @@ class PatientController {
     }
 
     public function obtenerLocalidades() {
+        //esta me parece que quedo al pedo
         if (isset($_SESSION['id'])){
             $idLocalidad = $_POST['id_partido'];
             return PatientRepository::getInstance()->getLocalidades($idLocalidad);

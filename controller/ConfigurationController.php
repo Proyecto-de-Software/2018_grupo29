@@ -27,6 +27,7 @@ class ConfigurationController {
     }
 
     public function menuConfiguracion(){
+        //acomodar session
         if (isset($_SESSION['id'])) { 
             if (  (in_array('configuracion_index', $_SESSION['permisos'])) or (in_array('configuracion_update', $_SESSION['permisos'])) ){
                 $_SESSION['configuraciones'] = ConfigurationRepository::getInstance()->getConfiguraciones();

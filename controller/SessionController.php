@@ -25,6 +25,7 @@ class SessionController {
     }
     
     public function iniciarSesion(){
+        //en esta me parece que el session esta bien
         if(isset($_POST['nombre']) && isset($_POST['contra'])) {
             $user["nombre"] = $_POST["nombre"];
             $user["contra"] = $_POST["contra"];
