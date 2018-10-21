@@ -26,7 +26,7 @@
 	  			<div class="col-2">{{usuario.created_at}}</div>		
 	  			<div class="col-2">{{usuario.updated_at}}</div>
 	  			<div class="col-1">{% if usuario.activo == 0 %} Activo {% else %} Bloqueado {% endif %}</div>
-	  			<div class="col-2">{% if usuario.activo == 0 %}
+	  			{% if "usuario_update" in datos.permisos %}<div class="col-2">{% if usuario.activo == 0 %}
 	  					<form method="POST" action="index.php?action=cambiarEstadoUsuario">
 	  						<input type="hidden" name="usuario_estado" value="{{ usuario.activo }}"> 
 	  						<input type="hidden" name="usuario_id" value="{{ usuario.id }}"> 
@@ -39,8 +39,9 @@
 	  						<input type="submit" class="btn btn-outline-success" value="Desbloquear">
 	  					</form> 
 	  				{% endif %}</div>
-	  			<div class="col-1"> <a href="#" class="btn btn-warning"> Editar </a> </div>
-	  			<div class="col-1"> <a href="#" class="btn btn-danger"> Eliminar </a> </div>
+	  			{% endif %}
+	  			<div class="col-1"><a href="#" class="btn btn-warning"> Editar </a></div>
+	  			<div class="col-1"><a href="#" class="btn btn-danger"> Eliminar </a></div>
 	  		</li>
 	    {% endfor %}
 	    </ul> 

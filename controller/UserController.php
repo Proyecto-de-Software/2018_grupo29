@@ -48,9 +48,9 @@ class UserController {
 
     public function getAllUsers($html){
     	$_SESSION["usuarios"] = UserRepository::getInstance()->listAll();
-        ResourceController::getInstance()->mostrarHTMLConParametros($html,$_SESSION);
     	//galletita con paginas
     	//array_chunk magico
+        ResourceController::getInstance()->mostrarHTMLConParametros($html,$_SESSION);
 
     }
 
@@ -64,15 +64,23 @@ class UserController {
     }
 
     public function cambiarEstado($datos){
-        if($datos["usuario_estado"]==0){
-            $datosNuevos["usuario_estado"] = 1;
-            $datosNuevos["usuario_id"] = $datos["usuario_id"];
-            UserRepository::getInstance()->cambiarEstado($datosNuevos);
+        if(isset($_SESSION['id'])){
+            if(in_array('usuario_update', $_SESSION['permisos'])){
+                if($datos["usuario_estado"]==0){
+                    $datosNuevos["usuario_estado"] = 1;
+                    $datosNuevos["usuario_id"] = $datos["usuario_id"];
+                    UserRepository::getInstance()->cambiarEstado($datosNuevos);
+                }else{
+                    $datosNuevos["usuario_estado"] = 0;
+                    $datosNuevos["usuario_id"] = $datos["usuario_id"];
+                    UserRepository::getInstance()->cambiarEstado($datosNuevos);
+                }
+                $this->getAllUsers('listaUsuarios.html.twig');
+            }else{
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
         }else{
-            $datosNuevos["usuario_estado"] = 0;
-            $datosNuevos["usuario_id"] = $datos["usuario_id"];
-            UserRepository::getInstance()->cambiarEstado($datosNuevos);
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
         }
-        $this->getAllUsers('listaUsuarios.html.twig');
     }
 }
