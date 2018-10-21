@@ -30,6 +30,19 @@ class ConfigurationRepository extends PDORepository {
         return $answer;
     }
 
+    public function getTitulo() {
+        $answer = $this->queryList("SELECT valor FROM configuracion WHERE id=1",[]);
+        return $answer;
+
+    }
+
+    public function getEstadoSitio() {
+        $answer = $this->queryList("SELECT valor FROM configuracion WHERE id = 4",[]);
+        return $answer;
+
+    }
+
+
     public function updateConfiguration($datos) {
         $this->queryList("UPDATE configuracion SET valor = :titulo WHERE id = 1 ",["titulo" => $datos['Titulo']]);
         $this->queryList("UPDATE configuracion SET valor = :mail WHERE id = 2 ",["mail" => $datos['mail']]);
