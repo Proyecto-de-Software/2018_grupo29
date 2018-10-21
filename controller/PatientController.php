@@ -5,6 +5,7 @@
  
  */
 require_once('controller/ResourceController.php');
+require_once('controller/APIController.php');
 require_once('model/SessionRepository.php');
 require_once('model/PatientRepository.php');
 
@@ -131,7 +132,9 @@ class PatientController {
     public function crearPaciente() {
         if (isset($_SESSION['id'])) {
             if (in_array('paciente_new', $_SESSION['permisos'])){
-                $_SESSION['listaPartidos'] = $this->obtenerPartidos();
+                // = $this->obtenerPartidos();
+                $_SESSION['listaPartidos'] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido");
+                //aca va AJAX, y antes de hacerlo voy a acomodar todo lo del session.
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
             }
             else {
