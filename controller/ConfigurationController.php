@@ -42,4 +42,20 @@ class ConfigurationController {
         }
     }
 
+    public function actualizarConfiguracion(){
+        if (isset($_SESSION['id'])) { 
+            if (  (in_array('configuracion_index', $_SESSION['permisos'])) or (in_array('configuracion_update', $_SESSION['permisos'])) )
+            {
+                ConfigurationRepository::getInstance()->updateConfiguration($_POST);
+                $this->menuConfiguracion();
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
 }

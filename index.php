@@ -53,6 +53,8 @@ if(!(isset($_GET["action"]))) {
 	PatientController::getInstance()->obtenerLocalidades();
 }elseif ($_GET["action"] == 'moduloConfiguracion'){
 	ConfigurationController::getInstance()->menuConfiguracion();
+}elseif ($_GET["action"] == 'actualizarConfiguracion'){
+	ConfigurationController::getInstance()->actualizarConfiguracion();
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }
