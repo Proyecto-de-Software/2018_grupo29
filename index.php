@@ -8,13 +8,19 @@ require_once('controller/ResourceController.php');
 require_once('controller/SessionController.php');
 require_once('controller/UserController.php');
 require_once('controller/PatientController.php');
+require_once('controller/ConfigurationController.php');
 require_once('model/PDORepository.php');
 require_once('model/UserRepository.php');
 require_once('model/PatientRepository.php');
 require_once('model/Resource.php');
+require_once('model/ConfigurationRepository.php');
 require_once('view/TwigView.php');
 require_once('view/SimpleResourceList.php');
 require_once('view/Home.php');
+
+$conf = ConfigurationRepository::getInstance()->getConfiguraciones();
+$_SESSION['tituloHospital'] = $conf[0]['valor'];
+$_SESSION['mailContacto'] = $conf[1]['valor'];
 
 //esto se va a modificar a los actions que tengamos 
 if(!(isset($_GET["action"]))) {
@@ -49,6 +55,10 @@ if(!(isset($_GET["action"]))) {
 	PatientController::getInstance()->obtenerPartidos();
 }elseif ($_GET["action"] == 'obtenerLocalidades'){
 	PatientController::getInstance()->obtenerLocalidades();
+}elseif ($_GET["action"] == 'moduloConfiguracion'){
+	ConfigurationController::getInstance()->menuConfiguracion();
+}elseif ($_GET["action"] == 'actualizarConfiguracion'){
+	ConfigurationController::getInstance()->actualizarConfiguracion();
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }
