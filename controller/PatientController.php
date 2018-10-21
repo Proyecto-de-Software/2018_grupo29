@@ -8,6 +8,7 @@ require_once('controller/ResourceController.php');
 require_once('controller/APIController.php');
 require_once('model/SessionRepository.php');
 require_once('model/PatientRepository.php');
+require_once('model/ConfigurationRepository.php');
 
 class PatientController {
     
@@ -48,10 +49,30 @@ class PatientController {
 
     public function obtenerPacientes(){
         //acomodar session
-        //acomdar permisos? 
-        if (isset($_SESSION['id'])) { 
-            $_SESSION['pacientes'] = PatientRepository::getInstance()->getPacientes();
-            ResourceController::getInstance()->mostrarHTMLConParametros('listadoPacientes.html.twig', $_SESSION);
+        if (isset($_SESSION['id'])) {
+            if (in_array('paciente_index', $_SESSION['permisos'])) {
+                $pacientes = PatientRepository::getInstance()->getPacientes();
+                $answer = ConfigurationRepository::getInstance()->getCantPaginas();
+                $cantElementosPorPagina = $answer[0]['valor'];
+                $cantElementosPorPagina =  intval($cantElementosPorPagina);
+                $_SESSION['cantElementosPorPagina'] = $cantElementosPorPagina;
+                $cantidadPacientes = count($pacientes);
+                $cantPaginas = $cantidadPacientes / $cantElementosPorPagina;
+                $cantPaginas = round($cantPaginas);
+                $_SESSION['cantPaginas'] = $cantPaginas;
+                $pacientes = array_chunk($pacientes, $cantElementosPorPagina);
+                if (! isset($_POST['pagina'])) {
+                    $actual = 0;
+                }
+                else {
+                    $actual = $_POST['pagina'] - 1;
+                }
+                $_SESSION['pacientes'] = $pacientes[$actual];
+                ResourceController::getInstance()->mostrarHTMLConParametros('listadoPacientes.html.twig', $_SESSION);
+            }
+            else{
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
         }
         else {
             ResourceController::getInstance()->mostrarHTML('error.html.twig');
@@ -109,14 +130,29 @@ class PatientController {
             else {$parametro['numero_documento'] = '';}
             if ($_POST['nro_historia_clinica'] != NULL) {$parametro['nro_historia_clinica'] = $_POST['nro_historia_clinica'];}
             else {$parametro['nro_historia_clinica'] = '';} 
-            $resultado = PatientRepository::getInstance()->buscarPaciente($parametro);
-            if (count($resultado)==0){
+            $pacientes = PatientRepository::getInstance()->buscarPaciente($parametro);
+            if (count($pacientes)==0){
                 $_SESSION['noHubo'] = 1;;
                 $this->mostrarFormulario();
             }
             else {
                 if (isset($_SESSION['noHubo'])) unset($_SESSION['noHubo']);
-                $_SESSION['pacientes'] = $resultado;
+                $answer = ConfigurationRepository::getInstance()->getCantPaginas();
+                $cantElementosPorPagina = $answer[0]['valor'];
+                $cantElementosPorPagina =  intval($cantElementosPorPagina);
+                $_SESSION['cantElementosPorPagina'] = $cantElementosPorPagina;
+                $cantidadPacientes = count($pacientes);
+                $cantPaginas = $cantidadPacientes / $cantElementosPorPagina;
+                $cantPaginas = round($cantPaginas);
+                $_SESSION['cantPaginas'] = $cantPaginas;
+                $pacientes = array_chunk($pacientes, $cantElementosPorPagina);
+                if (! isset($_POST['pagina'])) {
+                    $actual = 0;
+                }
+                else {
+                    $actual = $_POST['pagina'] - 1;
+                }
+                $_SESSION['pacientes'] = $pacientes[$actual];
                 ResourceController::getInstance()->mostrarHTMLConParametros('listadoPacientes.html.twig', $_SESSION);
             }
         }

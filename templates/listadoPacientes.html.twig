@@ -1,6 +1,5 @@
 {% include 'home.html.twig' %}
 
-{% block content %}
 	<h2 class="alMedio text-center"> Pacientes del Hospital</h2>
 	<br>
 	<div class="row container-fluid">
@@ -47,4 +46,15 @@
     {% endfor %}
     </ul> 
 </div>
-{% endblock %}
+<br>
+ <ul class="pagination justify-content-center">
+  {% for i in 1 .. datos.cantPaginas %}
+    <li class="page-item">
+      <form method="POST" action="./index.php?action=listarPacientes">
+        <input type="submit" class="btn btn-info" value="{{ i }}">
+        <input type="hidden" name="pagina" value="{{ i }}">
+      </form>
+    </li>
+    &emsp;
+  {% endfor %}
+</ul> 

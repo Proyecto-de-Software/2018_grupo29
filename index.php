@@ -18,9 +18,9 @@ require_once('view/TwigView.php');
 require_once('view/SimpleResourceList.php');
 require_once('view/Home.php');
 
-//$conf = ConfigurationRepository::getInstance()->getConfiguraciones();
-//$_SESSION['tituloHospital'] = $conf[0]['valor'];
-//$_SESSION['mailContacto'] = $conf[1]['valor'];
+$conf = ConfigurationRepository::getInstance()->getConfiguraciones();
+$_SESSION['tituloHospital'] = $conf[0]['valor'];
+$_SESSION['mailContacto'] = $conf[1]['valor'];
 
 //esto se va a modificar a los actions que tengamos 
 if(!(isset($_GET["action"]))) {
