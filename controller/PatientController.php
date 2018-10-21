@@ -28,7 +28,6 @@ class PatientController {
     public function menuPacientes(){
         if (isset($_SESSION['id'])) { 
             if ( 
-                (in_array('paciente_search', $_SESSION['permisos'])) or
                 (in_array('paciente_show', $_SESSION['permisos'])) or 
                 (in_array('paciente_new', $_SESSION['permisos'])) or 
                 (in_array('paciente_update', $_SESSION['permisos'])) or
