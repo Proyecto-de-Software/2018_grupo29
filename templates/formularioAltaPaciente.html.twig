@@ -1,5 +1,8 @@
 {% include 'home.html.twig' %}
 
+<script type="text/javascript" src="./templates/js/jquery.js"></script>
+<script type="text/javascript" src="./templates/js/ajax.js"></script>
+
 {% block content %}
 	<div class="row container-fluid alMedio">
 		<div class="col-sm-4"> </div>
@@ -31,17 +34,16 @@
 				 </div>
 				 <div class="form-group">
 				 	<label for="partidos">Partido</label>
-				 	<select class="form-control" name="partidos" id="partidos" onchange="mostrarLocalidades(this.value)">
+				 	<select class="form-control" name="partidos" id="partidos">
 				 		<option value="">Seleccionar partido</option>
 				 		{% for partido in datos.listaPartidos %}
 				 			<option name="id_partido" value="{{ partido.id }}"> {{ partido.nombre }} </option>
 				 		{% endfor %}
 				 	</select>
 				 </div>
-				 <div class="form-group">
+				 <div class="form-group" id="divLocalidades">
 				 	<label for="partidos">Localidad</label>
 				 	<select class="form-control" name="localidades" id="localidades">
-				 		<option value="">Seleccionar localidad</option>
 				 	</select>
 				 </div>
 			</div>
