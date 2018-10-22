@@ -67,6 +67,10 @@ if(!(isset($_GET["action"]))) {
 	UserController::getInstance()->crearUsuarioNuevo();
 }elseif ($_GET["action"] == 'obtenerCiudades'){
 	AJAXController::getInstance()->obtenerCiudades($_POST);
+}elseif ($_GET["action"] == 'formularioBusquedaUsuarios'){
+	UserController::getInstance()->mostrarFormularioBusqueda();
+}elseif ($_GET["action"] == 'buscarUsuario'){
+	UserController::getInstance()->buscarUsuario();
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }

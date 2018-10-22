@@ -57,11 +57,8 @@
         <input type="hidden" name="pagina" value="{{ i }}">
         {% if datos.fueBusqueda == 1 %}
           <input type="hidden" name="fueBusqueda" value="{{ datos.fueBusqueda }}">
-          <input type="hidden" name="nombre" value="{{ datos.filtros.nombre }}"> 
-          <input type="hidden" name="nombre_tipo_documento" value="{{ datos.filtros.nombre_tipo_documento }}"> 
-          <input type="hidden" name="numero_documento" value="{{ datos.filtros.numero_documento }}"> 
-          <input type="hidden" name="apellido" value="{{ datos.filtros.apellido }}"> 
-          <input type="hidden" name="nro_historia_clinica" value="{{ datos.filtros.nro_historia_clinica }}"> 
+          <input type="hidden" name="username" value="{{ datos.filtros.username }}"> 
+          <input type="hidden" name="activo" value="{{ datos.filtros.activo }}">  
         {% endif %}
       </form>
     </li>

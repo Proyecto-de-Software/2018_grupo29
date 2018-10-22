@@ -71,4 +71,14 @@ class UserRepository extends PDORepository {
 
             ]);
     }
+
+    public function buscarUsuarioSinActivo($datos) {
+        $answer = $this->queryList("SELECT * FROM usuario WHERE username LIKE CONCAT('%', :username, '%')",["username" => $datos['username']]);
+        return $answer;
+    }
+
+    public function buscarUsuarioConActivo($datos) {
+        $answer = $this->queryList("SELECT * FROM usuario WHERE username LIKE CONCAT('%', :username, '%') AND activo = :activo",["username" => $datos['username'],"activo" => $datos['activo']]);
+        return $answer;
+    }
 }
