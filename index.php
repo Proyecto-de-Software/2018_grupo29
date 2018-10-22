@@ -61,8 +61,18 @@ if(!(isset($_GET["action"]))) {
 	ConfigurationController::getInstance()->menuConfiguracion();
 }elseif ($_GET["action"] == 'actualizarConfiguracion'){
 	ConfigurationController::getInstance()->actualizarConfiguracion();
+}elseif ($_GET["action"] == 'nuevoUsuario'){
+	UserController::getInstance()->nuevoUsuario();
+}elseif ($_GET["action"] == 'crearUsuario'){
+	UserController::getInstance()->crearUsuarioNuevo();
 }elseif ($_GET["action"] == 'obtenerCiudades'){
 	AJAXController::getInstance()->obtenerCiudades($_POST);
+}elseif ($_GET["action"] == 'formularioBusquedaUsuarios'){
+	UserController::getInstance()->mostrarFormularioBusqueda();
+}elseif ($_GET["action"] == 'buscarUsuario'){
+	UserController::getInstance()->buscarUsuario();
+}elseif ($_GET["action"] == 'crearPacienteNuevo'){
+	PatientController::getInstance()->crearPacienteNuevo();
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }

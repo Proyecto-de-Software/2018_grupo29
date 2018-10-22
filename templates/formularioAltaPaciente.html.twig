@@ -15,22 +15,18 @@
 	</div>
 		<div class="row container-fluid">
 			<div class="col-sm-6">
-				<form method="POST" action="">
+				<form method="POST" action="./index.php?action=crearPacienteNuevo">
 				 <div class="form-group">
 				 	<label for="first_name">Nombre*</label>
-				    <input type="text" class="form-control" required>
+				    <input type="text" name="nombre" class="form-control" >
 				 </div>
 				 <div class="form-group">
 				    <label for="last_name">Apellido*</label>
-				    <input type="text" class="form-control" required>
-				 </div>
-				 <div class="form-group">
-				 	<label for="lugar_nacimiento">Lugar de nacimiento </label>
-				    <input type="text" class="form-control">
+				    <input type="text" name="apellido" class="form-control" >
 				 </div>
 				 <div class="form-group">
 				 	<label for="domicilio">Domicilio actual*</label>
-				    <input type="text" class="form-control" required>
+				    <input type="text" name="domicilio" class="form-control" >
 				 </div>
 				 <div class="form-group">
 				 	<label for="partidos">Partido</label>
@@ -46,40 +42,58 @@
 				 	<select class="form-control" name="localidades" id="localidades">
 				 	</select>
 				 </div>
+				 <div class="form-group">
+				 	<label for="partidos">¿Tiene el documento en su poder?*</label>
+				 	<select class="form-control" name="tiene_documento">
+				 		<option value="0">No</option>
+				 		<option value="1">Sí</option>
+				 	</select>
+				 </div>
+				 <div class="form-group">
+				 	<label for="obra_social">Obra Social</label>
+				 	<select class="form-control" name="obra_social_id">
+				 		<option value="1">IOMA</option>
+				 		<option value="2">OSDE</option>
+				 		<option value="3">OSECAC</option>
+				 	</select>
+				 </div>
 			</div>
 			<div class="col-sm-6">
 				 <div class="form-group">
 				 	<label for="genero">Género*</label>
-				 	<select class="form-control" required>
-				 		<option>Masculino</option>
-				 		<option>Femenino</option>
-				 		<option>Otro</option>
+				 	<select name="genero_id" class="form-control" >
+				 		<option value="1">Masculino</option>
+				 		<option value="2">Femenino</option>
+				 		<option value="3">Otro</option>
 				 	</select>
 				 </div>
 				 <div class="form-group">
-				 	<label for="tipo_doc">Tipo de Documento*</label>
-				 	<select class="form-control" required>
-				 		<option>DNI</option>
-				 		<option>LC</option>
-				 		<option>LE</option>
-				 		<option>CI</option>
+				 	<label for="tipo_documento">Tipo de Documento*</label>
+				 	<select class="form-control" name="tipo_documento" >
+				 		<option value="1">DNI</option>
+				 		<option value="2">LC</option>
+				 		<option value="3">CI</option>
+				 		<option value="4">LE</option>
 				 	</select>
 				 </div>
 				 <div class="form-group">
 				 	<label for="fecha_nac">Fecha de nacimiento*</label>
-				 	<input type="date" name="fecha_nac" class="form-control" required>
+				 	<input type="date" name="fecha_nac" class="form-control" >
 				 </div>
 				 <div class="form-group">
 				 	<label for="numero">Número de documento*</label>
-				 	<input type="text" class="form-control" name="numero" required>
+				 	<input type="text" class="form-control" name="numero" >
 				 </div>
 				 <div class="form-group">
 				    <label for="numeroHistoriaClinica">Número de historia clínica</label>
-				    <input type="text" class="form-control">
+				    <input type="text" class="form-control" name="nro_historia_clinica">
 				 </div>
 				 <div class="form-group">
 				    <label for="numeroCarpeta">Número de carpeta</label>
-				    <input type="text" class="form-control">
+				    <input type="text" class="form-control" name="nro_carpeta">
+				 </div><div class="form-group">
+				    <label for="telefono">Número de telefono</label>
+				    <input type="text" class="form-control" name="tel">
 				 </div>
 			</div>
 			<div class="row container-fluid">

@@ -83,7 +83,7 @@ class UserController {
                 }
             }
             else{
-                $this->buscarPaciente();
+                $this->buscarUsuario();
             }
         }
         else {
@@ -119,6 +119,107 @@ class UserController {
                 ResourceController::getInstance()->mostrarHTML('error.html.twig');
             }
         }else{
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function nuevoUsuario(){
+        if(isset($_SESSION['id'])){
+            if(in_array('usuario_new', $_SESSION['permisos'])){
+                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
+            }else{
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }else{
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function crearUsuarioNuevo(){
+        if(isset($_SESSION['id'])){
+            if(in_array('usuario_new', $_SESSION['permisos'])){
+                $answer = UserRepository::getInstance()->verificarUnicidad($_POST);
+                if (count($answer) == 0) {
+                    $_POST['created_at'] = date("Y-m-d H:i:s");
+                    $_POST['updated_at'] = date("Y-m-d H:i:s");
+                    UserRepository::getInstance()->agregarUsuario($_POST);
+                    $_SESSION['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
+                    $_SESSION['tipo_mensaje'] = 'text-success';
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
+                }
+                else {
+                    $_SESSION['mensaje'] = "El nombre de usuario '".$_POST['username']."'  ya existe. Por favor elija otro";
+                    $_SESSION['tipo_mensaje'] = 'text-danger';
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
+                }
+            }else{
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }else{
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function mostrarFormularioBusqueda(){
+        if (isset($_SESSION['id'])) {
+            if (in_array('usuario_index', $_SESSION['permisos'])) {
+                
+                ResourceController::getInstance()->mostrarHTMLConParametros('busquedaUsuario.html.twig', $_SESSION);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function buscarUsuario(){
+        if (isset($_SESSION['id'])) {
+            if (in_array('usuario_index', $_SESSION['permisos'])) {
+                if (($_POST['activo']) == '') {
+                    $usuarios = UserRepository::getInstance()->buscarUsuarioSinActivo($_POST);
+                }
+                else{
+                    $usuarios = UserRepository::getInstance()->buscarUsuarioConActivo($_POST);
+                }
+                if (count($usuarios)==0){
+                    $_SESSION['noHubo'] = 1;;
+                    $this->mostrarFormularioBusqueda($_SESSION);
+                }
+                else {
+                    if (isset($_SESSION['noHubo'])) unset($_SESSION['noHubo']);
+                    $answer = ConfigurationRepository::getInstance()->getCantPaginas();
+                    $cantElementosPorPagina = $answer[0]['valor'];
+                    $cantElementosPorPagina =  intval($cantElementosPorPagina);
+                    $_SESSION['cantElementosPorPagina'] = $cantElementosPorPagina;
+                    $cantidadUsuarios = count($usuarios);
+                    $cantPaginas = $cantidadUsuarios / $cantElementosPorPagina;
+                    $cantPaginas = ceil($cantPaginas);
+                    $_SESSION['cantPaginas'] = $cantPaginas;
+                    $usuarios = array_chunk($usuarios, $cantElementosPorPagina);
+                    if (! isset($_POST['pagina'])) {
+                        $actual = 0;
+                    }
+                    else {
+                        $actual = $_POST['pagina'] - 1;
+                    }
+                    $_SESSION['usuarios'] = $usuarios[$actual];
+                    $_SESSION['fueBusqueda'] = 1;
+                    $_SESSION['filtros'] = $_POST;
+                    ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
+                }
+            
+                
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+
+        }
+        else {
             ResourceController::getInstance()->mostrarHTML('error.html.twig');
         }
     }
