@@ -42,6 +42,11 @@ class ConfigurationRepository extends PDORepository {
 
     }
 
+    public function getCantPaginas() {
+        $answer = $this->queryList("SELECT valor FROM configuracion WHERE id = 3",[]);
+        return $answer;
+    }
+
 
     public function updateConfiguration($datos) {
         $this->queryList("UPDATE configuracion SET valor = :titulo WHERE id = 1 ",["titulo" => $datos['Titulo']]);

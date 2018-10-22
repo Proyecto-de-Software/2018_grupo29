@@ -50,7 +50,7 @@ class SessionController {
         if(isset($_SESSION)){
             session_unset();
             session_destroy();
-            ResourceController::getInstance()->mostrarHTML('home.html.twig');
+            ResourceController::getInstance()->menuPrincipal('home.html.twig',array());
         }
     }
     

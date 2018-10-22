@@ -39,9 +39,11 @@ class ResourceController {
         $view = new Home();
         if(isset($_SESSION['id'])){
             $view->showConParametros($html,$_SESSION);
-        }else{
+        }
+        else{ 
             $estado = ConfigurationRepository::getInstance()->getEstadoSitio();
-            if ($estado == 0){
+            $es = $estado[0]['valor'];   
+            if ($es == '0'){
                 $view->show($html);
             }
             else{
