@@ -59,6 +59,10 @@ if(!(isset($_GET["action"]))) {
 	ConfigurationController::getInstance()->menuConfiguracion();
 }elseif ($_GET["action"] == 'actualizarConfiguracion'){
 	ConfigurationController::getInstance()->actualizarConfiguracion();
+}elseif ($_GET["action"] == 'nuevoUsuario'){
+	UserController::getInstance()->nuevoUsuario();
+}elseif ($_GET["action"] == 'crearUsuario'){
+	UserController::getInstance()->crearUsuarioNuevo();
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }
