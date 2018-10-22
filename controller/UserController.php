@@ -76,7 +76,7 @@ class UserController {
                     }
                     $_SESSION['usuarios'] = $usuarios[$actual];
                     $_SESSION['fueBusqueda'] = 0;
-                    ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
+                    ResourceController::getInstance()->mostrarHTMLConParametros($html, $_SESSION);
                 }
                 else {
                     ResourceController::getInstance()->mostrarHTML('error.html.twig');
@@ -222,5 +222,41 @@ class UserController {
         else {
             ResourceController::getInstance()->mostrarHTML('error.html.twig');
         }
+    }
+
+    public function eliminarUsuario() {
+        if (isset($_SESSION['id'])){
+            if (in_array('usuario_destroy', $_SESSION['permisos'])){
+                UserRepository::getInstance()->eliminarUsuario($_POST['usuario_id']);
+                ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function verDatosUsuario(){
+        if (isset($_SESSION['id'])){
+            if (in_array('usuario_update', $_SESSION['permisos'])){
+                $_SESSION['datosUsuario'] = UserRepository::getInstance()->datosUsuario($_POST['usuario_id']);
+                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function editarUsuario(){
+        UserRepository::getInstance()->actualizarUsuario($_POST);
+        unset($_SESSION['datosUsuario']);
+        ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
     }
 }

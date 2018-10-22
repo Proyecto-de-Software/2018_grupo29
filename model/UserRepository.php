@@ -81,4 +81,27 @@ class UserRepository extends PDORepository {
         $answer = $this->queryList("SELECT * FROM usuario WHERE username LIKE CONCAT('%', :username, '%') AND activo = :activo",["username" => $datos['username'],"activo" => $datos['activo']]);
         return $answer;
     }
+
+    public function eliminarUsuario($id) {
+        $this->queryList("DELETE FROM usuario_tiene_rol WHERE usuario_id = :id",["id" => $id]);
+        $this->queryList("DELETE FROM usuario WHERE id = :id",["id" => $id]);
+    }
+
+    public function datosUsuario($id){
+        $answer = $this->queryList("SELECT * FROM usuario where id=:id", ["id" => $id]);
+        return $answer[0];
+    }
+
+    public function actualizarUsuario($datos){
+        var_dump($datos);
+        $this->queryList("UPDATE usuario set username=:username, email=:email, password=:pwd, activo=0, first_name=:first_name, last_name=:last_name where id=:id"
+            ,[
+                "username" => $datos["username"],
+                "email" => $datos["email"],
+                "pwd" => $datos["password"],
+                "first_name" => $datos["first_name"],
+                "last_name" => $datos["last_name"],
+                "id" => $datos["id_usuario"]
+            ]);
+    }
 }

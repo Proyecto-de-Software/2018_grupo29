@@ -7,7 +7,9 @@
 	<div class="row container-fluid alMedio">
 		<div class="col-sm-4"> </div>
 		<div class="col-sm-4">
-			<h1 class="alMedio text-center">Nuevo Paciente</h1>
+			{% if datos.datosPaciente is defined %}<h1 class="alMedio text-center">Modificar Paciente</h1>
+			{% else %}<h1 class="alMedio text-center">Nuevo Paciente</h1>
+			{% endif %}
 			<p class="text-center"> Nota: los campos que tienen (*) son obligatorios</p>
 			<br>
 		</div>
@@ -15,18 +17,23 @@
 	</div>
 		<div class="row container-fluid">
 			<div class="col-sm-6">
-				<form method="POST" action="./index.php?action=crearPacienteNuevo">
+				{% if datos.datosPaciente is defined %}
+					<form method="POST" action="./index.php?action=modificarPaciente">
+						<input type="hidden" name="id_paciente" value="{{datos.datosPaciente.id_paciente}}" >
+				{% else %}
+					<form method="POST" action="./index.php?action=crearPacienteNuevo">
+				{% endif %}
 				 <div class="form-group">
 				 	<label for="first_name">Nombre*</label>
-				    <input type="text" name="nombre" class="form-control" >
+				    <input type="text" name="nombre" class="form-control" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.nombre}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				    <label for="last_name">Apellido*</label>
-				    <input type="text" name="apellido" class="form-control" >
+				    <input type="text" name="apellido" class="form-control" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.apellido}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				 	<label for="domicilio">Domicilio actual*</label>
-				    <input type="text" name="domicilio" class="form-control" >
+				    <input type="text" name="domicilio" class="form-control" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.domicilio}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				 	<label for="partidos">Partido</label>
@@ -78,22 +85,22 @@
 				 </div>
 				 <div class="form-group">
 				 	<label for="fecha_nac">Fecha de nacimiento*</label>
-				 	<input type="date" name="fecha_nac" class="form-control" >
+				 	<input type="date" name="fecha_nac" class="form-control" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.fecha_nac}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				 	<label for="numero">Número de documento*</label>
-				 	<input type="text" class="form-control" name="numero" >
+				 	<input type="text" class="form-control" name="numero" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.numero}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				    <label for="numeroHistoriaClinica">Número de historia clínica</label>
-				    <input type="text" class="form-control" name="nro_historia_clinica">
+				    <input type="text" class="form-control" name="nro_historia_clinica" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.nro_historia_clinica}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				    <label for="numeroCarpeta">Número de carpeta</label>
-				    <input type="text" class="form-control" name="nro_carpeta">
+				    <input type="text" class="form-control" name="nro_carpeta" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.nro_carpeta}}" {% endif %}>
 				 </div><div class="form-group">
 				    <label for="telefono">Número de telefono</label>
-				    <input type="text" class="form-control" name="tel">
+				    <input type="text" class="form-control" name="tel" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.tel}}" {% endif %}>
 				 </div>
 			</div>
 			<div class="row container-fluid">

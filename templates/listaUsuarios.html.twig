@@ -1,10 +1,4 @@
-{% include "header.html.twig" %}
-
-<title> Usuarios </title>
-
-{% include "styles.html.twig" %}
-
-{% include "navBar.html.twig" %}
+{% include "home.html.twig" %}
 
 <h2 class="alMedio text-center">Usuarios</h2>
 <br>
@@ -40,8 +34,24 @@
 	  					</form> 
 	  				{% endif %}</div>
 	  			{% endif %}
-	  			<div class="col-1"><a href="#" class="btn btn-warning"> Editar </a></div>
-	  			<div class="col-1"><a href="#" class="btn btn-danger"> Eliminar </a></div>
+	  			{% if "usuario_update" in datos.permisos %}
+	  				<div class="col-1">
+	  					<form method="POST" action="index.php?action=editarUsuario">
+	  						<input type="hidden" name="usuario_estado" value="{{ usuario.activo }}"> 
+	  						<input type="hidden" name="usuario_id" value="{{ usuario.id }}"> 
+	  						<input type="submit" class="btn btn-warning" value="Editar">
+	  					</form>
+	  				</div>
+	  			{% else %} <div class="col-1"></div> {% endif %}
+	  			{% if "usuario_destroy" in datos.permisos %}
+	  				<div class="col-1">
+	  					<form method="POST" action="index.php?action=eliminarUsuario" onclick="return confirmacion('¿Está seguro que quiere eliminar al paciente?')">
+	  						<input type="hidden" name="usuario_estado" value="{{ usuario.activo }}"> 
+	  						<input type="hidden" name="usuario_id" value="{{ usuario.id }}"> 
+	  						<input type="submit" class="btn btn-danger" value="Eliminar">
+	  					</form>
+	  				</div>
+	  			{% else %} <div class="col-1"></div> {% endif %}
 	  		</li>
 	    {% endfor %}
 	    </ul> 

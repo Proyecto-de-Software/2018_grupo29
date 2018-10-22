@@ -234,6 +234,7 @@ class PatientController {
     }
 
     public function crearPacienteNuevo(){
+        //var_dump($_POST);
         if (isset($_SESSION['id'])){
             if (in_array('paciente_new', $_SESSION['permisos'])){
                 if (! isset($_POST['localidades'])) {
@@ -249,7 +250,7 @@ class PatientController {
                 $_POST['obra_social_id'] = intval($_POST['obra_social_id']);
                
                 PatientRepository::getInstance()->crearPaciente($_POST);
-                $this->crearPaciente();
+                ResourceController::getInstance()->mostrarHTMLConParametros('home.html.twig',$_SESSION);
             }
             else {
                 ResourceController::getInstance()->mostrarHTML('error.html.twig');
@@ -260,4 +261,25 @@ class PatientController {
         }
     }
 
+    public function verDatosPaciente() {
+        if (isset($_SESSION['id'])){
+            if (in_array('paciente_update', $_SESSION['permisos'])){
+                $_SESSION['listaPartidos'] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido");
+                $_SESSION['datosPaciente'] = PatientRepository::getInstance()->datosPaciente($_POST['id_paciente']);
+                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function editarPaciente(){
+        PatientRepository::getInstance()->actualizarPaciente($_POST);
+        unset($_SESSION['datosPaciente']);
+        PatientController::getInstance()->obtenerPacientes();
+    }
 }

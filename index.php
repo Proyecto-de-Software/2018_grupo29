@@ -73,6 +73,16 @@ if(!(isset($_GET["action"]))) {
 	UserController::getInstance()->buscarUsuario();
 }elseif ($_GET["action"] == 'crearPacienteNuevo'){
 	PatientController::getInstance()->crearPacienteNuevo();
+}elseif ($_GET["action"] == 'editarPaciente'){
+	PatientController::getInstance()->verDatosPaciente();
+}elseif ($_GET["action"] == 'modificarPaciente'){
+	PatientController::getInstance()->editarPaciente();
+}elseif ($_GET["action"] == 'eliminarUsuario'){
+	UserController::getInstance()->eliminarUsuario();
+}elseif ($_GET["action"] == 'editarUsuario'){
+	UserController::getInstance()->verDatosUsuario();
+}elseif ($_GET["action"] == 'modificarUsuario'){
+	UserController::getInstance()->editarUsuario();
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }

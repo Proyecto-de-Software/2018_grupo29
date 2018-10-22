@@ -94,7 +94,7 @@ class PatientRepository extends PDORepository {
     }
 
     public function crearPaciente($datos) {
-        $answer = $this->queryList("INSERT INTO `paciente` (`id_paciente`, `apellido`, `nombre`, `fecha_nac`, `lugar_nac`, `localidad_id`, `region_sanitaria_id`, `domicilio`, `genero_id`, `tiene_documento`, `tipo_doc_id`, `numero`, `tel`, `nro_historia_clinica`, `nro_carpeta`, `obra_social_id`) VALUES (NULL, :apellido, :nombre, :fecha, NULL, :localidad, 1 , :domicilio, :genero_id, :tiene_documento, :tipo_documento_id, :numero , :tel, :nro_historia_clinica, :nro_carpeta, :obra_social_id);"
+        $answer = $this->queryList("INSERT INTO paciente (apellido, nombre, fecha_nac, lugar_nac, localidad_id, region_sanitaria_id, domicilio, genero_id, tiene_documento, tipo_doc_id, numero, tel, nro_historia_clinica, nro_carpeta, obra_social_id) VALUES ( :apellido, :nombre, :fecha, NULL, :localidad, 1 , :domicilio, :genero_id, :tiene_documento, :tipo_documento_id, :numero , :tel, :nro_historia_clinica, :nro_carpeta, :obra_social_id);"
 
         ,[
             "apellido" => $datos['apellido'],
@@ -113,6 +113,32 @@ class PatientRepository extends PDORepository {
         ]);
         //Benja, no se por que esto no anda... $answer->debugDumpParams();
     }
+
+    public function datosPaciente($id){
+        $answer = $this->queryList("SELECT * FROM paciente where id_paciente=:id", ["id" => $id]);
+        return $answer[0];
+    }
+
+    public function actualizarPaciente($datos){
+        $this->queryList("UPDATE paciente set nombre=:nombre, apellido=:apellido, domicilio=:domicilio, localidad_id=:localidad, tiene_documento=:tieneDoc, obra_social_id=:obraSoc, genero_id=:genero, tipo_doc_id=:tipoDoc, fecha_nac=:fecha, numero=:nro, nro_historia_clinica=:nroHC, nro_carpeta=:nroC, tel=:tel WHERE id_paciente=:id"
+            ,[
+                "nombre" => $datos["nombre"],
+                "apellido" => $datos["apellido"],
+                "domicilio" => $datos["domicilio"],
+                "localidad" => $datos["localidades"],
+                "tieneDoc" => $datos["tiene_documento"],
+                "obraSoc" => $datos["obra_social_id"],
+                "genero" => $datos["genero_id"],
+                "tipoDoc" => $datos["tipo_documento"],
+                "fecha" => $datos["fecha_nac"],
+                "nro" => $datos["numero"],
+                "nroHC" => $datos["nro_historia_clinica"],
+                "nroC" => $datos["nro_carpeta"],
+                "tel" => $datos["tel"],
+                "id" => $datos["id_paciente"],
+            ]);
+    }
+
 }
 
 
