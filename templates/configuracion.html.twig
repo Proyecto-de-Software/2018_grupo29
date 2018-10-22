@@ -18,8 +18,9 @@
 				    <input type="hidden" value="{{ datos.configuraciones[1].id }}"  name="id"> </input>
 				 </div>
 				 <div class="form-group">
-				 	<label for="">Hojas por página</label>
+				 	<label for="">Elementos por página</label>
 				    <select class="form-control" name="{{ datos.configuraciones[2].variable }}">
+				    	<option value="1" {% if datos.configuraciones[2].valor == 1 %} selected="" {% endif %}>1</option>
 				    	<option value="3" {% if datos.configuraciones[2].valor == 3 %} selected="" {% endif %}>3</option>
 				    	<option value="5" {% if datos.configuraciones[2].valor == 5 %} selected="" {% endif %}>5</option>
 				    	<option value="8" {% if datos.configuraciones[2].valor == 8 %} selected="" {% endif %}>8</option>

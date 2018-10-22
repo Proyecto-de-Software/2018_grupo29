@@ -47,13 +47,51 @@ class UserController {
     }
 
     public function getAllUsers($html){
-    	//acomodar session
-        $_SESSION["usuarios"] = UserRepository::getInstance()->listAll();
-    	//galletita con paginas
-    	//array_chunk magico
-        ResourceController::getInstance()->mostrarHTMLConParametros($html,$_SESSION);
 
-    }
+        /* Anterior al paginado...
+        $usuarios = UserRepository::getInstance()->listAll();
+        $_SESSION["usuarios"] = $usuarios;
+        ResourceController::getInstance()->mostrarHTMLConParametros($html,$_SESSION);
+        */
+
+        if (! isset($_POST['fueBusqueda'])) $_POST['fueBusqueda'] = 0;
+        if (isset($_SESSION['id'])) {
+            if (($_POST['fueBusqueda']) == 0) {
+                if (in_array('usuario_index', $_SESSION['permisos'])) {
+                    $usuarios = UserRepository::getInstance()->listAll();
+                    $answer = ConfigurationRepository::getInstance()->getCantPaginas();
+                    $cantElementosPorPagina = $answer[0]['valor'];
+                    $cantElementosPorPagina =  intval($cantElementosPorPagina);
+                    $_SESSION['cantElementosPorPagina'] = $cantElementosPorPagina;
+                    $cantidadUsuarios = count($usuarios);
+                    $cantPaginas = $cantidadUsuarios / $cantElementosPorPagina;
+                    $cantPaginas = ceil($cantPaginas);
+                    $_SESSION['cantPaginas'] = $cantPaginas;
+                    $usuarios = array_chunk($usuarios, $cantElementosPorPagina);
+                    if (! isset($_POST['pagina'])) {
+                        $actual = 0;
+                    }
+                    else {
+                        $actual = $_POST['pagina'] - 1;
+                    }
+                    $_SESSION['usuarios'] = $usuarios[$actual];
+                    $_SESSION['fueBusqueda'] = 0;
+                    ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
+                }
+                else {
+                    ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                }
+            }
+            else{
+                $this->buscarPaciente();
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    } 
+
+    
 
     public function obtenerPermisos($id){
     	$permisos = UserRepository::getInstance()->getPermisos($id);
