@@ -5,6 +5,7 @@
 {% include "styles.html.twig" %}
 
 <script type="text/javascript" src="./templates/js/manejoSesiones.js"></script>
+<script type="text/javascript" src="./templates/js/jquery.js"></script>
 
 {% include "navBar.html.twig" %}
 
@@ -25,6 +26,7 @@
 			 <div class="form-group">
 			 	<label for="tipo_doc">Tipo de Documento</label>
 			 	<select class="form-control">
+			 		{# aca deberian ir las opciones sacadas de la API que nos dan #}
 			 		<option>DNI</option>
 			 		<option>LC</option>
 			 	</select>

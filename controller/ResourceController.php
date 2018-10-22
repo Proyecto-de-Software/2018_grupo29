@@ -5,6 +5,9 @@
  *
  * @author fede
  */
+
+require_once('model/ConfigurationRepository.php');
+
 class ResourceController {
     
     private static $instance;
@@ -36,8 +39,16 @@ class ResourceController {
         $view = new Home();
         if(isset($_SESSION['id'])){
             $view->showConParametros($html,$_SESSION);
-        }else{
-            $view->show($html);
+        }
+        else{ 
+            $estado = ConfigurationRepository::getInstance()->getEstadoSitio();
+            $es = $estado[0]['valor'];   
+            if ($es == '0'){
+                $view->show($html);
+            }
+            else{
+                $view->show('mantenimiento.html.twig');
+            }
         }
     }
 }

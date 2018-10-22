@@ -25,6 +25,7 @@ class SessionController {
     }
     
     public function iniciarSesion(){
+        //en esta me parece que el session esta bien
         if(isset($_POST['nombre']) && isset($_POST['contra'])) {
             $user["nombre"] = $_POST["nombre"];
             $user["contra"] = $_POST["contra"];
@@ -49,7 +50,7 @@ class SessionController {
         if(isset($_SESSION)){
             session_unset();
             session_destroy();
-            ResourceController::getInstance()->mostrarHTML('home.html.twig');
+            ResourceController::getInstance()->menuPrincipal('home.html.twig',array());
         }
     }
     

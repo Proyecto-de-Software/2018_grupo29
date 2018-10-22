@@ -1,10 +1,15 @@
 {% include 'home.html.twig' %}
 
+<script type="text/javascript" src="./templates/js/jquery.js"></script>
+<script type="text/javascript" src="./templates/js/ajax.js"></script>
+
 {% block content %}
 	<div class="row container-fluid alMedio">
 		<div class="col-sm-4"> </div>
 		<div class="col-sm-4">
-			<h1 class="alMedio text-center">Nuevo Paciente</h1>
+			{% if datos.datosPaciente is defined %}<h1 class="alMedio text-center">Modificar Paciente</h1>
+			{% else %}<h1 class="alMedio text-center">Nuevo Paciente</h1>
+			{% endif %}
 			<p class="text-center"> Nota: los campos que tienen (*) son obligatorios</p>
 			<br>
 		</div>
@@ -12,72 +17,90 @@
 	</div>
 		<div class="row container-fluid">
 			<div class="col-sm-6">
-				<form method="POST" action="">
+				{% if datos.datosPaciente is defined %}
+					<form method="POST" action="./index.php?action=modificarPaciente">
+						<input type="hidden" name="id_paciente" value="{{datos.datosPaciente.id_paciente}}" >
+				{% else %}
+					<form method="POST" action="./index.php?action=crearPacienteNuevo">
+				{% endif %}
 				 <div class="form-group">
 				 	<label for="first_name">Nombre*</label>
-				    <input type="text" class="form-control" required>
+				    <input type="text" name="nombre" class="form-control" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.nombre}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				    <label for="last_name">Apellido*</label>
-				    <input type="text" class="form-control" required>
-				 </div>
-				 <div class="form-group">
-				 	<label for="lugar_nacimiento">Lugar de nacimiento </label>
-				    <input type="text" class="form-control">
+				    <input type="text" name="apellido" class="form-control" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.apellido}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				 	<label for="domicilio">Domicilio actual*</label>
-				    <input type="text" class="form-control" required>
+				    <input type="text" name="domicilio" class="form-control" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.domicilio}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				 	<label for="partidos">Partido</label>
-				 	<select class="form-control" name="partidos" id="partidos" onchange="mostrarLocalidades(this.value)">
+				 	<select class="form-control" name="partidos" id="partidos">
 				 		<option value="">Seleccionar partido</option>
 				 		{% for partido in datos.listaPartidos %}
 				 			<option name="id_partido" value="{{ partido.id }}"> {{ partido.nombre }} </option>
 				 		{% endfor %}
 				 	</select>
 				 </div>
-				 <div class="form-group">
+				 <div class="form-group" id="divLocalidades">
 				 	<label for="partidos">Localidad</label>
 				 	<select class="form-control" name="localidades" id="localidades">
-				 		<option value="">Seleccionar localidad</option>
+				 	</select>
+				 </div>
+				 <div class="form-group">
+				 	<label for="partidos">¿Tiene el documento en su poder?*</label>
+				 	<select class="form-control" name="tiene_documento">
+				 		<option value="0">No</option>
+				 		<option value="1">Sí</option>
+				 	</select>
+				 </div>
+				 <div class="form-group">
+				 	<label for="obra_social">Obra Social</label>
+				 	<select class="form-control" name="obra_social_id">
+				 		<option value="1">IOMA</option>
+				 		<option value="2">OSDE</option>
+				 		<option value="3">OSECAC</option>
 				 	</select>
 				 </div>
 			</div>
 			<div class="col-sm-6">
 				 <div class="form-group">
 				 	<label for="genero">Género*</label>
-				 	<select class="form-control" required>
-				 		<option>Masculino</option>
-				 		<option>Femenino</option>
-				 		<option>Otro</option>
+				 	<select name="genero_id" class="form-control" >
+				 		<option value="1">Masculino</option>
+				 		<option value="2">Femenino</option>
+				 		<option value="3">Otro</option>
 				 	</select>
 				 </div>
 				 <div class="form-group">
-				 	<label for="tipo_doc">Tipo de Documento*</label>
-				 	<select class="form-control" required>
-				 		<option>DNI</option>
-				 		<option>LC</option>
-				 		<option>LE</option>
-				 		<option>CI</option>
+				 	<label for="tipo_documento">Tipo de Documento*</label>
+				 	<select class="form-control" name="tipo_documento" >
+				 		<option value="1">DNI</option>
+				 		<option value="2">LC</option>
+				 		<option value="3">CI</option>
+				 		<option value="4">LE</option>
 				 	</select>
 				 </div>
 				 <div class="form-group">
 				 	<label for="fecha_nac">Fecha de nacimiento*</label>
-				 	<input type="date" name="fecha_nac" class="form-control" required>
+				 	<input type="date" name="fecha_nac" class="form-control" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.fecha_nac}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				 	<label for="numero">Número de documento*</label>
-				 	<input type="text" class="form-control" name="numero" required>
+				 	<input type="text" class="form-control" name="numero" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.numero}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				    <label for="numeroHistoriaClinica">Número de historia clínica</label>
-				    <input type="text" class="form-control">
+				    <input type="text" class="form-control" name="nro_historia_clinica" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.nro_historia_clinica}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				    <label for="numeroCarpeta">Número de carpeta</label>
-				    <input type="text" class="form-control">
+				    <input type="text" class="form-control" name="nro_carpeta" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.nro_carpeta}}" {% endif %}>
+				 </div><div class="form-group">
+				    <label for="telefono">Número de telefono</label>
+				    <input type="text" class="form-control" name="tel" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.tel}}" {% endif %}>
 				 </div>
 			</div>
 			<div class="row container-fluid">

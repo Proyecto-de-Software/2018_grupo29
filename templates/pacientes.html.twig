@@ -3,7 +3,6 @@
 
 <h2 class="alMedio text-center"> Módulo de Pacientes </h2>
 
-{% block content %}
 	<div class="row container-fluid alMedio">
 		<div class="col-sm-4">
 			{% if ("paciente_new" in datos.permisos) %}
@@ -20,4 +19,3 @@
 				<div class="text-center"><a href="./index.php?action=listarPacientes" class="btn btn-primary btn-lg center"> Listado de pacientes</a> </div>
 			{% endif %}
 		</div>
-{% endblock %}
