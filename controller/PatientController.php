@@ -186,7 +186,6 @@ class PatientController {
             if (in_array('paciente_new', $_SESSION['permisos'])){
                 // = $this->obtenerPartidos();
                 $_SESSION['listaPartidos'] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido");
-                //aca va AJAX, y antes de hacerlo voy a acomodar todo lo del session.
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
             }
             else {
