@@ -71,6 +71,8 @@ if(!(isset($_GET["action"]))) {
 	UserController::getInstance()->mostrarFormularioBusqueda();
 }elseif ($_GET["action"] == 'buscarUsuario'){
 	UserController::getInstance()->buscarUsuario();
+}elseif ($_GET["action"] == 'crearPacienteNuevo'){
+	PatientController::getInstance()->crearPacienteNuevo();
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }

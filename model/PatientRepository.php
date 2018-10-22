@@ -92,6 +92,27 @@ class PatientRepository extends PDORepository {
         $answer = $this->queryList("SELECT id, nombre_localidad FROM localidad WHERE partido_id = :id",["id" => $idPartido['id_partido']]);
         return $answer;
     }
+
+    public function crearPaciente($datos) {
+        $answer = $this->queryList("INSERT INTO `paciente` (`id_paciente`, `apellido`, `nombre`, `fecha_nac`, `lugar_nac`, `localidad_id`, `region_sanitaria_id`, `domicilio`, `genero_id`, `tiene_documento`, `tipo_doc_id`, `numero`, `tel`, `nro_historia_clinica`, `nro_carpeta`, `obra_social_id`) VALUES (NULL, :apellido, :nombre, :fecha, NULL, :localidad, 1 , :domicilio, :genero_id, :tiene_documento, :tipo_documento_id, :numero , :tel, :nro_historia_clinica, :nro_carpeta, :obra_social_id);"
+
+        ,[
+            "apellido" => $datos['apellido'],
+            "nombre" => $datos['nombre'],
+            "fecha" => $datos['fecha_nac'],
+            "localidad" => $datos['localidades'],
+            "domicilio" => $datos['domicilio'],
+            "genero_id" => $datos['genero_id'],
+            "tiene_documento" => $datos['tiene_documento'],
+            "tipo_documento_id" => $datos['tipo_documento'],
+            "numero" => $datos['numero'],
+            "tel" => $datos['tel'],
+            "nro_historia_clinica" => $datos['nro_historia_clinica'],
+            "nro_carpeta" => $datos['nro_carpeta'],
+            "obra_social_id" => $datos['obra_social_id']
+        ]);
+        //Benja, no se por que esto no anda... $answer->debugDumpParams();
+    }
 }
 
 
