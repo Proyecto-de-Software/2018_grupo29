@@ -4,6 +4,8 @@ ini_set('display_startup_errors',1);
 ini_set('display_errors',1);
 error_reporting(-1);
 
+require_once('controller/APIController.php');
+require_once('controller/AJAXController.php');
 require_once('controller/ResourceController.php');
 require_once('controller/SessionController.php');
 require_once('controller/UserController.php');
@@ -63,6 +65,8 @@ if(!(isset($_GET["action"]))) {
 	UserController::getInstance()->nuevoUsuario();
 }elseif ($_GET["action"] == 'crearUsuario'){
 	UserController::getInstance()->crearUsuarioNuevo();
+}elseif ($_GET["action"] == 'obtenerCiudades'){
+	AJAXController::getInstance()->obtenerCiudades($_POST);
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }

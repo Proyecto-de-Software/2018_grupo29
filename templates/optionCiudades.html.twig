@@ -1,0 +1,6 @@
+<label for="partidos">Localidad</label>
+<select class="form-control" name="localidades" id="localidades">
+{% for ciudad in datos.ciudades %}
+	<option name="id_ciudad" value="{{ ciudad.id }}"> {{ ciudad.nombre }} </option>
+{% endfor %}
+</select>
