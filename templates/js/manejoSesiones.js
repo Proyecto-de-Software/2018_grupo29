@@ -32,7 +32,7 @@ function validarAltaUsuario() {
   var first_name = document.forms["formularioAltaUsuario"]["first_name"].value;
   var last_name = document.forms["formularioAltaUsuario"]["last_name"].value;
   var email = document.forms["formularioAltaUsuario"]["email"].value;
-  var email = document.forms["formularioAltaUsuario"]["username"].value;
+  var username = document.forms["formularioAltaUsuario"]["username"].value;
 
   if (! tieneSoloLetras(first_name)) {
     document.getElementById("campo_error").innerHTML = "El nombre debe tener solo letras";

@@ -104,4 +104,27 @@ class UserRepository extends PDORepository {
                 "id" => $datos["id_usuario"]
             ]);
     }
+
+    public function getRoles(){
+        $answer = $this->queryList("SELECT * FROM rol",[]);
+        return $answer;
+    }
+
+    public function getRolesDeUsuario($id) {
+        $answer = $this->queryList("SELECT r.nombre, r.id FROM usuario u INNER JOIN usuario_tiene_rol utr ON u.id = utr.usuario_id INNER JOIN rol r ON r.id = utr.rol_id WHERE u.id = :id",["id" => $id]);
+        return $answer;
+    }
+
+    public function getRolesQueNoTieneUnUsuario($id) {
+        $answer = $this->queryList("SELECT r.id, r.nombre FROM rol r WHERE r.id NOT IN (SELECT r.id FROM usuario u INNER JOIN usuario_tiene_rol utr ON u.id = utr.usuario_id INNER JOIN rol r ON r.id = utr.rol_id WHERE u.id = :id)",["id" => $id]);
+        return $answer;
+    }
+
+    public function agregarRol($datos) {
+        $this->queryList("INSERT INTO usuario_tiene_rol (usuario_id, rol_id) VALUES (:usuario_id, :rol_id)",["usuario_id" => $datos['usuario_id'],"rol_id" => $datos['rol_id']]);
+    }
+
+    public function quitarRol($datos) {
+        $this->queryList("DELETE FROM usuario_tiene_rol WHERE usuario_id = :usuario_id AND rol_id = :rol_id",["usuario_id" => $datos['usuario_id'], "rol_id" => $datos['rol_id']]);
+    }
 }

@@ -260,4 +260,62 @@ class UserController {
         unset($_SESSION['datosUsuario']);
         ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
     }
+
+    public function mostrarRoles() {
+        if (isset($_SESSION['id'])){
+            if (in_array('usuario_update', $_SESSION['permisos'])){
+                /*
+                Cuando cambiemos todo de SESSION deberia ser algo asi.
+                $parametro['roles'] = UserRepository::getInstance()->getRoles();
+                $parametro['datosSession'] = $_SESSION;
+                */
+                $_SESSION['roles'] = UserRepository::getInstance()->getRolesQueNoTieneUnUsuario($_POST['usuario_id']);
+                $_SESSION['rolesDeUsuario'] = UserRepository::getInstance()->getRolesDeUsuario($_POST['usuario_id']);
+                $_SESSION['nombreUsuarioRoles'] = $_POST['first_name'];
+                $_SESSION['apellidoUsuarioRoles'] = $_POST['last_name'];
+                $_SESSION['idUsuarioRoles'] = $_POST['usuario_id'];
+                ResourceController::getInstance()->mostrarHTMLConParametros('roles.html.twig', $_SESSION);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function agregarRol($datos){
+        if (isset($_SESSION['id'])){
+            if (in_array('usuario_update', $_SESSION['permisos'])){
+                $parametro['usuario_id'] = $_POST['usuario_id'];
+                $parametro['rol_id'] = $_POST['rol_id'];
+                UserRepository::getInstance()->agregarRol($parametro);
+                $this->mostrarRoles();
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function quitarRol($datos) {
+        if (isset($_SESSION['id'])){
+            if (in_array('usuario_update', $_SESSION['permisos'])){
+                $parametro['usuario_id'] = $_POST['usuario_id'];
+                $parametro['rol_id'] = $_POST['rol_id'];
+                UserRepository::getInstance()->quitarRol($parametro);
+                $this->mostrarRoles();
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
 }
