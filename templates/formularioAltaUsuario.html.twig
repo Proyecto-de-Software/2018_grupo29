@@ -33,6 +33,16 @@
 				 	<label for="username">Nombre de usuario</label>
 				    <input type="text" name="username" class="form-control" required="" {% if datos.datosUsuario is defined %} placeholder="{{datos.datosUsuario.username}}" {% endif %}>
 				 </div>
+
+				 <div class="form-group">
+				 	<label for="roles">Roles</label>
+				 	{% for rol in datos.roles %}
+					 	<label class="container">{{ rol.nombre }}
+							<input type="checkbox" name="roles[]" value="{{ rol.id }}">
+							<span class="checkmark"></span>		
+						</label>	
+					{% endfor %}
+				 </div>
 				 <div class="form-group">
 				 	<label for="password">Contraseña</label>
 				    <input type="password" name="password" class="form-control"required="" {% if datos.datosUsuario is defined %} placeholder="{{datos.datosUsuario.password}}" {% endif %}>

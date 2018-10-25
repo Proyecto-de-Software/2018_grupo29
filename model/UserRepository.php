@@ -68,7 +68,6 @@ class UserRepository extends PDORepository {
                 "created_at" => $datos['created_at'],
                 "first_name" => $datos['first_name'],
                 "last_name" => $datos['last_name']
-
             ]);
     }
 
@@ -127,4 +126,14 @@ class UserRepository extends PDORepository {
     public function quitarRol($datos) {
         $this->queryList("DELETE FROM usuario_tiene_rol WHERE usuario_id = :usuario_id AND rol_id = :rol_id",["usuario_id" => $datos['usuario_id'], "rol_id" => $datos['rol_id']]);
     }
+
+    public function agregarRolAUsuario($datos) {
+        $this->queryList("INSERT INTO usuario_tiene_rol (usuario_id, rol_id) VALUES (:usuario_id , :rol_id)",["usuario_id" => $datos['id_usuario'], "rol_id" => $datos['id_rol']]);
+    }
+
+    public function getIdByUsername($username) {
+        $answer = $this->queryList("SELECT id FROM usuario WHERE username = :username",["username" => $username]);
+        return $answer;
+    }
 }
+

@@ -126,6 +126,7 @@ class UserController {
     public function nuevoUsuario(){
         if(isset($_SESSION['id'])){
             if(in_array('usuario_new', $_SESSION['permisos'])){
+                $_SESSION['roles'] = UserRepository::getInstance()->getRoles();
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
             }else{
                 ResourceController::getInstance()->mostrarHTML('error.html.twig');
@@ -143,6 +144,17 @@ class UserController {
                     $_POST['created_at'] = date("Y-m-d H:i:s");
                     $_POST['updated_at'] = date("Y-m-d H:i:s");
                     UserRepository::getInstance()->agregarUsuario($_POST);
+                    $id = UserRepository::getInstance()->getIdByUsername($_POST['username'])[0];
+                    $id = intval($id['id']);
+                    if (isset($_POST['roles'])) {
+                        $checkbox = ($_POST['roles']);
+                        $N = count($checkbox);
+                        $parametro['id_usuario'] = $id;
+                        for($i=0; $i < $N; $i++) {
+                            $parametro['id_rol'] = intval($checkbox[$i]);
+                            UserRepository::getInstance()->agregarRolAUsuario($parametro);
+                        }
+                    }
                     $_SESSION['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
                     $_SESSION['tipo_mensaje'] = 'text-success';
                     ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);

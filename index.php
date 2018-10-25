@@ -89,8 +89,7 @@ if(!(isset($_GET["action"]))) {
 	UserController::getInstance()->agregarRol($_POST);
 }elseif ($_GET["action"] == 'quitarRol'){
 	UserController::getInstance()->quitarRol($_POST);
-}
-else{
+}else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }
 
