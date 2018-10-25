@@ -25,8 +25,8 @@ class UserRepository extends PDORepository {
         
     }
 
-    public function listAll() {
-        $answer = $this->queryList("select * from usuario",[]);
+    public function listAll($id) {
+        $answer = $this->queryList("select * from usuario where id <> :id",["id" => $id]);
         return $answer;
     }
 
@@ -73,12 +73,12 @@ class UserRepository extends PDORepository {
     }
 
     public function buscarUsuarioSinActivo($datos) {
-        $answer = $this->queryList("SELECT * FROM usuario WHERE username LIKE CONCAT('%', :username, '%')",["username" => $datos['username']]);
+        $answer = $this->queryList("SELECT * FROM usuario WHERE id <> :id AND username LIKE CONCAT('%', :username, '%')",["username" => $datos['username'], "id" => $datos['id']]);
         return $answer;
     }
 
     public function buscarUsuarioConActivo($datos) {
-        $answer = $this->queryList("SELECT * FROM usuario WHERE username LIKE CONCAT('%', :username, '%') AND activo = :activo",["username" => $datos['username'],"activo" => $datos['activo']]);
+        $answer = $this->queryList("SELECT * FROM usuario WHERE id <> :id AND username LIKE CONCAT('%', :username, '%') AND activo = :activo",["username" => $datos['username'],"activo" => $datos['activo'], "id" => $datos['id']]);
         return $answer;
     }
 

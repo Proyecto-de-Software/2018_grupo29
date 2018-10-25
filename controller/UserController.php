@@ -58,7 +58,7 @@ class UserController {
         if (isset($_SESSION['id'])) {
             if (($_POST['fueBusqueda']) == 0) {
                 if (in_array('usuario_index', $_SESSION['permisos'])) {
-                    $usuarios = UserRepository::getInstance()->listAll();
+                    $usuarios = UserRepository::getInstance()->listAll($_SESSION['id']);
                     $answer = ConfigurationRepository::getInstance()->getCantPaginas();
                     $cantElementosPorPagina = $answer[0]['valor'];
                     $cantElementosPorPagina =  intval($cantElementosPorPagina);
@@ -179,6 +179,7 @@ class UserController {
     public function buscarUsuario(){
         if (isset($_SESSION['id'])) {
             if (in_array('usuario_index', $_SESSION['permisos'])) {
+                $_POST['id'] = $_SESSION['id'];
                 if (($_POST['activo']) == '') {
                     $usuarios = UserRepository::getInstance()->buscarUsuarioSinActivo($_POST);
                 }
@@ -190,7 +191,7 @@ class UserController {
                     $this->mostrarFormularioBusqueda($_SESSION);
                 }
                 else {
-                    if (isset($_SESSION['noHubo'])) unset($_SESSION['noHubo']);
+                    if (isset($_SESSION['noHubo'])) $_SESSION['noHubo'] = '';
                     $answer = ConfigurationRepository::getInstance()->getCantPaginas();
                     $cantElementosPorPagina = $answer[0]['valor'];
                     $cantElementosPorPagina =  intval($cantElementosPorPagina);
