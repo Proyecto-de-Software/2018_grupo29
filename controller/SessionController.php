@@ -36,11 +36,17 @@ class SessionController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('login.html.twig', $parametros);
             }
             else{
-                $_SESSION['nombre'] = $usuario[0]['username'];
-                $_SESSION['first_name'] = $usuario[0]['first_name'];
-                $_SESSION['id'] = $usuario[0]['id'];
-                $_SESSION['permisos'] = UserController::getInstance()->obtenerPermisos($usuario[0]['id']);
-                ResourceController::getInstance()->menuPrincipal('home.html.twig');
+                if ($usuario[0]['activo'] == 1){
+                   $parametros['mensaje'] = "Lamentablemente tu cuenta ha sido bloqueada";
+                ResourceController::getInstance()->mostrarHTMLConParametros('login.html.twig', $parametros); 
+                }
+                else {
+                    $_SESSION['nombre'] = $usuario[0]['username'];
+                    $_SESSION['first_name'] = $usuario[0]['first_name'];
+                    $_SESSION['id'] = $usuario[0]['id'];
+                    $_SESSION['permisos'] = UserController::getInstance()->obtenerPermisos($usuario[0]['id']);
+                    ResourceController::getInstance()->menuPrincipal('home.html.twig');
+                }
             }
         }
         //ResourceController::getInstance()->mostrarHTML('home.html.twig'); //parametros

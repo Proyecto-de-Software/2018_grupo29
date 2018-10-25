@@ -34,13 +34,15 @@
   					<input type="hidden" name="id_paciente" value="{{paciente.id_paciente}}">
   					<input type="submit" name="Editar" value="Editar" class="btn btn-warning">
   				</form>
-  			</div>	
-  			<div class="col-1">
-  				<form method="POST" action="./index.php?action=eliminarPaciente" onclick="return confirmacion('¿Está seguro que quiere eliminar al paciente?')">
-  					<input type="hidden" name="id_paciente" value="{{paciente.id_paciente}}">
-  					<input type="submit" name="Eliminar" value="Eliminar" class="btn btn-danger">
-  				</form>
-  			</div>			
+  			</div>
+        {% if datos.puedeBorrar is defined %}
+    			<div class="col-1">
+    				<form method="POST" action="./index.php?action=eliminarPaciente" onclick="return confirmacion('¿Está seguro que quiere eliminar al paciente?')">
+    					<input type="hidden" name="id_paciente" value="{{paciente.id_paciente}}">
+    					<input type="submit" name="Eliminar" value="Eliminar" class="btn btn-danger">
+    				</form>
+    			</div>			
+        {% endif %}
   		</li>
 
     {% endfor %}
