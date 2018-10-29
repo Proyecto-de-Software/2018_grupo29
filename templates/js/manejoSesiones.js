@@ -58,4 +58,6 @@ function validarAltaUsuario() {
     document.getElementById("campo_error").innerHTML = "El nombre de usuario debe tener 6 caracteres como mínimo";
     return false;
   }
+
+  return true;
 }

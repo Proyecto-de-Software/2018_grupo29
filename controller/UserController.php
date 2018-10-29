@@ -137,7 +137,7 @@ class UserController {
     }
 
     public function crearUsuarioNuevo(){
-        if(isset($_SESSION['id'])){
+        if(isset($_SESSION['id']) && ($_POST !== array())){
             if(in_array('usuario_new', $_SESSION['permisos'])){
                 $answer = UserRepository::getInstance()->verificarUnicidad($_POST);
                 if (count($answer) == 0) {
