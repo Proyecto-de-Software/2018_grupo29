@@ -83,6 +83,12 @@ if(!(isset($_GET["action"]))) {
 	UserController::getInstance()->verDatosUsuario();
 }elseif ($_GET["action"] == 'modificarUsuario'){
 	UserController::getInstance()->editarUsuario();
+}elseif ($_GET["action"] == 'manejoRoles'){
+	UserController::getInstance()->mostrarRoles();
+}elseif ($_GET["action"] == 'agregarRol'){
+	UserController::getInstance()->agregarRol($_POST);
+}elseif ($_GET["action"] == 'quitarRol'){
+	UserController::getInstance()->quitarRol($_POST);
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }

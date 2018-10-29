@@ -9,13 +9,13 @@
 			{% endif %}
 			<br>
 			{% if datos.mensaje is defined %}
-				<p id="campo_error" class="{{datos.tipo_mensaje}}"> {{ datos.mensaje }}</p>
+				<p id="campo_error" class="{{datos.tipo_mensaje}} text-center"> {{ datos.mensaje }}</p>
 			{% endif %}
 				{% if datos.datosUsuario is defined %}
-					<form method="POST" action="./index.php?action=modificarUsuario">
+					<form method="POST" action="./index.php?action=modificarUsuario" onsubmit='return validarAltaUsuario()'>
 						<input type="hidden" name="id_usuario" value="{{datos.datosUsuario.id}}" >
 				{% else %}
-					<form name="formularioAltaUsuario" method="POST" action="./index.php?action=crearUsuario">
+					<form name="formularioAltaUsuario" method="POST" action="./index.php?action=crearUsuario" onsubmit="return validarAltaUsuario()">
 				{% endif %}
 				 <div class="form-group">
 				 	<label for="first_name">Nombre</label>
@@ -27,11 +27,21 @@
 				 </div>
 				 <div class="form-group">
 				 	<label for="email">Correo electrónico</label>
-				    <input type="text" name="email" class="form-control"required="" {% if datos.datosUsuario is defined %} placeholder="{{datos.datosUsuario.email}}" {% endif %}>
+				    <input type="email" name="email" class="form-control"required="" {% if datos.datosUsuario is defined %} placeholder="{{datos.datosUsuario.email}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				 	<label for="username">Nombre de usuario</label>
-				    <input type="text" name="username" class="form-control"required="" {% if datos.datosUsuario is defined %} placeholder="{{datos.datosUsuario.username}}" {% endif %}>
+				    <input type="text" name="username" class="form-control" required="" {% if datos.datosUsuario is defined %} placeholder="{{datos.datosUsuario.username}}" {% endif %}>
+				 </div>
+
+				 <div class="form-group">
+				 	<label for="roles">Roles</label>
+				 	{% for rol in datos.roles %}
+					 	<label class="container">{{ rol.nombre }}
+							<input type="checkbox" name="roles[]" value="{{ rol.id }}">
+							<span class="checkmark"></span>		
+						</label>	
+					{% endfor %}
 				 </div>
 				 <div class="form-group">
 				 	<label for="password">Contraseña</label>

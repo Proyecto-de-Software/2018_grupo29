@@ -71,6 +71,7 @@ class PatientController {
                     }
                     $_SESSION['pacientes'] = $pacientes[$actual];
                     $_SESSION['fueBusqueda'] = 0;
+                    if (in_array('paciente_destroy', $_SESSION['permisos'])) $_SESSION['puedeBorrar'] = 1;
                     ResourceController::getInstance()->mostrarHTMLConParametros('listadoPacientes.html.twig', $_SESSION);
                 }
                 else {

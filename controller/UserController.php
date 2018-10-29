@@ -58,7 +58,7 @@ class UserController {
         if (isset($_SESSION['id'])) {
             if (($_POST['fueBusqueda']) == 0) {
                 if (in_array('usuario_index', $_SESSION['permisos'])) {
-                    $usuarios = UserRepository::getInstance()->listAll();
+                    $usuarios = UserRepository::getInstance()->listAll($_SESSION['id']);
                     $answer = ConfigurationRepository::getInstance()->getCantPaginas();
                     $cantElementosPorPagina = $answer[0]['valor'];
                     $cantElementosPorPagina =  intval($cantElementosPorPagina);
@@ -126,6 +126,7 @@ class UserController {
     public function nuevoUsuario(){
         if(isset($_SESSION['id'])){
             if(in_array('usuario_new', $_SESSION['permisos'])){
+                $_SESSION['roles'] = UserRepository::getInstance()->getRoles();
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
             }else{
                 ResourceController::getInstance()->mostrarHTML('error.html.twig');
@@ -143,6 +144,17 @@ class UserController {
                     $_POST['created_at'] = date("Y-m-d H:i:s");
                     $_POST['updated_at'] = date("Y-m-d H:i:s");
                     UserRepository::getInstance()->agregarUsuario($_POST);
+                    $id = UserRepository::getInstance()->getIdByUsername($_POST['username'])[0];
+                    $id = intval($id['id']);
+                    if (isset($_POST['roles'])) {
+                        $checkbox = ($_POST['roles']);
+                        $N = count($checkbox);
+                        $parametro['id_usuario'] = $id;
+                        for($i=0; $i < $N; $i++) {
+                            $parametro['id_rol'] = intval($checkbox[$i]);
+                            UserRepository::getInstance()->agregarRolAUsuario($parametro);
+                        }
+                    }
                     $_SESSION['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
                     $_SESSION['tipo_mensaje'] = 'text-success';
                     ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
@@ -179,6 +191,7 @@ class UserController {
     public function buscarUsuario(){
         if (isset($_SESSION['id'])) {
             if (in_array('usuario_index', $_SESSION['permisos'])) {
+                $_POST['id'] = $_SESSION['id'];
                 if (($_POST['activo']) == '') {
                     $usuarios = UserRepository::getInstance()->buscarUsuarioSinActivo($_POST);
                 }
@@ -190,7 +203,7 @@ class UserController {
                     $this->mostrarFormularioBusqueda($_SESSION);
                 }
                 else {
-                    if (isset($_SESSION['noHubo'])) unset($_SESSION['noHubo']);
+                    if (isset($_SESSION['noHubo'])) $_SESSION['noHubo'] = '';
                     $answer = ConfigurationRepository::getInstance()->getCantPaginas();
                     $cantElementosPorPagina = $answer[0]['valor'];
                     $cantElementosPorPagina =  intval($cantElementosPorPagina);
@@ -258,5 +271,63 @@ class UserController {
         UserRepository::getInstance()->actualizarUsuario($_POST);
         unset($_SESSION['datosUsuario']);
         ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
+    }
+
+    public function mostrarRoles() {
+        if (isset($_SESSION['id'])){
+            if (in_array('usuario_update', $_SESSION['permisos'])){
+                /*
+                Cuando cambiemos todo de SESSION deberia ser algo asi.
+                $parametro['roles'] = UserRepository::getInstance()->getRoles();
+                $parametro['datosSession'] = $_SESSION;
+                */
+                $_SESSION['roles'] = UserRepository::getInstance()->getRolesQueNoTieneUnUsuario($_POST['usuario_id']);
+                $_SESSION['rolesDeUsuario'] = UserRepository::getInstance()->getRolesDeUsuario($_POST['usuario_id']);
+                $_SESSION['nombreUsuarioRoles'] = $_POST['first_name'];
+                $_SESSION['apellidoUsuarioRoles'] = $_POST['last_name'];
+                $_SESSION['idUsuarioRoles'] = $_POST['usuario_id'];
+                ResourceController::getInstance()->mostrarHTMLConParametros('roles.html.twig', $_SESSION);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function agregarRol($datos){
+        if (isset($_SESSION['id'])){
+            if (in_array('usuario_update', $_SESSION['permisos'])){
+                $parametro['usuario_id'] = $_POST['usuario_id'];
+                $parametro['rol_id'] = $_POST['rol_id'];
+                UserRepository::getInstance()->agregarRol($parametro);
+                $this->mostrarRoles();
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
+    }
+
+    public function quitarRol($datos) {
+        if (isset($_SESSION['id'])){
+            if (in_array('usuario_update', $_SESSION['permisos'])){
+                $parametro['usuario_id'] = $_POST['usuario_id'];
+                $parametro['rol_id'] = $_POST['rol_id'];
+                UserRepository::getInstance()->quitarRol($parametro);
+                $this->mostrarRoles();
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+        }
     }
 }
