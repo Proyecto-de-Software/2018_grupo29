@@ -1,4 +1,10 @@
-{% include "home.html.twig" %}
+{% include "header.html.twig" %}
+
+<title>Hospital Dr. Alejandro Korn</title>
+
+{% include "styles.html.twig" %}
+
+{% include "navBar.html.twig" %}
 
 <h2 class="alMedio text-center">Usuarios</h2>
 <br>
@@ -7,15 +13,20 @@
 	<div class="col-10">
 		<ul class="list-group">
 			<li  class="list-group-item row d-flex text-center">
-				<div class="col-2 text-info">Nombre y apellido</div>
+				<div class="col-1 text-info">Nombre y apellido</div>
 				<div class="col-1 text-info">Nombre de usuario</div>
 				<div class="col-2 text-info">Fecha de creación</div>
 				<div class="col-2 text-info">Fecha de última modificación</div>
 				<div class="col-1 text-info">Estado</div>
+				<div class="col-1"></div>
+				<div class="col-1"></div>
+				<div class="col-1"></div>
+				<div class="col-1"></div>
+				<div class="col-1"></div>
 			</li>
 		{% for usuario in datos.usuarios %}
 	        <li class="list-group-item row d-flex text-center">
-	  			<div class="col-2">{{usuario.last_name}} {{usuario.first_name}} </div>
+	  			<div class="col-1">{{usuario.last_name}} {{usuario.first_name}} </div>
 	  			<div class="col-1">{{usuario.username}}</div>
 	  			<div class="col-2">{{usuario.created_at}}</div>		
 	  			<div class="col-2">{{usuario.updated_at}}</div>
@@ -34,6 +45,18 @@
 	  					</form> 
 	  				{% endif %}</div>
 	  			{% endif %}
+
+	  		    <!-- Para el manejo de roles tenes que ser admin, si tenes ese permiso sos admin si o si no? -->
+	  			{% if "usuario_update" in datos.permisos %} 
+		  			<div class="col-1">
+		  				<form method="POST" action="index.php?action=manejoRoles"> 
+	  						<input type="hidden" name="usuario_id" value="{{ usuario.id }}"> 
+	  						<input type="hidden" name="last_name" value="{{ usuario.last_name }}"> 
+	  						<input type="hidden" name="first_name" value="{{ usuario.first_name }}"> 
+	  						<input type="submit" class="btn btn-secondary" value="Roles">
+		  				</form>
+		  			</div>
+		  		{% endif %}
 	  			{% if "usuario_update" in datos.permisos %}
 	  				<div class="col-1">
 	  					<form method="POST" action="index.php?action=editarUsuario">
@@ -52,6 +75,7 @@
 	  					</form>
 	  				</div>
 	  			{% else %} <div class="col-1"></div> {% endif %}
+	  				
 	  		</li>
 	    {% endfor %}
 	    </ul> 

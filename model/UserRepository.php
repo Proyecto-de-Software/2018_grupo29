@@ -25,8 +25,8 @@ class UserRepository extends PDORepository {
         
     }
 
-    public function listAll() {
-        $answer = $this->queryList("select * from usuario",[]);
+    public function listAll($id) {
+        $answer = $this->queryList("select * from usuario where id <> :id",["id" => $id]);
         return $answer;
     }
 
@@ -68,17 +68,16 @@ class UserRepository extends PDORepository {
                 "created_at" => $datos['created_at'],
                 "first_name" => $datos['first_name'],
                 "last_name" => $datos['last_name']
-
             ]);
     }
 
     public function buscarUsuarioSinActivo($datos) {
-        $answer = $this->queryList("SELECT * FROM usuario WHERE username LIKE CONCAT('%', :username, '%')",["username" => $datos['username']]);
+        $answer = $this->queryList("SELECT * FROM usuario WHERE id <> :id AND username LIKE CONCAT('%', :username, '%')",["username" => $datos['username'], "id" => $datos['id']]);
         return $answer;
     }
 
     public function buscarUsuarioConActivo($datos) {
-        $answer = $this->queryList("SELECT * FROM usuario WHERE username LIKE CONCAT('%', :username, '%') AND activo = :activo",["username" => $datos['username'],"activo" => $datos['activo']]);
+        $answer = $this->queryList("SELECT * FROM usuario WHERE id <> :id AND username LIKE CONCAT('%', :username, '%') AND activo = :activo",["username" => $datos['username'],"activo" => $datos['activo'], "id" => $datos['id']]);
         return $answer;
     }
 
@@ -104,4 +103,33 @@ class UserRepository extends PDORepository {
                 "id" => $datos["id_usuario"]
             ]);
     }
+
+    public function getRoles(){
+        $answer = $this->queryList("SELECT * FROM rol",[]);
+        return $answer;
+    }
+
+    public function getRolesDeUsuario($id) {
+        $answer = $this->queryList("SELECT r.nombre, r.id FROM usuario u INNER JOIN usuario_tiene_rol utr ON u.id = utr.usuario_id INNER JOIN rol r ON r.id = utr.rol_id WHERE u.id = :id",["id" => $id]);
+        return $answer;
+    }
+
+    public function getRolesQueNoTieneUnUsuario($id) {
+        $answer = $this->queryList("SELECT r.id, r.nombre FROM rol r WHERE r.id NOT IN (SELECT r.id FROM usuario u INNER JOIN usuario_tiene_rol utr ON u.id = utr.usuario_id INNER JOIN rol r ON r.id = utr.rol_id WHERE u.id = :id)",["id" => $id]);
+        return $answer;
+    }
+
+    public function asignarRol($datos) {
+        $this->queryList("INSERT INTO usuario_tiene_rol (usuario_id, rol_id) VALUES (:usuario_id, :rol_id)",["usuario_id" => $datos['usuario_id'],"rol_id" => $datos['rol_id']]);
+    }
+
+    public function desasignarRol($datos) {
+        $this->queryList("DELETE FROM usuario_tiene_rol WHERE usuario_id = :usuario_id AND rol_id = :rol_id",["usuario_id" => $datos['usuario_id'], "rol_id" => $datos['rol_id']]);
+    }
+
+    public function getIdByUsername($username) {
+        $answer = $this->queryList("SELECT id FROM usuario WHERE username = :username",["username" => $username]);
+        return $answer;
+    }
 }
+

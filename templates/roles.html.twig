@@ -1,0 +1,49 @@
+{% include 'home.html.twig' %}
+
+<h2 class="alMedio text-center"> Agregar/quitar roles a {{datos.nombreUsuarioRoles}} {{datos.apellidoUsuarioRoles}}</h2>
+<br>
+<div class="row container-fluid">
+	<div class="col-1"></div>
+	<div class="col-4 text-center">
+		<h4>Roles actuales</h4>
+		<ul class="list-group ">
+			{% for rol in datos.rolesDeUsuario %}
+				<li class="list-group-item row d-flex text-center">
+					<div class="col-1">{{ rol.nombre }}</div>
+					<div class="col-8"></div>
+					<div class="col-1">
+						<form method="POST" action="index.php?action=desasignarRol">
+							<button class="btn btn-danger">Desasignar</button>
+							<input type="hidden" name="usuario_id" value="{{datos.idUsuarioRoles}}">
+							<input type="hidden" name="rol_id" value="{{rol.id}}">
+							<input type="hidden" name="first_name" value="{{datos.nombreUsuarioRoles}}">
+							<input type="hidden" name="last_name" value="{{datos.apellidoUsuarioRoles}}">
+						</form>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col-2"></div>
+	<div class="col-4 text-center">
+		<h4>Resto de roles</h4>
+		<ul  class="list-group">
+			{% for rol in datos.roles %}
+				<li class="list-group-item row d-flex text-center">
+					<div class="col-1">{{ rol.nombre }}</div>
+					<div class="col-8"></div>
+					<div class="col-1">
+						<form method="POST" action="index.php?action=asignarRol">
+							<button class="btn btn-success">Asignar</button>
+							<input type="hidden" name="usuario_id" value="{{datos.idUsuarioRoles}}">
+							<input type="hidden" name="rol_id" value="{{rol.id}}">
+							<input type="hidden" name="first_name" value="{{datos.nombreUsuarioRoles}}">
+							<input type="hidden" name="last_name" value="{{datos.apellidoUsuarioRoles}}">
+						</form>
+					</div>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col-1"></div>
+</div>

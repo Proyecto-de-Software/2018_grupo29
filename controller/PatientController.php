@@ -71,6 +71,7 @@ class PatientController {
                     }
                     $_SESSION['pacientes'] = $pacientes[$actual];
                     $_SESSION['fueBusqueda'] = 0;
+                    if (in_array('paciente_destroy', $_SESSION['permisos'])) $_SESSION['puedeBorrar'] = 1;
                     ResourceController::getInstance()->mostrarHTMLConParametros('listadoPacientes.html.twig', $_SESSION);
                 }
                 else {
@@ -125,7 +126,6 @@ class PatientController {
 
     public function buscarPaciente(){
         //acomodar session
-        //acomodar permisos?
         if (isset($_SESSION['id'])) {
             if ($_POST['nombre'] != NULL) {$parametro['nombre'] = $_POST['nombre'];}
             else {$parametro['nombre'] = '';}
@@ -139,7 +139,7 @@ class PatientController {
             else {$parametro['nro_historia_clinica'] = '';} 
             $pacientes = PatientRepository::getInstance()->buscarPaciente($parametro);
             if (count($pacientes)==0){
-                $_SESSION['noHubo'] = 1;;
+                $_SESSION['noHubo'] = 1;
                 $this->mostrarFormulario();
             }
             else {
@@ -183,6 +183,7 @@ class PatientController {
 
     public function crearPaciente() {
         if (isset($_SESSION['id'])) {
+            var_dump($_POST);
             if (in_array('paciente_new', $_SESSION['permisos'])){
                 // = $this->obtenerPartidos();
                 $_SESSION['listaPartidos'] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido");
@@ -234,8 +235,7 @@ class PatientController {
     }
 
     public function crearPacienteNuevo(){
-        //var_dump($_POST);
-        if (isset($_SESSION['id'])){
+        if (isset($_SESSION['id']) && ($_POST !== array())){
             if (in_array('paciente_new', $_SESSION['permisos'])){
                 if (! isset($_POST['localidades'])) {
                     $_POST['localidades'] = 1;

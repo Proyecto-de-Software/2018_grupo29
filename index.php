@@ -24,9 +24,10 @@ $conf = ConfigurationRepository::getInstance()->getConfiguraciones();
 $_SESSION['tituloHospital'] = $conf[0]['valor'];
 $_SESSION['mailContacto'] = $conf[1]['valor'];
 
+
 //esto se va a modificar a los actions que tengamos 
 if(!(isset($_GET["action"]))) {
-    ResourceController::getInstance()->menuPrincipal('home.html.twig',array());
+    ResourceController::getInstance()->menuPrincipal('home.html.twig');
 }elseif ($_GET["action"] == 'login'){
     ResourceController::getInstance()->mostrarHTML('login.html.twig');
 }elseif ($_GET["action"] == 'inicioSesion'){
@@ -83,6 +84,12 @@ if(!(isset($_GET["action"]))) {
 	UserController::getInstance()->verDatosUsuario();
 }elseif ($_GET["action"] == 'modificarUsuario'){
 	UserController::getInstance()->editarUsuario();
+}elseif ($_GET["action"] == 'manejoRoles'){
+	UserController::getInstance()->mostrarRoles();
+}elseif ($_GET["action"] == 'asignarRol'){
+	UserController::getInstance()->asignarRol($_POST);
+}elseif ($_GET["action"] == 'desasignarRol'){
+	UserController::getInstance()->desasignarRol($_POST);
 }else{
 	ResourceController::getInstance()->mostrarHTML('error.html.twig');
 }
