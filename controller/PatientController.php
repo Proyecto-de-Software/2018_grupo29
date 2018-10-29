@@ -140,7 +140,7 @@ class PatientController {
             else {$parametro['nro_historia_clinica'] = '';} 
             $pacientes = PatientRepository::getInstance()->buscarPaciente($parametro);
             if (count($pacientes)==0){
-                $_SESSION['noHubo'] = 1;;
+                $_SESSION['noHubo'] = 1;
                 $this->mostrarFormulario();
             }
             else {

@@ -119,16 +119,12 @@ class UserRepository extends PDORepository {
         return $answer;
     }
 
-    public function agregarRol($datos) {
+    public function asignarRol($datos) {
         $this->queryList("INSERT INTO usuario_tiene_rol (usuario_id, rol_id) VALUES (:usuario_id, :rol_id)",["usuario_id" => $datos['usuario_id'],"rol_id" => $datos['rol_id']]);
     }
 
-    public function quitarRol($datos) {
+    public function desasignarRol($datos) {
         $this->queryList("DELETE FROM usuario_tiene_rol WHERE usuario_id = :usuario_id AND rol_id = :rol_id",["usuario_id" => $datos['usuario_id'], "rol_id" => $datos['rol_id']]);
-    }
-
-    public function agregarRolAUsuario($datos) {
-        $this->queryList("INSERT INTO usuario_tiene_rol (usuario_id, rol_id) VALUES (:usuario_id , :rol_id)",["usuario_id" => $datos['id_usuario'], "rol_id" => $datos['id_rol']]);
     }
 
     public function getIdByUsername($username) {

@@ -12,8 +12,8 @@
 					<div class="col-1">{{ rol.nombre }}</div>
 					<div class="col-8"></div>
 					<div class="col-1">
-						<form method="POST" action="index.php?action=quitarRol">
-							<button class="btn btn-danger">Quitar</button>
+						<form method="POST" action="index.php?action=desasignarRol">
+							<button class="btn btn-danger">Desasignar</button>
 							<input type="hidden" name="usuario_id" value="{{datos.idUsuarioRoles}}">
 							<input type="hidden" name="rol_id" value="{{rol.id}}">
 							<input type="hidden" name="first_name" value="{{datos.nombreUsuarioRoles}}">
@@ -33,8 +33,8 @@
 					<div class="col-1">{{ rol.nombre }}</div>
 					<div class="col-8"></div>
 					<div class="col-1">
-						<form method="POST" action="index.php?action=agregarRol">
-							<button class="btn btn-success">Agregar</button>
+						<form method="POST" action="index.php?action=asignarRol">
+							<button class="btn btn-success">Asignar</button>
 							<input type="hidden" name="usuario_id" value="{{datos.idUsuarioRoles}}">
 							<input type="hidden" name="rol_id" value="{{rol.id}}">
 							<input type="hidden" name="first_name" value="{{datos.nombreUsuarioRoles}}">
