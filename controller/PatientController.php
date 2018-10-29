@@ -183,7 +183,6 @@ class PatientController {
 
     public function crearPaciente() {
         if (isset($_SESSION['id'])) {
-            var_dump($_POST);
             if (in_array('paciente_new', $_SESSION['permisos'])){
                 // = $this->obtenerPartidos();
                 $_SESSION['listaPartidos'] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido");
@@ -248,6 +247,7 @@ class PatientController {
                 $_POST['nro_historia_clinica'] = intval($_POST['nro_historia_clinica']);
                 $_POST['nro_carpeta'] = intval($_POST['nro_carpeta']);
                 $_POST['obra_social_id'] = intval($_POST['obra_social_id']);
+                $_POST['region_sanitaria_id'] = PatientRepository::getInstance()->obtenerRegionSanitaria($_POST["partidos"]);
                
                 PatientRepository::getInstance()->crearPaciente($_POST);
                 ResourceController::getInstance()->mostrarHTMLConParametros('home.html.twig',$_SESSION);

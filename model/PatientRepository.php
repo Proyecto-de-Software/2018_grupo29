@@ -83,6 +83,11 @@ class PatientRepository extends PDORepository {
         $this->queryList("DELETE FROM paciente WHERE id_paciente = :id",["id" => $id]);
     }
 
+    public function obtenerRegionSanitaria($datos){
+        $answer = $this->queryList("SELECT region_sanitaria_id FROM partido WHERE id=:id",["id" => $datos]);
+        return $answer[0];
+    }
+
     public function getPartidos(){
         $answer = $this->queryList("SELECT id, nombre FROM partido",[]);
         return $answer;
@@ -94,7 +99,7 @@ class PatientRepository extends PDORepository {
     }
 
     public function crearPaciente($datos) {
-        $answer = $this->queryList("INSERT INTO paciente (apellido, nombre, fecha_nac, lugar_nac, localidad_id, region_sanitaria_id, domicilio, genero_id, tiene_documento, tipo_doc_id, numero, tel, nro_historia_clinica, nro_carpeta, obra_social_id) VALUES ( :apellido, :nombre, :fecha, NULL, :localidad, 1 , :domicilio, :genero_id, :tiene_documento, :tipo_documento_id, :numero , :tel, :nro_historia_clinica, :nro_carpeta, :obra_social_id);"
+        $answer = $this->queryList("INSERT INTO paciente (apellido, nombre, fecha_nac, lugar_nac, localidad_id, region_sanitaria_id, domicilio, genero_id, tiene_documento, tipo_doc_id, numero, tel, nro_historia_clinica, nro_carpeta, obra_social_id) VALUES ( :apellido, :nombre, :fecha, :partido, :localidad, :region_sanitaria , :domicilio, :genero_id, :tiene_documento, :tipo_documento_id, :numero , :tel, :nro_historia_clinica, :nro_carpeta, :obra_social_id);"
 
         ,[
             "apellido" => $datos['apellido'],
@@ -109,7 +114,9 @@ class PatientRepository extends PDORepository {
             "tel" => $datos['tel'],
             "nro_historia_clinica" => $datos['nro_historia_clinica'],
             "nro_carpeta" => $datos['nro_carpeta'],
-            "obra_social_id" => $datos['obra_social_id']
+            "obra_social_id" => $datos['obra_social_id'],
+            "region_sanitaria" => $datos['region_sanitaria_id'],
+            "partido" => $datos['partidos']
         ]);
         //Benja, no se por que esto no anda... $answer->debugDumpParams();
     }

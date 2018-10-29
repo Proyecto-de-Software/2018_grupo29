@@ -91,6 +91,6 @@ if(!(isset($_GET["action"]))) {
 }elseif ($_GET["action"] == 'desasignarRol'){
 	UserController::getInstance()->desasignarRol($_POST);
 }else{
-	ResourceController::getInstance()->mostrarHTML('error.html.twig');
+	ResourceController::getInstance()->menuPrincipal('home.html.twig');
 }
 

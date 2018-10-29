@@ -1,4 +1,5 @@
 $(document).ready(function(){  
+    //traer partidos con ajax
     $('#partidos').change(function () {
         var id = $(this).find(':selected')[0].value;
         //alert(id);
@@ -10,8 +11,14 @@ $(document).ready(function(){
             },
             success: function (data) {
                 // the next thing you want to do 
-                $("#divLocalidades").html(data);
-            }
+                //console.log(data);
+                var options = '';
+                for (ciudad in data) {
+                    options += '<option value="' + data[ciudad].id + '">' + data[ciudad].nombre + '</option>';
+                }
+                $("#localidades").html(options);
+            },
+            dataType: "json"
         });
     });
 });
