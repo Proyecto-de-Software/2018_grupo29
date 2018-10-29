@@ -149,10 +149,10 @@ class UserController {
                     if (isset($_POST['roles'])) {
                         $checkbox = ($_POST['roles']);
                         $N = count($checkbox);
-                        $parametro['id_usuario'] = $id;
+                        $parametro['usuario_id'] = $id;
                         for($i=0; $i < $N; $i++) {
-                            $parametro['id_rol'] = intval($checkbox[$i]);
-                            UserRepository::getInstance()->agregarRolAUsuario($parametro);
+                            $parametro['rol_id'] = intval($checkbox[$i]);
+                            UserRepository::getInstance()->asignarRol($parametro);
                         }
                     }
                     $_SESSION['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
@@ -297,12 +297,12 @@ class UserController {
         }
     }
 
-    public function agregarRol($datos){
+    public function asignarRol($datos){
         if (isset($_SESSION['id'])){
             if (in_array('usuario_update', $_SESSION['permisos'])){
                 $parametro['usuario_id'] = $_POST['usuario_id'];
                 $parametro['rol_id'] = $_POST['rol_id'];
-                UserRepository::getInstance()->agregarRol($parametro);
+                UserRepository::getInstance()->asignarRol($parametro);
                 $this->mostrarRoles();
             }
             else {
@@ -314,12 +314,12 @@ class UserController {
         }
     }
 
-    public function quitarRol($datos) {
+    public function desasignarRol($datos) {
         if (isset($_SESSION['id'])){
             if (in_array('usuario_update', $_SESSION['permisos'])){
                 $parametro['usuario_id'] = $_POST['usuario_id'];
                 $parametro['rol_id'] = $_POST['rol_id'];
-                UserRepository::getInstance()->quitarRol($parametro);
+                UserRepository::getInstance()->desasignarRol($parametro);
                 $this->mostrarRoles();
             }
             else {
