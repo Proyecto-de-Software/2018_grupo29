@@ -39,11 +39,11 @@ class PatientController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('pacientes.html.twig', $_SESSION);
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -75,7 +75,7 @@ class PatientController {
                     ResourceController::getInstance()->mostrarHTMLConParametros('listadoPacientes.html.twig', $_SESSION);
                 }
                 else {
-                    ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                    ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
                 }
             }
             else{
@@ -83,7 +83,7 @@ class PatientController {
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }    
 
@@ -115,12 +115,12 @@ class PatientController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('busquedaPaciente.html.twig', $_SESSION);
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
 
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -166,7 +166,7 @@ class PatientController {
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -189,11 +189,11 @@ class PatientController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
     
@@ -204,11 +204,11 @@ class PatientController {
                 PatientController::getInstance()->obtenerPacientes();
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -218,7 +218,7 @@ class PatientController {
             return PatientRepository::getInstance()->getPartidos();
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -229,7 +229,7 @@ class PatientController {
             return PatientRepository::getInstance()->getLocalidades($idLocalidad);
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -247,17 +247,18 @@ class PatientController {
                 $_POST['nro_historia_clinica'] = intval($_POST['nro_historia_clinica']);
                 $_POST['nro_carpeta'] = intval($_POST['nro_carpeta']);
                 $_POST['obra_social_id'] = intval($_POST['obra_social_id']);
+                //hacer region sanitaria con api
                 $_POST['region_sanitaria_id'] = PatientRepository::getInstance()->obtenerRegionSanitaria($_POST["partidos"]);
                
                 PatientRepository::getInstance()->crearPaciente($_POST);
                 ResourceController::getInstance()->mostrarHTMLConParametros('home.html.twig',$_SESSION);
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -269,11 +270,11 @@ class PatientController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 

@@ -38,11 +38,11 @@ class UserController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('usuarios.html.twig', $_SESSION);
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -79,7 +79,7 @@ class UserController {
                     ResourceController::getInstance()->mostrarHTMLConParametros($html, $_SESSION);
                 }
                 else {
-                    ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                    ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
                 }
             }
             else{
@@ -87,7 +87,7 @@ class UserController {
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     } 
 
@@ -116,10 +116,10 @@ class UserController {
                 }
                 $this->getAllUsers('listaUsuarios.html.twig');
             }else{
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }else{
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -129,10 +129,10 @@ class UserController {
                 $_SESSION['roles'] = UserRepository::getInstance()->getRoles();
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
             }else{
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }else{
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -165,10 +165,10 @@ class UserController {
                     ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
                 }
             }else{
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }else{
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -179,12 +179,12 @@ class UserController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('busquedaUsuario.html.twig', $_SESSION);
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
 
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -228,12 +228,12 @@ class UserController {
                 
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
 
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -244,11 +244,11 @@ class UserController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -259,11 +259,11 @@ class UserController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -289,11 +289,11 @@ class UserController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('roles.html.twig', $_SESSION);
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -306,11 +306,11 @@ class UserController {
                 $this->mostrarRoles();
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -323,11 +323,11 @@ class UserController {
                 $this->mostrarRoles();
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 }

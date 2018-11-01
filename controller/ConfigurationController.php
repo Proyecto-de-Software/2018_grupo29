@@ -35,11 +35,11 @@ class ConfigurationController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('configuracion.html.twig', $_SESSION);
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
@@ -51,11 +51,11 @@ class ConfigurationController {
                 $this->menuConfiguracion();
             }
             else {
-                ResourceController::getInstance()->mostrarHTML('error.html.twig');
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTML('error.html.twig');
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 
