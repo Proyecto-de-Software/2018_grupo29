@@ -232,6 +232,51 @@ class PatientController {
             ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
+    public function tieneSoloLetras($string) {
+        return  preg_match("/[a-zA-Z]+$/", $string);
+    }
+    public function tieneSoloNumeros($param) {
+        return  preg_match("/[0-9]+$/", $param);
+    }
+    public function validarFormularioPaciente($datos,&$msj){
+        if (! $this->tieneSoloLetras($datos['nombre'])) {
+            $msj = "El nombre debe tener solo letras";
+            return false;
+        }
+
+          if (! $this->tieneSoloLetras($datos["apellido"])) {
+            $msj = "El apellido debe tener solo letras";
+            return false;
+          }
+
+          if (! $this->tieneSoloNumeros($datos['numero'])) {
+             $msj = "El número de documento debe tener solo números";
+            return false;
+          }
+
+          if ($datos['nro_historia_clinica'] != NULL) {
+            if (! $this->tieneSoloNumeros($datos['nro_historia_clinica'])) {
+              $msj = "El número de historia clínica debe tener solo números";
+              return false;
+            }
+          }
+
+          if ($datos['nro_carpeta'] != NULL) {
+            if (! $this->tieneSoloNumeros($datos['nro_carpeta'])) {
+              $msj = "El número de carpeta debe tener solo números";
+              return false;
+            }
+          }
+
+          if ($datos['tel'] != NULL) {
+            if ((! $this->tieneSoloNumeros($datos['tel'])) && (strlen($datos['tel'])< 8)) {
+              $msj = "El número de teléfono debe tener sólo números y al menos 8 dígitos";
+              return false;
+            }
+          }
+
+          return true;
+    }
 
     public function crearPacienteNuevo(){
         if (isset($_SESSION['id']) && ($_POST !== array())){
@@ -239,19 +284,27 @@ class PatientController {
                 if (! isset($_POST['localidades'])) {
                     $_POST['localidades'] = 1;
                 }
-                $_POST['localidades'] = intval($_POST['localidades']);
-                $_POST['genero_id'] = intval($_POST['genero_id']);
-                $_POST['tiene_documento'] = intval($_POST['tiene_documento']);
-                $_POST['tipo_documento'] = intval($_POST['tipo_documento']);
-                $_POST['numero'] = intval($_POST['numero']);
-                $_POST['nro_historia_clinica'] = intval($_POST['nro_historia_clinica']);
-                $_POST['nro_carpeta'] = intval($_POST['nro_carpeta']);
-                $_POST['obra_social_id'] = intval($_POST['obra_social_id']);
-                //hacer region sanitaria con api
-                $_POST['region_sanitaria_id'] = PatientRepository::getInstance()->obtenerRegionSanitaria($_POST["partidos"]);
-               
-                PatientRepository::getInstance()->crearPaciente($_POST);
-                ResourceController::getInstance()->mostrarHTMLConParametros('home.html.twig',$_SESSION);
+                $msj = '';
+                if ($this->validarFormularioPaciente($_POST,$msj)) {
+                    $_POST['localidades'] = intval($_POST['localidades']);
+                    $_POST['genero_id'] = intval($_POST['genero_id']);
+                    $_POST['tiene_documento'] = intval($_POST['tiene_documento']);
+                    $_POST['tipo_documento'] = intval($_POST['tipo_documento']);
+                    $_POST['numero'] = intval($_POST['numero']);
+                    $_POST['nro_historia_clinica'] = intval($_POST['nro_historia_clinica']);
+                    $_POST['nro_carpeta'] = intval($_POST['nro_carpeta']);
+                    $_POST['obra_social_id'] = intval($_POST['obra_social_id']);
+                    //hacer region sanitaria con api
+                    $_POST['region_sanitaria_id'] = PatientRepository::getInstance()->obtenerRegionSanitaria($_POST["partidos"]);
+                   
+                    PatientRepository::getInstance()->crearPaciente($_POST);
+                    ResourceController::getInstance()->mostrarHTMLConParametros('home.html.twig',$_SESSION);
+                }
+                else {
+                    $_SESSION['mensaje'] = $msj;
+                    $_SESSION['tipo_mensaje'] = 'text-danger';
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
+                }
             }
             else {
                 ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);

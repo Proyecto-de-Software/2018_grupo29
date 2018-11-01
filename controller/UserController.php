@@ -136,6 +136,41 @@ class UserController {
         }
     }
 
+    
+
+    public function verificarFormularioUsuario($datos, &$msj) {
+         if (! $this->tieneSoloLetras($datos['first_name'])) {
+            $msj = "El nombre debe tener solo letras";
+            return false;
+        }
+
+          if (! $this->tieneSoloLetras($datos["last_name"])) {
+            $msj = "El apellido debe tener solo letras";
+            return false;
+          }
+
+          if (strlen($datos['password']) < 6) {
+            $msj = "La contraseña tiene menos de 6 caracteres";
+            return false;
+          }
+
+          if ($datos['password'] != $datos['password2']) {
+            $msj = "Las contraseñas no coinciden";
+            return false;
+          }
+          
+          if (strlen($datos['username']) < 6) {
+            $msj = "El nombre de usuario debe tener 6 caracteres como mínimo";
+            return false;
+          }
+
+          return true;
+    }
+
+    public function tieneSoloLetras($string) {
+        return  preg_match("/[a-zA-Z]+$/", $string);
+    }
+
     public function crearUsuarioNuevo(){
         if(isset($_SESSION['id']) && ($_POST !== array())){
             if(in_array('usuario_new', $_SESSION['permisos'])){
@@ -143,21 +178,29 @@ class UserController {
                 if (count($answer) == 0) {
                     $_POST['created_at'] = date("Y-m-d H:i:s");
                     $_POST['updated_at'] = date("Y-m-d H:i:s");
-                    UserRepository::getInstance()->agregarUsuario($_POST);
-                    $id = UserRepository::getInstance()->getIdByUsername($_POST['username'])[0];
-                    $id = intval($id['id']);
-                    if (isset($_POST['roles'])) {
-                        $checkbox = ($_POST['roles']);
-                        $N = count($checkbox);
-                        $parametro['usuario_id'] = $id;
-                        for($i=0; $i < $N; $i++) {
-                            $parametro['rol_id'] = intval($checkbox[$i]);
-                            UserRepository::getInstance()->asignarRol($parametro);
+                    $msj = '';
+                    if ($this->verificarFormularioUsuario($_POST,$msj)) {
+                        UserRepository::getInstance()->agregarUsuario($_POST);
+                        $id = UserRepository::getInstance()->getIdByUsername($_POST['username'])[0];
+                        $id = intval($id['id']);
+                        if (isset($_POST['roles'])) {
+                            $checkbox = ($_POST['roles']);
+                            $N = count($checkbox);
+                            $parametro['usuario_id'] = $id;
+                            for($i=0; $i < $N; $i++) {
+                                $parametro['rol_id'] = intval($checkbox[$i]);
+                                UserRepository::getInstance()->asignarRol($parametro);
+                            }
                         }
+                        $_SESSION['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
+                        $_SESSION['tipo_mensaje'] = 'text-success';
+                        ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
                     }
-                    $_SESSION['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
-                    $_SESSION['tipo_mensaje'] = 'text-success';
-                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
+                    else {
+                        $_SESSION['mensaje'] = $msj;
+                        $_SESSION['tipo_mensaje'] = 'text-danger';
+                        ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
+                    }
                 }
                 else {
                     $_SESSION['mensaje'] = "El nombre de usuario '".$_POST['username']."'  ya existe. Por favor elija otro";

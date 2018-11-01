@@ -10,6 +10,10 @@
 			{% if datos.datosPaciente is defined %}<h1 class="alMedio text-center">Modificar Paciente</h1>
 			{% else %}<h1 class="alMedio text-center">Nuevo Paciente</h1>
 			{% endif %}
+			<p id="campo_error" class="text-center text-danger"></p>
+			{% if datos.mensaje is defined %}
+				<p id="campo_error" class="{{datos.tipo_mensaje}} text-center"> {{ datos.mensaje }}</p>
+			{% endif %}
 			<p class="text-center"> Nota: los campos que tienen (*) son obligatorios</p>
 			<br>
 		</div>
@@ -18,10 +22,10 @@
 		<div class="row container-fluid">
 			<div class="col-sm-6">
 				{% if datos.datosPaciente is defined %}
-					<form method="POST" action="./index.php?action=modificarPaciente">
+					<form name="formularioAltaPaciente" method="POST" action="./index.php?action=modificarPaciente" onsubmit='return validarAltaPaciente()'>
 						<input type="hidden" name="id_paciente" value="{{datos.datosPaciente.id_paciente}}" >
 				{% else %}
-					<form method="POST" action="./index.php?action=crearPacienteNuevo">
+					<form name="formularioAltaPaciente" method="POST" action="./index.php?action=crearPacienteNuevo" onsubmit='return validarAltaPaciente()'>
 				{% endif %}
 				 <div class="form-group">
 				 	<label for="first_name">Nombre*</label>
