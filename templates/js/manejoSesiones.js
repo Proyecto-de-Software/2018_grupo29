@@ -90,22 +90,22 @@ function validarAltaPaciente() {
     return false;
   }
 
-  if (nro_historia_clinica != '') {
-    if (! tieneSoloNumeros(nro_historia_clinica)) {
-      document.getElementById("campo_error").innerHTML = "El número de historia clínica debe tener solo números";
+  if (nro_historia_clinica != '')  {
+    if ((! tieneSoloNumeros(nro_historia_clinica)) || (nro_historia_clinica.length > 6)) {
+      document.getElementById("campo_error").innerHTML = "El número de historia clínica debe tener solo números y 6 dígitos como máximo";
       return false;
     }
   }
 
   if (nro_carpeta != '') {
-    if (! tieneSoloNumeros(nro_carpeta)) {
-      document.getElementById("campo_error").innerHTML = "El número de carpeta debe tener solo números";
+    if ((! tieneSoloNumeros(nro_carpeta)) || (nro_carpeta.length > 5)) {
+      document.getElementById("campo_error").innerHTML = "El número de carpeta debe tener solo números y 5 dígitos como máximo";
       return false;
     }
   }
 
   if (tel != '') {
-    if ((! tieneSoloNumeros(tel)) && (tel.length < 8)) {
+    if ((! tieneSoloNumeros(tel)) || (tel.length < 8)) {
       document.getElementById("campo_error").innerHTML = "El número de teléfono debe tener sólo números y al menos 8 dígitos";
       return false;
     }

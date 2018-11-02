@@ -255,21 +255,21 @@ class PatientController {
           }
 
           if ($datos['nro_historia_clinica'] != NULL) {
-            if (! $this->tieneSoloNumeros($datos['nro_historia_clinica'])) {
-              $msj = "El número de historia clínica debe tener solo números";
+            if ((! $this->tieneSoloNumeros($datos['nro_historia_clinica'])) || (strlen($datos['nro_historia_clinica']) > 6 )){
+              $msj = "El número de historia clínica debe tener solo números y máximo 6 dígitos";
               return false;
             }
           }
 
           if ($datos['nro_carpeta'] != NULL) {
-            if (! $this->tieneSoloNumeros($datos['nro_carpeta'])) {
-              $msj = "El número de carpeta debe tener solo números";
+            if ((! $this->tieneSoloNumeros($datos['nro_carpeta'])) || (strlen($datos['nro_carpeta']) > 5)) {
+              $msj = "El número de carpeta debe tener solo números y máximo 5 dígitos";
               return false;
             }
           }
 
           if ($datos['tel'] != NULL) {
-            if ((! $this->tieneSoloNumeros($datos['tel'])) && (strlen($datos['tel'])< 8)) {
+            if ((! $this->tieneSoloNumeros($datos['tel'])) || (strlen($datos['tel'])< 8)) {
               $msj = "El número de teléfono debe tener sólo números y al menos 8 dígitos";
               return false;
             }
@@ -295,10 +295,17 @@ class PatientController {
                     $_POST['nro_carpeta'] = intval($_POST['nro_carpeta']);
                     $_POST['obra_social_id'] = intval($_POST['obra_social_id']);
                     //hacer region sanitaria con api
+                    if ($_POST['partidos'] != ''){
                     $_POST['region_sanitaria_id'] = PatientRepository::getInstance()->obtenerRegionSanitaria($_POST["partidos"]);
-                   
+                    }
+                    else {
+                        $_POST['region_sanitaria_id'] = 1;
+                    }
+                    if ($_POST['obra_social_id'] == 0) $_POST['obra_social_id'] = 1;
                     PatientRepository::getInstance()->crearPaciente($_POST);
-                    ResourceController::getInstance()->mostrarHTMLConParametros('home.html.twig',$_SESSION);
+                    $_SESSION['mensaje'] = 'Se ha creado un nuevo Paciente';
+                    $_SESSION['tipo_mensaje'] = 'text-success';
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
                 }
                 else {
                     $_SESSION['mensaje'] = $msj;
