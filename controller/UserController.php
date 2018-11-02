@@ -242,7 +242,9 @@ class UserController {
                     $usuarios = UserRepository::getInstance()->buscarUsuarioConActivo($_POST);
                 }
                 if (count($usuarios)==0){
-                    $_SESSION['noHubo'] = 1;;
+                    $_SESSION['noHubo'] = 1;
+                    $_SESSION['mensaje'] = 'No se encontro a ningún usuario con esos datos';
+                    $_SESSION['tipo_mensaje'] = 'text-danger';                    
                     $this->mostrarFormularioBusqueda($_SESSION);
                 }
                 else {
