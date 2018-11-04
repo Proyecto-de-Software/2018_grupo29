@@ -51,8 +51,16 @@ class PatientRepository extends PDORepository {
             *
             FROM
                 paciente p
+            INNER JOIN localidad l ON
+                l.id = p.localidad_id
+            INNER JOIN region_sanitaria rs ON
+                rs.id = p.region_sanitaria_id
+            INNER JOIN genero g ON
+                g.id = p.genero_id
             INNER JOIN tipo_documento td ON
                 td.id = p.tipo_doc_id
+            INNER JOIN obra_social os ON
+                os.id = p.obra_social_id
             WHERE 
                 p.nombre LIKE CONCAT('%', :nombre, '%') AND
                 p.apellido LIKE CONCAT('%', :apellido, '%') AND
