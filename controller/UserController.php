@@ -247,21 +247,7 @@ class UserController {
         }
     }
 
-    public function mostrarFormularioBusqueda(){
-        if (isset($_SESSION['id'])) {
-            if (in_array('usuario_index', $_SESSION['permisos'])) {
-                
-                ResourceController::getInstance()->mostrarHTMLConParametros('busquedaUsuario.html.twig', $_SESSION);
-            }
-            else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
-            }
-
-        }
-        else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
-        }
-    }
+    
 
     public function eliminarUsuario() {
         $parametros = ResourceController::getInstance()->getConfiguration();
