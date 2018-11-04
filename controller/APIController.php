@@ -3,7 +3,6 @@
  * Description of PatientnController
  * @author copiarme? jamas!
  */
-include('./httpful.phar');
 
 class APIController {
 
