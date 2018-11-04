@@ -39,12 +39,7 @@ class APIController {
 		curl_close($curl);
 		$response = json_decode($response, true);
 		return $response;*/
-		\Httpful\Httpful::register(\Httpful\Mime::JSON, new \Httpful\Handlers\JsonHandler(array('decode_as_array' => true)));
-		$response = \Httpful\Request::get($url)
-			->expects('application/json')
-    		->send();
-		$arreglo = $response->body;
-		return $arreglo;
 
+		return json_decode(file_get_contents($url),true);		
     }
 }
