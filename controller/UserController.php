@@ -249,6 +249,11 @@ class UserController {
                     $mensaje['tipo_mensaje'] = 'text-danger';
                     $this->nuevoUsuario($mensaje);
                 }
+                else {
+                    $parametros['mensaje'] = 'Ya existe ese nombre de usuario';
+                    $parametros['tipo_mensaje'] = 'text-danger';
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
+                }
             }else{
                 $this->error($parametros);
             }
