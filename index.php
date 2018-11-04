@@ -42,7 +42,7 @@ if(!(isset($_GET["action"]))) {
 }elseif ($_GET["action"] == 'listarPacientes'){
 	PatientController::getInstance()->obtenerPacientes();  
 }elseif ($_GET["action"] == 'formularioBusquedaPaciente'){
-	PatientController::getInstance()->mostrarFormulario(0); //andando 95%
+	PatientController::getInstance()->mostrarFormulario(0);
 }elseif ($_GET["action"] == 'buscarPaciente'){
 	PatientController::getInstance()->buscarPaciente(); 
 }elseif ($_GET["action"] == 'nuevoPacienteNN'){
@@ -60,7 +60,7 @@ if(!(isset($_GET["action"]))) {
 }elseif ($_GET["action"] == 'actualizarConfiguracion'){
 	ConfigurationController::getInstance()->actualizarConfiguracion();
 }elseif ($_GET["action"] == 'nuevoUsuario'){
-	UserController::getInstance()->nuevoUsuario(); 
+	UserController::getInstance()->nuevoUsuario(array()); 
 }elseif ($_GET["action"] == 'crearUsuario'){
 	UserController::getInstance()->crearUsuarioNuevo();
 }elseif ($_GET["action"] == 'obtenerCiudades'){
