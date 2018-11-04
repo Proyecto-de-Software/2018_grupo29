@@ -3,6 +3,7 @@
  * Description of PatientnController
  * @author copiarme? jamas!
  */
+include('./httpful.phar');
 
 class APIController {
 
@@ -22,7 +23,9 @@ class APIController {
     }
 
     public function obtenerAPI($url){
-    	$curl = curl_init();
+    	
+    	//este codigo comentado quedo de cuando usamos CURL, ahora estamos usando httpful
+    	/*$curl = curl_init();
 		curl_setopt_array($curl, array(
 		CURLOPT_URL => $url,
 		CURLOPT_RETURNTRANSFER => true,
@@ -35,6 +38,13 @@ class APIController {
 		$err = curl_error($curl);
 		curl_close($curl);
 		$response = json_decode($response, true);
-		return $response;
+		return $response;*/
+		\Httpful\Httpful::register(\Httpful\Mime::JSON, new \Httpful\Handlers\JsonHandler(array('decode_as_array' => true)));
+		$response = \Httpful\Request::get($url)
+			->expects('application/json')
+    		->send();
+		$arreglo = $response->body;
+		return $arreglo;
+
     }
 }
