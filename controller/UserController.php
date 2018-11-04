@@ -90,7 +90,8 @@ class UserController {
                 }
                 if (count($usuarios)==0){
                     //$parametros['noHubo'] = 1;
-                    $this->mostrarFormularioBusqueda();
+                    $msj = 'No se encontró un usuario con esos datos';
+                    $this->mostrarFormularioBusqueda($msj);
                 }
                 else {
                     ResourceController::getInstance()->setPaginado($parametros,$usuarios);
@@ -110,11 +111,12 @@ class UserController {
         }
     }
 
-    public function mostrarFormularioBusqueda(){
+    public function mostrarFormularioBusqueda($msj){
         $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id'])) {
             $parametros["session"] = $_SESSION;
             if (in_array('usuario_index', $_SESSION['permisos'])) {
+                $parametros['mensaje'] = $msj;
                 ResourceController::getInstance()->mostrarHTMLConParametros('busquedaUsuario.html.twig', $parametros);
             }
             else {

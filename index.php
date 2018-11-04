@@ -66,7 +66,7 @@ if(!(isset($_GET["action"]))) {
 }elseif ($_GET["action"] == 'obtenerCiudades'){
 	AJAXController::getInstance()->obtenerCiudades($_POST);
 }elseif ($_GET["action"] == 'formularioBusquedaUsuarios'){
-	UserController::getInstance()->mostrarFormularioBusqueda();
+	UserController::getInstance()->mostrarFormularioBusqueda('');
 }elseif ($_GET["action"] == 'buscarUsuario'){
 	UserController::getInstance()->buscarUsuario();
 }elseif ($_GET["action"] == 'crearPacienteNuevo'){
