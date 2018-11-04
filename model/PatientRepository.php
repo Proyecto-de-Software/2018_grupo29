@@ -146,6 +146,16 @@ class PatientRepository extends PDORepository {
             ]);
     }
 
+    public function unicidadNroHistoriaClinica($numero) {
+        $answer = $this->queryList("SELECT nro_historia_clinica FROM paciente WHERE nro_historia_clinica = :nro",["nro" => $numero]);
+        return $answer;
+    }
+
+    public function unicidadNroCarpeta($numero) {
+        $answer = $this->queryList("SELECT nro_carpeta FROM paciente WHERE nro_carpeta = :nro",["nro" => $numero]);
+        return $answer;
+    }
+
 }
 
 

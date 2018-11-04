@@ -277,7 +277,35 @@ class PatientController {
 
           return true;
     }
+    public function existeLaHistoriaClinica(){
+        if ($_POST['nro_historia_clinica'] != 0) {
+            $nhc = PatientRepository::getInstance()->unicidadNroHistoriaClinica($_POST['nro_historia_clinica']);
+            if (count($nhc) != 0){
+                $_SESSION['mensaje'] = 'El número de historia clínica ya existe';
+                $_SESSION['tipo_mensaje'] = 'text-danger';
+                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
+                die();
+            }
+        }
+        else {
+            $_POST['nro_historia_clinica'] = NULL;
+        }
+    }
 
+    public function existeLaCarpeta(){
+        if ($_POST['nro_carpeta'] != 0) {
+            $nc = PatientRepository::getInstance()->unicidadNroCarpeta($_POST['nro_carpeta']);
+            if (count($nc) != 0){
+                $_SESSION['mensaje'] = 'El número de carpeta ya existe';
+                $_SESSION['tipo_mensaje'] = 'text-danger';
+                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
+                die();
+            }
+        }
+        else {
+            $_POST['nro_carpeta'] = NULL;
+        }
+    }
     public function crearPacienteNuevo(){
         if (isset($_SESSION['id']) && ($_POST !== array())){
             if (in_array('paciente_new', $_SESSION['permisos'])){
@@ -295,6 +323,13 @@ class PatientController {
                     $_POST['nro_carpeta'] = intval($_POST['nro_carpeta']);
                     $_POST['obra_social_id'] = intval($_POST['obra_social_id']);
                     //hacer region sanitaria con api
+
+                    //Si el nrohistoriaclinica existe termina el script, sino sigue.
+                    $this->existeLaHistoriaClinica();
+                     //Si el numero de carpeta existe termina el script, sino sigue.
+                    $this->existeLaCarpeta();
+                     //ambos anteriores, si el usuario no seteo ningun valor, los pone en NULL.
+                    
                     if ($_POST['partidos'] != ''){
                     $_POST['region_sanitaria_id'] = PatientRepository::getInstance()->obtenerRegionSanitaria($_POST["partidos"]);
                     }
