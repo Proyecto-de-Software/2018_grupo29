@@ -241,6 +241,11 @@ class UserController {
                         ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
                     }
                 }
+                else {
+                    $parametros['mensaje'] = 'Ya existe ese nombre de usuario';
+                    $parametros['tipo_mensaje'] = 'text-danger';
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
+                }
             }else{
                 ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
