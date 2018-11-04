@@ -27,35 +27,38 @@ class ConfigurationController {
     }
 
     public function menuConfiguracion(){
-        //acomodar session
+        $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id'])) { 
+            $parametros["session"] = $_SESSION;
             if (  (in_array('configuracion_index', $_SESSION['permisos'])) or (in_array('configuracion_update', $_SESSION['permisos'])) ){
-                $_SESSION['configuraciones'] = ConfigurationRepository::getInstance()->getConfiguraciones();
+                $parametros['configuraciones'] = ConfigurationRepository::getInstance()->getConfiguraciones();
                // $vector['sesion'] = $_SESSION;
-                ResourceController::getInstance()->mostrarHTMLConParametros('configuracion.html.twig', $_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('configuracion.html.twig', $parametros);
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }
 
     public function actualizarConfiguracion(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id'])) { 
+            $parametros["session"] = $_SESSION;
             if (  (in_array('configuracion_index', $_SESSION['permisos'])) or (in_array('configuracion_update', $_SESSION['permisos'])) )
             {
                 ConfigurationRepository::getInstance()->updateConfiguration($_POST);
                 $this->menuConfiguracion();
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }
 

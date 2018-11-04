@@ -15,7 +15,7 @@
   		<div class="col-sm-4">
   			<h2> <p class="text-center">Iniciar sesión </p></h2> 
   			<div class="alMedio">
-  				{% if datos is defined %} 
+  				{% if datos.mensaje is defined %} 
   					<p class="text-danger">{{ datos.mensaje }}  </p>
   				{% endif %}
   				<p id="campo_error" class="text-danger"> </p>

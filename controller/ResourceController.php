@@ -26,6 +26,7 @@ class ResourceController {
     }
     
     public function mostrarHTML($html){
+        //creo que quedo sin usos
         $view = new Home();
         $view->show($html);
     }
@@ -36,19 +37,41 @@ class ResourceController {
     }
 
     public function menuPrincipal($html){
-        $view = new Home();
+        $datos = $this->getConfiguration();
         if(isset($_SESSION['id'])){
-            $view->showConParametros($html,$_SESSION);
+            $datos["session"] = $_SESSION;
+            $this->mostrarHTMLConParametros($html, $datos);
         }
         else{ 
             $estado = ConfigurationRepository::getInstance()->getEstadoSitio();
             $es = $estado[0]['valor'];   
             if ($es == '0'){
-                $view->show($html);
+                $this->mostrarHTMLConParametros($html, $datos);
             }
             else{
-                $view->show('mantenimiento.html.twig');
+                $this->mostrarHTMLConParametros('mantenimiento.html.twig', $datos);
             }
         }
+    }
+
+    public function getConfiguration(){
+        $datos['tituloHospital'] = $GLOBALS["conf"][0]['valor'];
+        $datos['mailContacto'] = $GLOBALS["conf"][1]['valor'];
+        return $datos;
+    }
+
+    public function setPaginado(&$vector, $datos){
+        $vector['cantElementosPorPagina'] = intval(ConfigurationRepository::getInstance()->getCantPaginas()[0]['valor']);
+        $cantidadUsuarios = count($datos);
+        $vector['cantPaginas'] = ceil($cantidadUsuarios / $vector['cantElementosPorPagina']);
+    }
+
+    public function paginaActual(){
+        if (! isset($_POST['pagina'])) {
+            $actual = 0;
+        } else {
+            $actual = $_POST['pagina'] - 1;
+        }
+        return $actual;
     }
 }

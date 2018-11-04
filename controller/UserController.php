@@ -27,7 +27,9 @@ class UserController {
     }
 
     public function menuUsuarios(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id'])) { 
+            $parametros["session"] = $_SESSION;
             if ( 
                 (in_array('usuario_show', $_SESSION['permisos'])) or 
                 (in_array('usuario_new', $_SESSION['permisos'])) or 
@@ -35,51 +37,34 @@ class UserController {
                 (in_array('usuario_index', $_SESSION['permisos'])) or 
                 (in_array('usuario_destroy', $_SESSION['permisos']))
                  ){
-                ResourceController::getInstance()->mostrarHTMLConParametros('usuarios.html.twig', $_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('usuarios.html.twig', $parametros);
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }
 
     public function getAllUsers($html){
 
-        /* Anterior al paginado...
-        $usuarios = UserRepository::getInstance()->listAll();
-        $_SESSION["usuarios"] = $usuarios;
-        ResourceController::getInstance()->mostrarHTMLConParametros($html,$_SESSION);
-        */
-
+        $parametros = ResourceController::getInstance()->getConfiguration();
         if (! isset($_POST['fueBusqueda'])) $_POST['fueBusqueda'] = 0;
         if (isset($_SESSION['id'])) {
+            $parametros["session"] = $_SESSION;
             if (($_POST['fueBusqueda']) == 0) {
                 if (in_array('usuario_index', $_SESSION['permisos'])) {
                     $usuarios = UserRepository::getInstance()->listAll($_SESSION['id']);
-                    $answer = ConfigurationRepository::getInstance()->getCantPaginas();
-                    $cantElementosPorPagina = $answer[0]['valor'];
-                    $cantElementosPorPagina =  intval($cantElementosPorPagina);
-                    $_SESSION['cantElementosPorPagina'] = $cantElementosPorPagina;
-                    $cantidadUsuarios = count($usuarios);
-                    $cantPaginas = $cantidadUsuarios / $cantElementosPorPagina;
-                    $cantPaginas = ceil($cantPaginas);
-                    $_SESSION['cantPaginas'] = $cantPaginas;
-                    $usuarios = array_chunk($usuarios, $cantElementosPorPagina);
-                    if (! isset($_POST['pagina'])) {
-                        $actual = 0;
-                    }
-                    else {
-                        $actual = $_POST['pagina'] - 1;
-                    }
-                    $_SESSION['usuarios'] = $usuarios[$actual];
-                    $_SESSION['fueBusqueda'] = 0;
-                    ResourceController::getInstance()->mostrarHTMLConParametros($html, $_SESSION);
+                    ResourceController::getInstance()->setPaginado($parametros,$usuarios);
+                    $usuarios = array_chunk($usuarios, $parametros['cantElementosPorPagina']);
+                    $parametros['usuarios'] = $usuarios[ResourceController::getInstance()->paginaActual()];
+                    $parametros['fueBusqueda'] = 0;
+                    ResourceController::getInstance()->mostrarHTMLConParametros($html, $parametros);
                 }
                 else {
-                    ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+                    ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
                 }
             }
             else{
@@ -87,11 +72,59 @@ class UserController {
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     } 
 
-    
+    public function buscarUsuario(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        if (isset($_SESSION['id'])) {
+            $parametros["session"] = $_SESSION;
+            if (in_array('usuario_index', $_SESSION['permisos'])) {
+                $_POST['id'] = $_SESSION['id'];
+                if (($_POST['activo']) == '') {
+                    $usuarios = UserRepository::getInstance()->buscarUsuarioSinActivo($_POST);
+                }
+                else{
+                    $usuarios = UserRepository::getInstance()->buscarUsuarioConActivo($_POST);
+                }
+                if (count($usuarios)==0){
+                    //$parametros['noHubo'] = 1;
+                    $this->mostrarFormularioBusqueda();
+                }
+                else {
+                    ResourceController::getInstance()->setPaginado($parametros,$usuarios);
+                    $usuarios = array_chunk($usuarios, $parametros['cantElementosPorPagina']);
+                    $parametros['usuarios'] = $usuarios[ResourceController::getInstance()->paginaActual()];
+                    $parametros['fueBusqueda'] = 1;
+                    $parametros['filtros'] = $_POST;
+                    ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $parametros);
+                }  
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+        }
+    }
+
+    public function mostrarFormularioBusqueda(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        if (isset($_SESSION['id'])) {
+            $parametros["session"] = $_SESSION;
+            if (in_array('usuario_index', $_SESSION['permisos'])) {
+                ResourceController::getInstance()->mostrarHTMLConParametros('busquedaUsuario.html.twig', $parametros);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+        }
+    }
 
     public function obtenerPermisos($id){
     	$permisos = UserRepository::getInstance()->getPermisos($id);
@@ -103,7 +136,9 @@ class UserController {
     }
 
     public function cambiarEstado($datos){
+        $parametros = ResourceController::getInstance()->getConfiguration();
         if(isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
             if(in_array('usuario_update', $_SESSION['permisos'])){
                 if($datos["usuario_estado"]==0){
                     $datosNuevos["usuario_estado"] = 1;
@@ -116,28 +151,32 @@ class UserController {
                 }
                 $this->getAllUsers('listaUsuarios.html.twig');
             }else{
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         }else{
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }
 
     public function nuevoUsuario(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
         if(isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
             if(in_array('usuario_new', $_SESSION['permisos'])){
-                $_SESSION['roles'] = UserRepository::getInstance()->getRoles();
-                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
+                $parametros['roles'] = UserRepository::getInstance()->getRoles();
+                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
             }else{
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         }else{
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }
 
     public function crearUsuarioNuevo(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
         if(isset($_SESSION['id']) && ($_POST !== array())){
+            $parametros["session"] = $_SESSION;
             if(in_array('usuario_new', $_SESSION['permisos'])){
                 $answer = UserRepository::getInstance()->verificarUnicidad($_POST);
                 if (count($answer) == 0) {
@@ -155,150 +194,102 @@ class UserController {
                             UserRepository::getInstance()->asignarRol($parametro);
                         }
                     }
-                    $_SESSION['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
-                    $_SESSION['tipo_mensaje'] = 'text-success';
-                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
+                    $parametros['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
+                    $parametros['tipo_mensaje'] = 'text-success';
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
                 }
                 else {
-                    $_SESSION['mensaje'] = "El nombre de usuario '".$_POST['username']."'  ya existe. Por favor elija otro";
-                    $_SESSION['tipo_mensaje'] = 'text-danger';
-                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
+                    $parametros['mensaje'] = "El nombre de usuario '".$_POST['username']."'  ya existe. Por favor elija otro";
+                    $parametros['tipo_mensaje'] = 'text-danger';
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
                 }
             }else{
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         }else{
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
-        }
-    }
-
-    public function mostrarFormularioBusqueda(){
-        if (isset($_SESSION['id'])) {
-            if (in_array('usuario_index', $_SESSION['permisos'])) {
-                
-                ResourceController::getInstance()->mostrarHTMLConParametros('busquedaUsuario.html.twig', $_SESSION);
-            }
-            else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
-            }
-
-        }
-        else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
-        }
-    }
-
-    public function buscarUsuario(){
-        if (isset($_SESSION['id'])) {
-            if (in_array('usuario_index', $_SESSION['permisos'])) {
-                $_POST['id'] = $_SESSION['id'];
-                if (($_POST['activo']) == '') {
-                    $usuarios = UserRepository::getInstance()->buscarUsuarioSinActivo($_POST);
-                }
-                else{
-                    $usuarios = UserRepository::getInstance()->buscarUsuarioConActivo($_POST);
-                }
-                if (count($usuarios)==0){
-                    $_SESSION['noHubo'] = 1;;
-                    $this->mostrarFormularioBusqueda($_SESSION);
-                }
-                else {
-                    if (isset($_SESSION['noHubo'])) $_SESSION['noHubo'] = '';
-                    $answer = ConfigurationRepository::getInstance()->getCantPaginas();
-                    $cantElementosPorPagina = $answer[0]['valor'];
-                    $cantElementosPorPagina =  intval($cantElementosPorPagina);
-                    $_SESSION['cantElementosPorPagina'] = $cantElementosPorPagina;
-                    $cantidadUsuarios = count($usuarios);
-                    $cantPaginas = $cantidadUsuarios / $cantElementosPorPagina;
-                    $cantPaginas = ceil($cantPaginas);
-                    $_SESSION['cantPaginas'] = $cantPaginas;
-                    $usuarios = array_chunk($usuarios, $cantElementosPorPagina);
-                    if (! isset($_POST['pagina'])) {
-                        $actual = 0;
-                    }
-                    else {
-                        $actual = $_POST['pagina'] - 1;
-                    }
-                    $_SESSION['usuarios'] = $usuarios[$actual];
-                    $_SESSION['fueBusqueda'] = 1;
-                    $_SESSION['filtros'] = $_POST;
-                    ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
-                }
-            
-                
-            }
-            else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
-            }
-
-        }
-        else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }
 
     public function eliminarUsuario() {
+        $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
             if (in_array('usuario_destroy', $_SESSION['permisos'])){
                 UserRepository::getInstance()->eliminarUsuario($_POST['usuario_id']);
-                ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $parametros);
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }
 
     public function verDatosUsuario(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
             if (in_array('usuario_update', $_SESSION['permisos'])){
-                $_SESSION['datosUsuario'] = UserRepository::getInstance()->datosUsuario($_POST['usuario_id']);
-                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $_SESSION);
+                $parametros['datosUsuario'] = UserRepository::getInstance()->datosUsuario($_POST['usuario_id']);
+                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }
 
     public function editarUsuario(){
-        UserRepository::getInstance()->actualizarUsuario($_POST);
-        unset($_SESSION['datosUsuario']);
-        ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        if (isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
+            if(in_array('usuario_update', $_SESSION['permisos'])){
+                UserRepository::getInstance()->actualizarUsuario($_POST);
+                ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
+            } else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            }
+        } else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+        }
     }
 
     public function mostrarRoles() {
+        $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
             if (in_array('usuario_update', $_SESSION['permisos'])){
                 /*
                 Cuando cambiemos todo de SESSION deberia ser algo asi.
                 $parametro['roles'] = UserRepository::getInstance()->getRoles();
                 $parametro['datosSession'] = $_SESSION;
                 */
-                $_SESSION['roles'] = UserRepository::getInstance()->getRolesQueNoTieneUnUsuario($_POST['usuario_id']);
-                $_SESSION['rolesDeUsuario'] = UserRepository::getInstance()->getRolesDeUsuario($_POST['usuario_id']);
-                $_SESSION['nombreUsuarioRoles'] = $_POST['first_name'];
-                $_SESSION['apellidoUsuarioRoles'] = $_POST['last_name'];
-                $_SESSION['idUsuarioRoles'] = $_POST['usuario_id'];
-                ResourceController::getInstance()->mostrarHTMLConParametros('roles.html.twig', $_SESSION);
+                $parametros['roles'] = UserRepository::getInstance()->getRolesQueNoTieneUnUsuario($_POST['usuario_id']);
+                $parametros['rolesDeUsuario'] = UserRepository::getInstance()->getRolesDeUsuario($_POST['usuario_id']);
+                $parametros['nombreUsuarioRoles'] = $_POST['first_name'];
+                $parametros['apellidoUsuarioRoles'] = $_POST['last_name'];
+                $parametros['idUsuarioRoles'] = $_POST['usuario_id'];
+                ResourceController::getInstance()->mostrarHTMLConParametros('roles.html.twig', $parametros);
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }
 
     public function asignarRol($datos){
+        $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
             if (in_array('usuario_update', $_SESSION['permisos'])){
                 $parametro['usuario_id'] = $_POST['usuario_id'];
                 $parametro['rol_id'] = $_POST['rol_id'];
@@ -306,28 +297,30 @@ class UserController {
                 $this->mostrarRoles();
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }
 
     public function desasignarRol($datos) {
+        $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
             if (in_array('usuario_update', $_SESSION['permisos'])){
-                $parametro['usuario_id'] = $_POST['usuario_id'];
-                $parametro['rol_id'] = $_POST['rol_id'];
-                UserRepository::getInstance()->desasignarRol($parametro);
+                $parametros['usuario_id'] = $_POST['usuario_id'];
+                $parametros['rol_id'] = $_POST['rol_id'];
+                UserRepository::getInstance()->desasignarRol($parametros);
                 $this->mostrarRoles();
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }
 }

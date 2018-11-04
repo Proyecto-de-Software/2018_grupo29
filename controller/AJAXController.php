@@ -30,9 +30,6 @@ class AJAXController {
 	    	$arr = array_filter($vectorCiudades, function ($var) use ($datos) {
 	    		return ($var['partido_id'] == $datos['id']);});
             echo json_encode($arr);
-            //$filtrado = array_values($arr);
-	    	//echo ('<label for="partidos">Localidad</label><select class="form-control" name="localidades" id="localidades"><option name="id_ciudad" value='.$filtrado[0]["id"].'">'.$filtrado[0]["nombre"].'</option></select>');
-	    	//ResourceController::getInstance()->mostrarHTMLConParametros("optionCiudades.html.twig",$filtrado);
 	    }
     }
 }
