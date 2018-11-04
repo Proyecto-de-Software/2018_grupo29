@@ -227,32 +227,31 @@ class UserController {
                     $_POST['created_at'] = date("Y-m-d H:i:s");
                     $_POST['updated_at'] = date("Y-m-d H:i:s");
                     $msj = '';
-                }
-                if ($this->verificarFormularioUsuario($_POST,$msj)&& (count($answer) == 0)) {
-                    UserRepository::getInstance()->agregarUsuario($_POST);
-                    $id = UserRepository::getInstance()->getIdByUsername($_POST['username'])[0];
-                    $id = intval($id['id']);
-                    if (isset($_POST['roles'])) {
-                        $checkbox = ($_POST['roles']);
-                        $N = count($checkbox);
-                        $parametro['usuario_id'] = $id;
-                        for($i=0; $i < $N; $i++) {
-                            $parametro['rol_id'] = intval($checkbox[$i]);
-                            UserRepository::getInstance()->asignarRol($parametro);
+                    if ($this->verificarFormularioUsuario($_POST,$msj){
+                        UserRepository::getInstance()->agregarUsuario($_POST);
+                        $id = UserRepository::getInstance()->getIdByUsername($_POST['username'])[0];
+                        $id = intval($id['id']);
+                        if (isset($_POST['roles'])) {
+                            $checkbox = ($_POST['roles']);
+                            $N = count($checkbox);
+                            $parametro['usuario_id'] = $id;
+                            for($i=0; $i < $N; $i++) {
+                                $parametro['rol_id'] = intval($checkbox[$i]);
+                                UserRepository::getInstance()->asignarRol($parametro);
+                            }
                         }
+                        $mensaje['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
+                        $mensaje['tipo_mensaje'] = 'text-success';
+                        $this->nuevoUsuario($mensaje);
+                    } else {
+                        $mensaje['mensaje'] = $msj;
+                        $mensaje['tipo_mensaje'] = 'text-danger';
+                        $this->nuevoUsuario($mensaje);
                     }
-                    $mensaje['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
-                    $mensaje['tipo_mensaje'] = 'text-success';
-                    $this->nuevoUsuario($mensaje);
                 } else {
-                    $mensaje['mensaje'] = $msj;
+                    $mensaje['mensaje'] = 'Ya existe ese nombre de usuario';
                     $mensaje['tipo_mensaje'] = 'text-danger';
                     $this->nuevoUsuario($mensaje);
-                }
-                else {
-                    $parametros['mensaje'] = 'Ya existe ese nombre de usuario';
-                    $parametros['tipo_mensaje'] = 'text-danger';
-                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
                 }
             }else{
                 $this->error($parametros);
