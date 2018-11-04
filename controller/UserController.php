@@ -26,6 +26,10 @@ class UserController {
         
     }
 
+    public function error($parametro){
+        ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+    }
+
     public function menuUsuarios(){
         $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id'])) { 
@@ -40,11 +44,11 @@ class UserController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('usuarios.html.twig', $parametros);
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                $this->error($parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     }
 
@@ -64,7 +68,7 @@ class UserController {
                     ResourceController::getInstance()->mostrarHTMLConParametros($html, $parametros);
                 }
                 else {
-                    ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                    $this->error($parametros);
                 }
             }
             else{
@@ -72,7 +76,7 @@ class UserController {
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     } 
 
@@ -103,11 +107,11 @@ class UserController {
                 }  
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                $this->error($parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     }
 
@@ -120,11 +124,11 @@ class UserController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('busquedaUsuario.html.twig', $parametros);
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                $this->error($parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     }
 
@@ -153,25 +157,30 @@ class UserController {
                 }
                 $this->getAllUsers('listaUsuarios.html.twig');
             }else{
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                $this->error($parametros);
             }
         }else{
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     }
 
-    public function nuevoUsuario(){
+    public function nuevoUsuario($msj){
+        var_dump($msj);
         $parametros = ResourceController::getInstance()->getConfiguration();
         if(isset($_SESSION['id'])){
             $parametros["session"] = $_SESSION;
             if(in_array('usuario_new', $_SESSION['permisos'])){
                 $parametros['roles'] = UserRepository::getInstance()->getRoles();
+                if(!($msj == array())){
+                    $parametros['mensaje'] = $msj['mensaje'];
+                    $parametros['tipo_mensaje'] = $msj['tipo_mensaje'];
+                }
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
             }else{
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                $this->error($parametros);
             }
         }else{
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     }
 
@@ -218,7 +227,7 @@ class UserController {
                     $_POST['created_at'] = date("Y-m-d H:i:s");
                     $_POST['updated_at'] = date("Y-m-d H:i:s");
                     $msj = '';
-                    if ($this->verificarFormularioUsuario($_POST,$msj)) {
+                    if ($this->verificarFormularioUsuario($_POST,$msj)){
                         UserRepository::getInstance()->agregarUsuario($_POST);
                         $id = UserRepository::getInstance()->getIdByUsername($_POST['username'])[0];
                         $id = intval($id['id']);
@@ -231,26 +240,24 @@ class UserController {
                                 UserRepository::getInstance()->asignarRol($parametro);
                             }
                         }
-                        $parametros['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
-                        $parametros['tipo_mensaje'] = 'text-success';
-                        ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
+                        $mensaje['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
+                        $mensaje['tipo_mensaje'] = 'text-success';
+                        $this->nuevoUsuario($mensaje);
+                    } else {
+                        $mensaje['mensaje'] = $msj;
+                        $mensaje['tipo_mensaje'] = 'text-danger';
+                        $this->nuevoUsuario($mensaje);
                     }
-                    else {
-                        $parametros['mensaje'] = $msj;
-                        $parametros['tipo_mensaje'] = 'text-danger';
-                        ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
-                    }
-                }
-                else {
-                    $parametros['mensaje'] = 'Ya existe ese nombre de usuario';
-                    $parametros['tipo_mensaje'] = 'text-danger';
-                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
+                } else {
+                    $mensaje['mensaje'] = 'Ya existe ese nombre de usuario';
+                    $mensaje['tipo_mensaje'] = 'text-danger';
+                    $this->nuevoUsuario($mensaje);
                 }
             }else{
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                $this->error($parametros);
             }
         }else{
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     }
 
@@ -265,11 +272,11 @@ class UserController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $parametros);
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                $this->error($parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     }
 
@@ -282,11 +289,11 @@ class UserController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                $this->error($parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     }
 
@@ -298,10 +305,10 @@ class UserController {
                 UserRepository::getInstance()->actualizarUsuario($_POST);
                 ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
             } else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                $this->error($parametros);
             }
         } else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     }
 
@@ -323,11 +330,11 @@ class UserController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('roles.html.twig', $parametros);
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                $this->error($parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     }
 
@@ -342,11 +349,11 @@ class UserController {
                 $this->mostrarRoles();
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                $this->error($parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     }
 
@@ -361,11 +368,11 @@ class UserController {
                 $this->mostrarRoles();
             }
             else {
-                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+                $this->error($parametros);
             }
         }
         else {
-            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            $this->error($parametros);
         }
     }
 }
