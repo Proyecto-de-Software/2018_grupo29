@@ -227,7 +227,7 @@ class UserController {
                     $_POST['created_at'] = date("Y-m-d H:i:s");
                     $_POST['updated_at'] = date("Y-m-d H:i:s");
                     $msj = '';
-                    if ($this->verificarFormularioUsuario($_POST,$msj){
+                    if ($this->verificarFormularioUsuario($_POST,$msj)){
                         UserRepository::getInstance()->agregarUsuario($_POST);
                         $id = UserRepository::getInstance()->getIdByUsername($_POST['username'])[0];
                         $id = intval($id['id']);
