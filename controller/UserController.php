@@ -173,6 +173,39 @@ class UserController {
         }
     }
 
+    public function verificarFormularioUsuario($datos, &$msj) {
+         if (! $this->tieneSoloLetras($datos['first_name'])) {
+            $msj = "El nombre debe tener solo letras";
+            return false;
+        }
+
+          if (! $this->tieneSoloLetras($datos["last_name"])) {
+            $msj = "El apellido debe tener solo letras";
+            return false;
+          }
+
+          if (strlen($datos['password']) < 6) {
+            $msj = "La contraseña tiene menos de 6 caracteres";
+            return false;
+          }
+
+          if ($datos['password'] != $datos['password2']) {
+            $msj = "Las contraseñas no coinciden";
+            return false;
+          }
+          
+          if (strlen($datos['username']) < 6) {
+            $msj = "El nombre de usuario debe tener 6 caracteres como mínimo";
+            return false;
+          }
+
+          return true;
+    }
+
+    public function tieneSoloLetras($string) {
+        return  preg_match("/[a-zA-Z]+$/", $string);
+    }
+
     public function crearUsuarioNuevo(){
         $parametros = ResourceController::getInstance()->getConfiguration();
         if(isset($_SESSION['id']) && ($_POST !== array())){
@@ -182,32 +215,51 @@ class UserController {
                 if (count($answer) == 0) {
                     $_POST['created_at'] = date("Y-m-d H:i:s");
                     $_POST['updated_at'] = date("Y-m-d H:i:s");
-                    UserRepository::getInstance()->agregarUsuario($_POST);
-                    $id = UserRepository::getInstance()->getIdByUsername($_POST['username'])[0];
-                    $id = intval($id['id']);
-                    if (isset($_POST['roles'])) {
-                        $checkbox = ($_POST['roles']);
-                        $N = count($checkbox);
-                        $parametro['usuario_id'] = $id;
-                        for($i=0; $i < $N; $i++) {
-                            $parametro['rol_id'] = intval($checkbox[$i]);
-                            UserRepository::getInstance()->asignarRol($parametro);
+                    $msj = '';
+                    if ($this->verificarFormularioUsuario($_POST,$msj)) {
+                        UserRepository::getInstance()->agregarUsuario($_POST);
+                        $id = UserRepository::getInstance()->getIdByUsername($_POST['username'])[0];
+                        $id = intval($id['id']);
+                        if (isset($_POST['roles'])) {
+                            $checkbox = ($_POST['roles']);
+                            $N = count($checkbox);
+                            $parametro['usuario_id'] = $id;
+                            for($i=0; $i < $N; $i++) {
+                                $parametro['rol_id'] = intval($checkbox[$i]);
+                                UserRepository::getInstance()->asignarRol($parametro);
+                            }
                         }
+                        $parametros['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
+                        $parametros['tipo_mensaje'] = 'text-success';
+                        ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
                     }
-                    $parametros['mensaje'] = "Se ha creado al usuario '".$_POST['username']."'";
-                    $parametros['tipo_mensaje'] = 'text-success';
-                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
-                }
-                else {
-                    $parametros['mensaje'] = "El nombre de usuario '".$_POST['username']."'  ya existe. Por favor elija otro";
-                    $parametros['tipo_mensaje'] = 'text-danger';
-                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
+                    else {
+                        $parametros['mensaje'] = $msj;
+                        $parametros['tipo_mensaje'] = 'text-danger';
+                        ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
+                    }
                 }
             }else{
                 ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         }else{
             ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+        }
+    }
+
+    public function mostrarFormularioBusqueda(){
+        if (isset($_SESSION['id'])) {
+            if (in_array('usuario_index', $_SESSION['permisos'])) {
+                
+                ResourceController::getInstance()->mostrarHTMLConParametros('busquedaUsuario.html.twig', $_SESSION);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
+            }
+
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
     }
 

@@ -220,33 +220,118 @@ class PatientController {
         else {
             ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$_SESSION);
         }
+<<<<<<< HEAD
     }*/
+=======
+    }
+    public function tieneSoloLetras($string) {
+        return  preg_match("/[a-zA-Z]+$/", $string);
+    }
+    public function tieneSoloNumeros($param) {
+        return  preg_match("/[0-9]+$/", $param);
+    }
+    public function validarFormularioPaciente($datos,&$msj){
+        if (! $this->tieneSoloLetras($datos['nombre'])) {
+            $msj = "El nombre debe tener solo letras";
+            return false;
+        }
+
+          if (! $this->tieneSoloLetras($datos["apellido"])) {
+            $msj = "El apellido debe tener solo letras";
+            return false;
+          }
+
+          if (! $this->tieneSoloNumeros($datos['numero'])) {
+             $msj = "El número de documento debe tener solo números";
+            return false;
+          }
+
+          if ($datos['nro_historia_clinica'] != NULL) {
+            if ((! $this->tieneSoloNumeros($datos['nro_historia_clinica'])) || (strlen($datos['nro_historia_clinica']) > 6 )){
+              $msj = "El número de historia clínica debe tener solo números y máximo 6 dígitos";
+              return false;
+            }
+          }
+
+          if ($datos['nro_carpeta'] != NULL) {
+            if ((! $this->tieneSoloNumeros($datos['nro_carpeta'])) || (strlen($datos['nro_carpeta']) > 5)) {
+              $msj = "El número de carpeta debe tener solo números y máximo 5 dígitos";
+              return false;
+            }
+          }
+
+          if ($datos['tel'] != NULL) {
+            if ((! $this->tieneSoloNumeros($datos['tel'])) || (strlen($datos['tel'])< 8)) {
+              $msj = "El número de teléfono debe tener sólo números y al menos 8 dígitos";
+              return false;
+            }
+          }
+
+          return true;
+    }
+    public function existeLaHistoriaClinica(){
+        if ($_POST['nro_historia_clinica'] != 0) {
+            $nhc = PatientRepository::getInstance()->unicidadNroHistoriaClinica($_POST['nro_historia_clinica']);
+            if (count($nhc) != 0){
+                $_SESSION['mensaje'] = 'El número de historia clínica ya existe';
+                $_SESSION['tipo_mensaje'] = 'text-danger';
+                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
+                die();
+            }
+        }
+        else {
+            $_POST['nro_historia_clinica'] = NULL;
+        }
+    }
+>>>>>>> 6fc37e3c43852d3f7f6850809861a1b0696dee2b
+
+    public function existeLaCarpeta(){
+        if ($_POST['nro_carpeta'] != 0) {
+            $nc = PatientRepository::getInstance()->unicidadNroCarpeta($_POST['nro_carpeta']);
+            if (count($nc) != 0){
+                $_SESSION['mensaje'] = 'El número de carpeta ya existe';
+                $_SESSION['tipo_mensaje'] = 'text-danger';
+                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $_SESSION);
+                die();
+            }
+        }
+        else {
+            $_POST['nro_carpeta'] = NULL;
+        }
+    }
 
     public function crearPacienteNuevo(){
         $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id']) && ($_POST !== array())){
             $parametros["session"] = $_SESSION;
             if (in_array('paciente_new', $_SESSION['permisos'])){
-    
-                //$_POST['localidades'] = intval($_POST['localidades']);
-                //$_POST['genero_id'] = intval($_POST['genero_id']);
-                //$_POST['tiene_documento'] = intval($_POST['tiene_documento']);
-                //$_POST['tipo_documento'] = intval($_POST['tipo_documento']);
-                //$_POST['numero'] = intval($_POST['numero']);
-                //$_POST['nro_historia_clinica'] = intval($_POST['nro_historia_clinica']);
-                //$_POST['nro_carpeta'] = intval($_POST['nro_carpeta']);
-                //$_POST['obra_social_id'] = intval($_POST['obra_social_id']);
-                //$regionesSanitarias = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria");
-                $partidos = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido");
-                $localidades = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad");
-                $localidadPaciente = array_values(array_filter($localidades, function ($var) {
-                    return ($var['partido_id'] == $_POST['localidades']);}));
-                $idPartido = $localidadPaciente[0]["partido_id"];
-                $partidoPaciente = array_values(array_filter($partidos, function ($var) use ($idPartido) {
-                    return ($var['id'] == $idPartido);}));
-                $_POST['region_sanitaria_id'] = $partidoPaciente[0]["region_sanitaria_id"];
-                PatientRepository::getInstance()->crearPaciente($_POST);
-                PatientController::getInstance()->obtenerPacientes();   
+                $msj = '';
+                if ($this->validarFormularioPaciente($_POST,$msj)) {
+                    $partidos = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido");
+                    $localidades = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad");
+                    $localidadPaciente = array_values(array_filter($localidades, function ($var) {
+                        return ($var['partido_id'] == $_POST['localidades']);}));
+                    $idPartido = $localidadPaciente[0]["partido_id"];
+                    $partidoPaciente = array_values(array_filter($partidos, function ($var) use ($idPartido) {
+                        return ($var['id'] == $idPartido);}));
+                    $_POST['region_sanitaria_id'] = $partidoPaciente[0]["region_sanitaria_id"];
+                    
+                    //Si el nrohistoriaclinica existe termina el script, sino sigue.
+                    $this->existeLaHistoriaClinica();
+                     //Si el numero de carpeta existe termina el script, sino sigue.
+                    $this->existeLaCarpeta();
+                     //ambos anteriores, si el usuario no seteo ningun valor, los pone en NULL.
+                    if ($_POST['obra_social_id'] == 0) $_POST['obra_social_id'] = 1;
+                    PatientRepository::getInstance()->crearPaciente($_POST);
+                    $parametros['mensaje'] = 'Se ha creado un nuevo Paciente';
+                    $parametros['tipo_mensaje'] = 'text-success';
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $parametros);
+                }
+                else {
+                    $parametros['mensaje'] = $msj;
+                    $parametros['tipo_mensaje'] = 'text-danger';
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $parametros);
+                }
             }
             else {
                 ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
