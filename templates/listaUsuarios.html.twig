@@ -31,7 +31,7 @@
 	  			<div class="col-2">{{usuario.created_at}}</div>		
 	  			<div class="col-2">{{usuario.updated_at}}</div>
 	  			<div class="col-1">{% if usuario.activo == 0 %} Activo {% else %} Bloqueado {% endif %}</div>
-	  			{% if "usuario_update" in datos.permisos %}<div class="col-2">{% if usuario.activo == 0 %}
+	  			{% if "usuario_update" in datos.session.permisos %}<div class="col-2">{% if usuario.activo == 0 %}
 	  					<form method="POST" action="index.php?action=cambiarEstadoUsuario">
 	  						<input type="hidden" name="usuario_estado" value="{{ usuario.activo }}"> 
 	  						<input type="hidden" name="usuario_id" value="{{ usuario.id }}"> 
@@ -46,8 +46,8 @@
 	  				{% endif %}</div>
 	  			{% endif %}
 
-	  		    <!-- Para el manejo de roles tenes que ser admin, si tenes ese permiso sos admin si o si no? -->
-	  			{% if "usuario_update" in datos.permisos %} 
+	  		    <!-- Para el manejo de roles tenes que ser admin, si tenes ese permiso sos admin si o si no? SI -->
+	  			{% if "usuario_update" in datos.session.permisos %} 
 		  			<div class="col-1">
 		  				<form method="POST" action="index.php?action=manejoRoles"> 
 	  						<input type="hidden" name="usuario_id" value="{{ usuario.id }}"> 
@@ -57,7 +57,7 @@
 		  				</form>
 		  			</div>
 		  		{% endif %}
-	  			{% if "usuario_update" in datos.permisos %}
+	  			{% if "usuario_update" in datos.session.permisos %}
 	  				<div class="col-1">
 	  					<form method="POST" action="index.php?action=editarUsuario">
 	  						<input type="hidden" name="usuario_estado" value="{{ usuario.activo }}"> 
@@ -66,7 +66,7 @@
 	  					</form>
 	  				</div>
 	  			{% else %} <div class="col-1"></div> {% endif %}
-	  			{% if "usuario_destroy" in datos.permisos %}
+	  			{% if "usuario_destroy" in datos.session.permisos %}
 	  				<div class="col-1">
 	  					<form method="POST" action="index.php?action=eliminarUsuario" onclick="return confirmacion('¿Está seguro que quiere eliminar al paciente?')">
 	  						<input type="hidden" name="usuario_estado" value="{{ usuario.activo }}"> 

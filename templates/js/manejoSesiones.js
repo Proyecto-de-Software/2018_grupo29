@@ -26,6 +26,10 @@ function tieneSoloLetras(string) {
   return /[a-zA-Z]+$/g.test(string);
 }
 
+function tieneSoloNumeros(parametro) {
+  return /[0-9]+$/g.test(parametro);
+}
+
 function validarAltaUsuario() {
   var contra1 = document.forms["formularioAltaUsuario"]["password"].value;
   var contra2 = document.forms["formularioAltaUsuario"]["password2"].value;
@@ -60,4 +64,53 @@ function validarAltaUsuario() {
   }
 
   return true;
+}
+
+
+function validarAltaPaciente() {
+  var nombre = document.forms["formularioAltaPaciente"]["nombre"].value;
+  var apellido = document.forms["formularioAltaPaciente"]["apellido"].value;
+  var nro_historia_clinica = document.forms["formularioAltaPaciente"]["nro_historia_clinica"].value;
+  var nro_carpeta = document.forms["formularioAltaPaciente"]["nro_carpeta"].value;
+  var tel = document.forms["formularioAltaPaciente"]["tel"].value;
+  var numeroDocumento = document.forms["formularioAltaPaciente"]["numero"].value;
+  
+   if (! tieneSoloLetras(nombre)) {
+    document.getElementById("campo_error").innerHTML = "El nombre debe tener solo letras";
+    return false;
+  }
+
+  if (! tieneSoloLetras(apellido)) {
+    document.getElementById("campo_error").innerHTML = "El apellido debe tener solo letras";
+    return false;
+  }
+
+  if (! tieneSoloNumeros(numeroDocumento)) {
+     document.getElementById("campo_error").innerHTML = "El número de documento debe tener solo números";
+    return false;
+  }
+
+  if (nro_historia_clinica != '')  {
+    if ((! tieneSoloNumeros(nro_historia_clinica)) || (nro_historia_clinica.length > 6)) {
+      document.getElementById("campo_error").innerHTML = "El número de historia clínica debe tener solo números y 6 dígitos como máximo";
+      return false;
+    }
+  }
+
+  if (nro_carpeta != '') {
+    if ((! tieneSoloNumeros(nro_carpeta)) || (nro_carpeta.length > 5)) {
+      document.getElementById("campo_error").innerHTML = "El número de carpeta debe tener solo números y 5 dígitos como máximo";
+      return false;
+    }
+  }
+
+  if (tel != '') {
+    if ((! tieneSoloNumeros(tel)) || (tel.length < 8)) {
+      document.getElementById("campo_error").innerHTML = "El número de teléfono debe tener sólo números y al menos 8 dígitos";
+      return false;
+    }
+  }
+
+  return true;
+
 }

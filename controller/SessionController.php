@@ -24,6 +24,11 @@ class SessionController {
         
     }
     
+    public function mostrarFormularioInicioSesion($html){
+        $resourceController = ResourceController::getInstance();
+        $resourceController->mostrarHTMLConParametros($html,$resourceController->getConfiguration());
+    }
+
     public function iniciarSesion(){
         //en esta me parece que el session esta bien
         if(isset($_POST['nombre']) && isset($_POST['contra'])) {
@@ -32,11 +37,13 @@ class SessionController {
             $usuario = SessionRepository::getInstance()->existeUsuario($user);
             if(count($usuario)==0){
                 //no existe el usuario
+                $parametros = ResourceController::getInstance()->getConfiguration();
                 $parametros['mensaje'] = "¡Error! Nombre de usuario o contraseña incorrecto";
                 ResourceController::getInstance()->mostrarHTMLConParametros('login.html.twig', $parametros);
             }
             else{
                 if ($usuario[0]['activo'] == 1){
+                   $parametros = ResourceController::getInstance()->getConfiguration();
                    $parametros['mensaje'] = "Lamentablemente tu cuenta ha sido bloqueada";
                 ResourceController::getInstance()->mostrarHTMLConParametros('login.html.twig', $parametros); 
                 }
@@ -49,14 +56,13 @@ class SessionController {
                 }
             }
         }
-        //ResourceController::getInstance()->mostrarHTML('home.html.twig'); //parametros
     }
 
     public function cerrarSesion(){
         if(isset($_SESSION)){
             session_unset();
             session_destroy();
-            ResourceController::getInstance()->menuPrincipal('home.html.twig',array());
+            ResourceController::getInstance()->menuPrincipal('home.html.twig');
         }
     }
     

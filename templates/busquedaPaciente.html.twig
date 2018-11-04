@@ -7,7 +7,12 @@
 			<h1 class="alMedio text-center">Búsqueda de Pacientes</h1>
 			<br>
 			{% if datos.historiaClinicaRandom != 0 %}
-				<p>¿No puede obtener ningún dato del paciente? <a href="./index.php?action=nuevoPacienteNN">Ingréselo como NN con historia clínica {{ datos.historiaClinicaRandom }}</a></p>
+				<p>¿No puede obtener ningún dato del paciente? 
+					<form id="myform" method="post" action="./index.php?action=nuevoPacienteNN">
+  						<input type="hidden" name="historiaClinicaRandom" value="{{ datos.historiaClinicaRandom }}"> 
+ 						<a onclick="document.getElementById('myform').submit();" href="#">Ingréselo como NN con historia clínica {{ datos.historiaClinicaRandom }}</a>
+					</form>
+				</p>
 			{% endif %}
 				¿Quiere dar de alta un <a href="./index.php?action=nuevoPaciente" class="text-info">nuevo paciente</a>?
 			<p class="{{ datos.tipo_mensaje}}">{{ datos.mensaje }}</p>
