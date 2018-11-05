@@ -136,6 +136,7 @@ class PatientRepository extends PDORepository {
     }
 
     public function actualizarPaciente($datos){
+        var_dump($datos);
         $this->queryList("UPDATE paciente set nombre=:nombre, apellido=:apellido, domicilio=:domicilio, localidad_id=:localidad, tiene_documento=:tieneDoc, obra_social_id=:obraSoc, genero_id=:genero, tipo_doc_id=:tipoDoc, fecha_nac=:fecha, numero=:nro, nro_historia_clinica=:nroHC, nro_carpeta=:nroC, tel=:tel WHERE id_paciente=:id"
             ,[
                 "nombre" => $datos["nombre"],

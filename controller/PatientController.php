@@ -374,6 +374,7 @@ class PatientController {
             $parametros["session"] = $_SESSION;
             if (in_array('paciente_update', $_SESSION['permisos'])){
                 if (! isset($_POST['localidades'])) $_POST['localidades'] = 1;
+                if ($_POST['obra_social_id'] == "") $_POST['obra_social_id'] = 1;
                 $msj = '';
                 if ($this->validarFormularioPaciente($_POST,$msj)) {
                     PatientRepository::getInstance()->actualizarPaciente($_POST);
