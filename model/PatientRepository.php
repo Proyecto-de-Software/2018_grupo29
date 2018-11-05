@@ -77,7 +77,6 @@ class PatientRepository extends PDORepository {
     }
     
     public function crearPacienteNN($datos) {
-        var_dump($datos);
         $answer = $this->queryList("INSERT INTO `paciente` (`id_paciente`, `apellido`, `nombre`, `fecha_nac`, `lugar_nac`, `localidad_id`, `region_sanitaria_id`, `domicilio`, `genero_id`, `tiene_documento`, `tipo_doc_id`, `numero`, `tel`, `nro_historia_clinica`, `nro_carpeta`, `obra_social_id`) VALUES (NULL, 'NN', '', '', NULL, '1', '1', '', '1', '0', '1', '', '', :nro_historia_clinica, NULL, '1')",["nro_historia_clinica" => $datos['historiaClinicaRandom']]);
         return $answer;
     }
@@ -136,7 +135,6 @@ class PatientRepository extends PDORepository {
     }
 
     public function actualizarPaciente($datos){
-        var_dump($datos);
         $this->queryList("UPDATE paciente set nombre=:nombre, apellido=:apellido, domicilio=:domicilio, localidad_id=:localidad, tiene_documento=:tieneDoc, obra_social_id=:obraSoc, genero_id=:genero, tipo_doc_id=:tipoDoc, fecha_nac=:fecha, numero=:nro, nro_historia_clinica=:nroHC, nro_carpeta=:nroC, tel=:tel WHERE id_paciente=:id"
             ,[
                 "nombre" => $datos["nombre"],
