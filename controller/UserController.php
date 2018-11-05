@@ -165,7 +165,6 @@ class UserController {
     }
 
     public function nuevoUsuario($msj){
-        var_dump($msj);
         $parametros = ResourceController::getInstance()->getConfiguration();
         if(isset($_SESSION['id'])){
             $parametros["session"] = $_SESSION;
@@ -302,8 +301,17 @@ class UserController {
         if (isset($_SESSION['id'])){
             $parametros["session"] = $_SESSION;
             if(in_array('usuario_update', $_SESSION['permisos'])){
-                UserRepository::getInstance()->actualizarUsuario($_POST);
-                ResourceController::getInstance()->mostrarHTMLConParametros('listaUsuarios.html.twig', $_SESSION);
+                $msj = '';
+                if ($this->verificarFormularioUsuario($_POST,$msj)){
+                    UserRepository::getInstance()->actualizarUsuario($_POST);
+                    ResourceController::getInstance()->mostrarHTMLConParametros('usuarios.html.twig', $parametros);
+                }
+                else {
+                    $parametros['mensaje'] = $msj;
+                    $parametros['tipo_mensaje'] = 'text-danger';
+                    $parametros['datosUsuario'] = UserRepository::getInstance()->datosUsuario($_POST['id_usuario']);
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaUsuario.html.twig', $parametros);
+                }
             } else {
                 $this->error($parametros);
             }

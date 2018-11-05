@@ -374,8 +374,19 @@ class PatientController {
             $parametros["session"] = $_SESSION;
             if (in_array('paciente_update', $_SESSION['permisos'])){
                 if (! isset($_POST['localidades'])) $_POST['localidades'] = 1;
-                PatientRepository::getInstance()->actualizarPaciente($_POST);
-                PatientController::getInstance()->obtenerPacientes();
+                $msj = '';
+                if ($this->validarFormularioPaciente($_POST,$msj)) {
+                    PatientRepository::getInstance()->actualizarPaciente($_POST);
+                    PatientController::getInstance()->obtenerPacientes();
+                }
+                else {
+                    $parametros['mensaje'] = $msj;
+                    $parametros['tipo_mensaje'] = 'text-danger';
+                    $parametros['listaPartidos'] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido");
+                    $parametros['datosPaciente'] = PatientRepository::getInstance()->datosPaciente($_POST['id_paciente']);
+                    $parametros["session"] = $_SESSION;
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $parametros);
+                }
             } else {
                 ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
