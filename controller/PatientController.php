@@ -234,59 +234,66 @@ class PatientController {
             $msj = "El nombre debe tener solo letras";
             return false;
         }
-
-          if (! $this->tieneSoloLetras($datos["apellido"])) {
+        if (! $this->tieneSoloLetras($datos["apellido"])) {
             $msj = "El apellido debe tener solo letras";
             return false;
-          }
-
-          if (! $this->tieneSoloNumeros($datos['numero'])) {
-             $msj = "El número de documento debe tener solo números";
+        }
+        if (! $this->tieneSoloNumeros($datos['numero'])) {
+            $msj = "El número de documento debe tener solo números";
             return false;
-          }
-
-          if ($datos['nro_historia_clinica'] != NULL) {
+        }
+        if ($datos['nro_historia_clinica'] != NULL) {
             if ((! $this->tieneSoloNumeros($datos['nro_historia_clinica'])) || (strlen($datos['nro_historia_clinica']) > 6 )){
-              $msj = "El número de historia clínica debe tener solo números y máximo 6 dígitos";
-              return false;
-            }
-          }
-
-          if ($datos['nro_carpeta'] != NULL) {
-            if ((! $this->tieneSoloNumeros($datos['nro_carpeta'])) || (strlen($datos['nro_carpeta']) > 5)) {
-              $msj = "El número de carpeta debe tener solo números y máximo 5 dígitos";
-              return false;
-            }
-          }
-
-          if ($datos['tel'] != NULL) {
-            if ((! $this->tieneSoloNumeros($datos['tel'])) || (strlen($datos['tel'])< 8)) {
-              $msj = "El número de teléfono debe tener sólo números y al menos 8 dígitos";
-              return false;
-            }
-          }
-
-          return true;
-    }
-    public function existeLaHistoriaClinica(){
-        $parametros = ResourceController::getInstance()->getConfiguration();
-        if ($_POST['nro_historia_clinica'] != 0) {
-            $nhc = PatientRepository::getInstance()->unicidadNroHistoriaClinica($_POST['nro_historia_clinica']);
-            if (count($nhc) != 0){
-                $parametros["session"] = $_SESSION;
-                $parametros['mensaje'] = 'El número de historia clínica ya existe';
-                $parametros['tipo_mensaje'] = 'text-danger';
-                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $parametros);
-                exit();
+                $msj = "El número de historia clínica debe tener solo números y máximo 6 dígitos";
+                return false;
             }
         }
-        else {
-            $_POST['nro_historia_clinica'] = '';
+        if ($datos['nro_carpeta'] != NULL) {
+            if ((! $this->tieneSoloNumeros($datos['nro_carpeta'])) || (strlen($datos['nro_carpeta']) > 5)) {
+                $msj = "El número de carpeta debe tener solo números y máximo 5 dígitos";
+                return false;
+            }
+        }
+        if ($datos['tel'] != NULL) {
+            if ((! $this->tieneSoloNumeros($datos['tel'])) || (strlen($datos['tel'])< 8)) {
+                $msj = "El número de teléfono debe tener sólo números y al menos 8 dígitos";
+                return false;
+            }
+        }
+        if(!$this->existeLaHistoriaClinica()){
+            $msj = 'El número de historia clinica ya existe';
+            return false;
+        }     
+        if(!$this->existeLaCarpeta()){
+            $msj = 'El número de carpeta ya existe';
+            return false;
+        }   
+        return true;
+    }
+    public function existeLaHistoriaClinica(){
+        if ($_POST['nro_historia_clinica'] !== "") {
+            if (count(PatientRepository::getInstance()->unicidadNroHistoriaClinica($_POST['nro_historia_clinica'],$_POST["id_paciente"])) != 0){
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
         }
     }
 
     public function existeLaCarpeta(){
-        $parametros = ResourceController::getInstance()->getConfiguration();
+        if ($_POST['nro_carpeta'] !== "" || $_POST['nro_carpeta'] == 0) {
+            if (count(PatientRepository::getInstance()->unicidadNroCarpeta($_POST['nro_carpeta'],$_POST["id_paciente"])) != 0){
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+
+        /*$parametros = ResourceController::getInstance()->getConfiguration();
         if ($_POST['nro_carpeta'] != 0) {
             $nc = PatientRepository::getInstance()->unicidadNroCarpeta($_POST['nro_carpeta']);
             if (count($nc) != 0){
@@ -299,7 +306,7 @@ class PatientController {
         }
         else {
             $_POST['nro_carpeta'] = '';
-        }
+        }*/
     }
 
     public function crearPacienteNuevo(){
@@ -323,11 +330,8 @@ class PatientController {
                         $_POST['localidades'] = '1';
                         $_POST['region_sanitaria_id'] = '1';
                     }
-                    //Si el nrohistoriaclinica existe termina el script, sino sigue.
-                    $this->existeLaHistoriaClinica();
-                     //Si el numero de carpeta existe termina el script, sino sigue.
-                    $this->existeLaCarpeta();
-                     //ambos anteriores, si el usuario no seteo ningun valor, los pone en NULL.
+                    if ($_POST['nro_carpeta'] == "") $_POST['nro_carpeta'] = 0;
+                    if ($_POST['nro_historia_clinica'] == "") $_POST['nro_historia_clinica'] = 0;
                     if ($_POST['obra_social_id'] == 0) $_POST['obra_social_id'] = 1;
                     PatientRepository::getInstance()->crearPaciente($_POST);
                     $parametros['mensaje'] = 'Se ha creado un nuevo Paciente';
@@ -377,6 +381,8 @@ class PatientController {
                 if ($_POST['obra_social_id'] == "") $_POST['obra_social_id'] = 1;
                 $msj = '';
                 if ($this->validarFormularioPaciente($_POST,$msj)) {
+                    if ($_POST['nro_carpeta'] == "") $_POST['nro_carpeta'] = 0;
+                    if ($_POST['nro_historia_clinica'] == "") $_POST['nro_historia_clinica'] = 0;
                     PatientRepository::getInstance()->actualizarPaciente($_POST);
                     PatientController::getInstance()->obtenerPacientes();
                 }
