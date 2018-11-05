@@ -27,17 +27,18 @@
 				{% else %}
 					<form name="formularioAltaPaciente" method="POST" action="./index.php?action=crearPacienteNuevo" onsubmit='return validarAltaPaciente()'>
 				{% endif %}
+				<input type="hidden" name="id_paciente" value="{{datos.datosPaciente.id_paciente}}">
 				 <div class="form-group">
 				 	<label for="first_name">Nombre*</label>
-				    <input required type="text" name="nombre" class="form-control" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.nombre}}" {% endif %}>
+				    <input required type="text" name="nombre" class="form-control" {% if datos.datosPaciente is defined %} value="{{datos.datosPaciente.nombre}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				    <label for="last_name">Apellido*</label>
-				    <input required  type="text" name="apellido" class="form-control" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.apellido}}" {% endif %}>
+				    <input required  type="text" name="apellido" class="form-control" {% if datos.datosPaciente is defined %} value="{{datos.datosPaciente.apellido}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				 	<label for="domicilio">Domicilio actual*</label>
-				    <input required type="text" name="domicilio" class="form-control" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.domicilio}}" {% endif %}>
+				    <input required type="text" name="domicilio" class="form-control" {% if datos.datosPaciente is defined %} value="{{datos.datosPaciente.domicilio}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				 	<label for="partidos">Partido</label>
@@ -90,23 +91,23 @@
 				 </div>
 				 <div class="form-group">
 				 	<label for="fecha_nac">Fecha de nacimiento*</label>
-				 	<input required  type="date" name="fecha_nac" class="form-control" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.fecha_nac}}" {% endif %}>
+				 	<input required  type="date" name="fecha_nac" class="form-control" {% if datos.datosPaciente is defined %} value="{{datos.datosPaciente.fecha_nac}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				 	<label for="numero">Número de documento*</label>
-				 	<input required  type="text" class="form-control" name="numero" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.numero}}" {% endif %}>
+				 	<input required  type="text" class="form-control" name="numero" {% if datos.datosPaciente is defined %} value="{{datos.datosPaciente.numero}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				    <label for="numeroHistoriaClinica">Número de historia clínica</label>
-				    <input type="text" class="form-control" name="nro_historia_clinica" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.nro_historia_clinica}}" {% endif %}>
+				    <input type="text" class="form-control" name="nro_historia_clinica" {% if datos.datosPaciente is defined %} value="{{datos.datosPaciente.nro_historia_clinica}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				    <label for="numeroCarpeta">Número de carpeta</label>
-				    <input type="text" class="form-control" name="nro_carpeta" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.nro_carpeta}}" {% endif %}>
+				    <input type="text" class="form-control" name="nro_carpeta" {% if datos.datosPaciente is defined %} value="{{datos.datosPaciente.nro_carpeta}}" {% endif %}>
 				 </div>
 				 <div class="form-group">
 				    <label for="telefono">Número de telefono</label>
-				    <input type="text" class="form-control" name="tel" {% if datos.datosPaciente is defined %} placeholder="{{datos.datosPaciente.tel}}" {% endif %}>
+				    <input type="text" class="form-control" name="tel" {% if datos.datosPaciente is defined %} value="{{datos.datosPaciente.tel}}" {% endif %}>
 				 </div>
 			</div>
 			<div class="row container-fluid">
