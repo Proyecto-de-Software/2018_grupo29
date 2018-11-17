@@ -77,7 +77,6 @@ class PatientRepository extends PDORepository {
     }
     
     public function crearPacienteNN($datos) {
-        var_dump($datos);
         $answer = $this->queryList("INSERT INTO `paciente` (`id_paciente`, `apellido`, `nombre`, `fecha_nac`, `lugar_nac`, `localidad_id`, `region_sanitaria_id`, `domicilio`, `genero_id`, `tiene_documento`, `tipo_doc_id`, `numero`, `tel`, `nro_historia_clinica`, `nro_carpeta`, `obra_social_id`) VALUES (NULL, 'NN', '', '', NULL, '1', '1', '', '1', '0', '1', '', '', :nro_historia_clinica, NULL, '1')",["nro_historia_clinica" => $datos['historiaClinicaRandom']]);
         return $answer;
     }
@@ -155,13 +154,15 @@ class PatientRepository extends PDORepository {
             ]);
     }
 
-    public function unicidadNroHistoriaClinica($numero) {
-        $answer = $this->queryList("SELECT nro_historia_clinica FROM paciente WHERE nro_historia_clinica = :nro",["nro" => $numero]);
+    public function unicidadNroHistoriaClinica($numero,$id) {
+        $answer = $this->queryList("SELECT nro_historia_clinica FROM paciente WHERE nro_historia_clinica = :nro and id_paciente != :id",[
+            "nro" => $numero, "id" => $id]);
         return $answer;
     }
 
-    public function unicidadNroCarpeta($numero) {
-        $answer = $this->queryList("SELECT nro_carpeta FROM paciente WHERE nro_carpeta = :nro",["nro" => $numero]);
+    public function unicidadNroCarpeta($numero,$id) {
+        $answer = $this->queryList("SELECT nro_carpeta FROM paciente WHERE nro_carpeta = :nro and id_paciente != :id",[
+            "nro" => $numero, "id" => $id]);
         return $answer;
     }
 
