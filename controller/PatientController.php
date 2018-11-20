@@ -99,6 +99,7 @@ class PatientController {
                 } else {
                     $parametros['mensaje'] = '';
                 }
+                $parametros["listaTipoDocumento"] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento");
                 ResourceController::getInstance()->mostrarHTMLConParametros('busquedaPaciente.html.twig', $parametros);
             }
             else {
@@ -172,7 +173,7 @@ class PatientController {
         if (isset($_SESSION['id'])) {
             $parametros["session"] = $_SESSION;
             if (in_array('paciente_new', $_SESSION['permisos'])){
-                $parametros['listaPartidos'] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido");
+                $this->datosAPI($parametros);
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $parametros);
             }
             else {
@@ -226,9 +227,11 @@ class PatientController {
     public function tieneSoloLetras($string) {
         return  preg_match("/[a-zA-Z]+$/", $string);
     }
+
     public function tieneSoloNumeros($param) {
         return  preg_match("/[0-9]+$/", $param);
     }
+
     public function validarFormularioPaciente($datos,&$msj){
         if (! $this->tieneSoloLetras($datos['nombre'])) {
             $msj = "El nombre debe tener solo letras";
@@ -270,6 +273,7 @@ class PatientController {
         }   
         return true;
     }
+
     public function existeLaHistoriaClinica(){
         if ($_POST['nro_historia_clinica'] !== "") {
             if (count(PatientRepository::getInstance()->unicidadNroHistoriaClinica($_POST['nro_historia_clinica'],$_POST["id_paciente"])) != 0){
@@ -310,6 +314,8 @@ class PatientController {
     }
 
     public function crearPacienteNuevo(){
+        //cambios de api no aplicados
+        var_dump($_POST);
         $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id']) && ($_POST !== array())){
             $parametros["session"] = $_SESSION;
@@ -341,6 +347,7 @@ class PatientController {
                 else {
                     $parametros['mensaje'] = $msj;
                     $parametros['tipo_mensaje'] = 'text-danger';
+                    $this->datosAPI($parametros);
                     ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $parametros);
                 }
             }
@@ -358,8 +365,8 @@ class PatientController {
         if (isset($_SESSION['id'])){
             $parametros["session"] = $_SESSION;
             if (in_array('paciente_update', $_SESSION['permisos'])){
-                $parametros['listaPartidos'] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido");
                 $parametros['datosPaciente'] = PatientRepository::getInstance()->datosPaciente($_POST['id_paciente']);
+                $this->datosAPI($parametros);
                 $parametros["session"] = $_SESSION;
                 ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $parametros);
             }
@@ -389,7 +396,7 @@ class PatientController {
                 else {
                     $parametros['mensaje'] = $msj;
                     $parametros['tipo_mensaje'] = 'text-danger';
-                    $parametros['listaPartidos'] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido");
+                    $this->datosAPI($parametros);
                     $parametros['datosPaciente'] = PatientRepository::getInstance()->datosPaciente($_POST['id_paciente']);
                     $parametros["session"] = $_SESSION;
                     ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $parametros);
@@ -400,5 +407,11 @@ class PatientController {
         } else {
             ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);   
         }
+    }
+
+    public function datosAPI(&$vector){
+        $vector['listaPartidos'] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido");
+        $vector['listaObraSocial'] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social");
+        $vector['listaTipoDocumento'] = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento");
     }
 }
