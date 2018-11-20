@@ -87,7 +87,14 @@ if(!(isset($_GET["action"]))) {
 	UserController::getInstance()->asignarRol($_POST);
 }elseif ($_GET["action"] == 'desasignarRol'){
 	UserController::getInstance()->desasignarRol($_POST);
+}elseif ($_GET["action"] == 'mostrarFormularioConsulta'){
+	PatientController::getInstance()->mostrarFormularioConsulta(array());
+}elseif ($_GET["action"] == 'obtenerConsultas'){
+	PatientController::getInstance()->obtenerConsultas($_POST);
+}elseif ($_GET["action"] == 'agregarConsulta'){
+	PatientController::getInstance()->agregarConsulta($_POST);
 }else{
 	ResourceController::getInstance()->menuPrincipal('home.html.twig');
 }
+
 
