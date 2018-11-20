@@ -34,5 +34,19 @@ abstract class PDORepository {
         $stmt->execute($args);
         return $stmt->fetchAll();
     }
+
+    protected function queryDevuelveId($sql, $args){
+        $connection = $this->getConnection();
+        $stmt = $connection->prepare($sql);
+        $stmt->execute($args);
+        return $connection->lastInsertId();
+    }
+
+    protected function queryObject($sql, $args){
+        $connection = $this->getConnection();
+        $stmt = $connection->prepare($sql);
+        $stmt->execute($args);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN|PDO::FETCH_GROUP);
+    }
     
 }

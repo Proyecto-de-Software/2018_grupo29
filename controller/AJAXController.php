@@ -6,6 +6,7 @@
 
 require_once('controller/APIController.php');
 require_once('controller/ResourceController.php');
+require_once('model/PatientRepository.php');
 
 class AJAXController {
 

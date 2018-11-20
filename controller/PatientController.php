@@ -230,6 +230,7 @@ class PatientController {
         return  preg_match("/[0-9]+$/", $param);
     }
     public function validarFormularioPaciente($datos,&$msj){
+        var_dump($datos);
         if (! $this->tieneSoloLetras($datos['nombre'])) {
             $msj = "El nombre debe tener solo letras";
             return false;
@@ -283,7 +284,7 @@ class PatientController {
     }
 
     public function existeLaCarpeta(){
-        if ($_POST['nro_carpeta'] !== "" || $_POST['nro_carpeta'] == 0) {
+        if ($_POST['nro_carpeta'] !== "") {
             if (count(PatientRepository::getInstance()->unicidadNroCarpeta($_POST['nro_carpeta'],$_POST["id_paciente"])) != 0){
                 return false;
             } else {
@@ -333,10 +334,11 @@ class PatientController {
                     if ($_POST['nro_carpeta'] == "") $_POST['nro_carpeta'] = 0;
                     if ($_POST['nro_historia_clinica'] == "") $_POST['nro_historia_clinica'] = 0;
                     if ($_POST['obra_social_id'] == 0) $_POST['obra_social_id'] = 1;
-                    PatientRepository::getInstance()->crearPaciente($_POST);
-                    $parametros['mensaje'] = 'Se ha creado un nuevo Paciente';
-                    $parametros['tipo_mensaje'] = 'text-success';
-                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaPaciente.html.twig', $parametros);
+                    $answer = PatientRepository::getInstance()->crearPaciente($_POST);
+                    $parametros['id_paciente'] = $answer;
+                    $parametros['nombre_paciente'] = $_POST['nombre'];
+                    $parametros['apellido_paciente'] = $_POST['apellido'];
+                    $this->mostrarFormularioConsulta($parametros);
                 }
                 else {
                     $parametros['mensaje'] = $msj;
@@ -398,6 +400,69 @@ class PatientController {
                 ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
             }
         } else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);   
+        }
+    }
+
+    public function mostrarFormularioConsulta($datos){
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        $parametros['session'] = $_SESSION;
+        $parametros['motivos'] = PatientRepository::getInstance()->getMotivos(); 
+        if ($datos != array()) {
+            $parametros['nombre_paciente'] = $datos['nombre_paciente'];
+            $parametros['apellido_paciente'] = $datos['apellido_paciente'];
+            $parametros['mensaje'] = 'Se ha creado un nuevo Paciente';
+            $parametros['tipo_mensaje'] = 'text-success';
+            $parametros['id_paciente'] = $datos['id_paciente'];
+        }
+        else {
+            $parametros['pacientes'] = PatientRepository::getInstance()->getPacientes();
+        }
+        ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaConsulta.html.twig', $parametros);
+    }
+
+    public function obtenerConsultas($datos) {
+        $answer = PatientRepository::getInstance()->getConsultas($datos['id']);
+        var_dump(json_encode($answer));
+        echo json_encode($answer);
+    }
+
+    public function validarFormularioConsulta($datos,&$msj) {
+        if ($datos['diagnostico'] == '') {
+            $msj = 'El diagnostico es obligatorio';
+            return false;
+        }
+        return true;
+    }
+
+    public function agregarConsulta($datos) {
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        if (isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
+            if (in_array('consulta_new', $_SESSION['permisos'])){
+                $msj = '';
+                if ($this->validarFormularioConsulta($datos,$msj)) {
+                    var_dump($_POST);
+                    PatientRepository::getInstance()->agregarConsulta($_POST);
+                    $parametros['mensaje'] = 'Consulta agregada';
+                    $parametros['tipo_mensaje'] = 'text-success';
+                    $parametros['motivos'] = PatientRepository::getInstance()->getMotivos();
+                    $parametros['pacientes'] = PatientRepository::getInstance()->getPacientes();
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaConsulta.html.twig', $parametros);
+                }
+                else {
+                    $parametros['motivos'] = PatientRepository::getInstance()->getMotivos();
+                    $parametros['pacientes'] = PatientRepository::getInstance()->getPacientes();
+                    $parametros['mensaje'] = $msj;
+                    $parametros['tipo_mensaje'] = 'text-danger';
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaConsulta.html.twig', $parametros);
+                }
+            } 
+            else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            }
+        }
+        else {
             ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);   
         }
     }
