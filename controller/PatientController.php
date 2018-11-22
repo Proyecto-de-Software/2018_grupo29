@@ -58,6 +58,8 @@ class PatientController {
             if (($_POST['fueBusqueda']) == 0) {
                 if (in_array('paciente_index', $_SESSION['permisos'])) {
                     $pacientes = PatientRepository::getInstance()->getPacientes();                   
+                    //$pacientes = $this->getPacientes();
+                    var_dump($pacientes);
                     ResourceController::getInstance()->setPaginado($parametros,$pacientes);
                     $pacientes = array_chunk($pacientes, $parametros['cantElementosPorPagina']);
                     $parametros['pacientes'] = $pacientes[ResourceController::getInstance()->paginaActual()];
