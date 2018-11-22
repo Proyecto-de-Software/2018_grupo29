@@ -20,10 +20,11 @@
 		<div class="col-sm-4"></div>
 	</div>
 	<br><br>
-	<div id="consultas" class="row container-fluid">
-		<ul id="lista">
+	
+		<ul id="lista" class="list-group">
+			
 		</ul>
-	</div>
+	
 	<br><br>
 	{% else %}
 		</div>
@@ -53,6 +54,7 @@
 				 	</select>
 				 </div>
 				{% endif %}
+				<div class="js-user-rating" data-is-authenticated="{{"consulta_destroy" in datos.session.permisos ? 'true' : 'false' }}"></div>
 				 <label for="fecha">Fecha de consulta*</label>
 				 <div class="form-group">
 				 	<input type="date" name="fecha" class="form-control" required>	

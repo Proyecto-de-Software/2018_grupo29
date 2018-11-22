@@ -17,7 +17,16 @@ function confirmacion($msj) {
   if (confirm($msj)){
        document.tuformulario.submit()
     }
-else {
+  else {
+        return false;
+    }
+}
+
+function confirmacionEliminacion(){
+  if (confirm('¿Está seguro que quiere eliminar esta consulta?')){
+       document.tuformulario.submit()
+    }
+  else {
         return false;
     }
 }

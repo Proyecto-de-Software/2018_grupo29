@@ -10,32 +10,32 @@ $(document).ready(function(){
             },
             success: function (data) {
                 var options = '';
+                var isAuthenticated = $('.js-user-rating').data('isAuthenticated');
                 console.log(data);
                 options += '<li class="list-group-item row d-flex text-center">';
-                options += '<div class="col-1 text-info"> Fecha </div>';
-                options += '<div class="col-1 text-info"> Motivo </div>';
-                options += '<div class="col-1 text-info"> Acompañantes </div>';
-                options += '<div class="col-1 text-info"> Trat. farmacológico </div>';
-                options += '<div class="col-3 text-info"> Diagnóstico </div>';
-                options += '<div class="col-2 text-info"> Observaciones </div>';
-                options += '<div class="col-1 text-info"> ¿Fue internado?</div>';
-                options += '<div class="col-2 text-info"> Articulación con otras instituciones </div>';
+                options += '<div id="consultas" class="row container-fluid">';
+                options += '<div class="col-2 text-info"> Fecha </div>';
+                options += '<div class="col-2 text-info"> Motivo </div>';
+                options += '<div class="col-5 text-info"> Diagnóstico </div>';
+                options += '<div class="col-1 text-info"></div>';
+                options += '<div class="col-1 text-info"></div>';
+                options += '<div class="col-1 text-info"></div>';
+                options += '</div>';
+                options += '</li>';
+                
+                console.log()
                 for (consulta in data) {
-                	if (data[consulta].internacion == 1) {
-                    	var internacion = 'Sí';
-                    }
-                    else {
-                    	var internacion = 'No';
-                    }
                 	options += '<li class="list-group-item row d-flex text-center">';
-                    options += '<div class="col-1">' + data[consulta].fecha + '</div>';
-                    options += '<div class="col-1">' + data[consulta].nombre + '</div>';
-                    options += '<div class="col-1">' + data[consulta].nombre_acompanamiento + '</div>';
-                    options += '<div class="col-1">' + data[consulta].nombre_tratamiento + '</div>';
-                    options += '<div class="col-3">' + data[consulta].diagnostico + '</div>';
-                    options += '<div class="col-2">' + data[consulta].observaciones + '</div>';
-                    options += '<div class="col-1">' + internacion + '</div>';
-                    options += '<div class="col-2">' + data[consulta].articulacion_con_instituciones + '</div>';    
+                    options += '<div id="consultas" class="row container-fluid">';
+                    options += '<div class="col-2">' + data[consulta].fecha + '</div>';
+                    options += '<div class="col-2">' + data[consulta].nombre + '</div>';
+                    options += '<div class="col-5">' + data[consulta].diagnostico + '</div>';
+                    options += '<div class="col-1"> <form method="POST" action="./index.php?action=showConsulta"><input type="hidden" name="id_consulta" value="'+ data[consulta].id +'"> <input type="submit" name="Ver" value="Ver" class="btn btn-success"></form> </div>';
+                    options += '<div class="col-1"> <form method="POST" action="./index.php?action=editConsulta"><input type="hidden" name="id_consulta" value="'+ data[consulta].id +'"> <input type="submit" name="Editar" value="Editar" class="btn btn-warning"></form> </div>';                    
+                    if (isAuthenticated) {
+                        options += '<div class="col-1"><form onsubmit="return confirmacionEliminacion()" method="POST" action="./index.php?action=deleteConsulta"><input type="hidden" name="id_consulta" value="'+ data[consulta].id +'"> <input type="submit" name="Eliminar" value="Eliminar" class="btn btn-danger"></form></div>';
+                    }
+                    options += '</div>';
                     options += '</li>';
                 }
                 $("#lista").html(options);
@@ -47,6 +47,6 @@ $(document).ready(function(){
 
 $(document).ready(function(){
     $("#botonConsulta").click(function(){
-        $("#consultas").toggle();
+        $("#lista").toggle();
     });
 });
