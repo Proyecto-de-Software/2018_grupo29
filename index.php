@@ -1,4 +1,6 @@
 <?php
+
+
 session_start();
 ini_set('display_startup_errors',1);
 ini_set('display_errors',1);
@@ -51,11 +53,7 @@ if(!(isset($_GET["action"]))) {
 	PatientController::getInstance()->crearPaciente(); 
 }elseif ($_GET["action"] == 'eliminarPaciente'){
 	PatientController::getInstance()->eliminarPaciente();
-}/*elseif ($_GET["action"] == 'obtenerPartidos'){
-	PatientController::getInstance()->obtenerPartidos();
-}elseif ($_GET["action"] == 'obtenerLocalidades'){
-	PatientController::getInstance()->obtenerLocalidades();
-}*/elseif ($_GET["action"] == 'moduloConfiguracion'){
+}elseif ($_GET["action"] == 'moduloConfiguracion'){
 	ConfigurationController::getInstance()->menuConfiguracion();
 }elseif ($_GET["action"] == 'actualizarConfiguracion'){
 	ConfigurationController::getInstance()->actualizarConfiguracion();
@@ -104,5 +102,3 @@ if(!(isset($_GET["action"]))) {
 }else{
 	ResourceController::getInstance()->menuPrincipal('home.html.twig');
 }
-
-
