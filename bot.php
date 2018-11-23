@@ -60,7 +60,7 @@ switch ($cmd) {
             break;
 }
 
-$url = 'https://api.telegram.org/bot123456780:hakfHFT35kvdkfhkffdgdkgh878sfsfskghs/sendMessage';
+$url = 'https://api.telegram.org/bot739044975:AAGd03rxoQsMXZyNWz5Am5zyB5VOet4Plbs/sendMessage';
 
     $options = array(
     'http' => array(
