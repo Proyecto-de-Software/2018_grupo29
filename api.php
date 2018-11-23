@@ -25,21 +25,25 @@ $container['db'] = function ($c) {
     return $pdo;
 };
 
+function query($sql, $args, $db){
+	$stmt = $db->prepare($sql);
+    $stmt->execute([$args]);
+    return $stmt->fetchAll();    
+}
+
+
 $app->get('/instituciones/{institucion-id}', function (Request $request, Response $response, array $args) {
-    $idInstitucion = $args['institucion-id'];
-    //$db = $this->db;
-    $stmt = $this->db->prepare("SELECT * FROM institucion where id = ?");
-    $stmt->execute([$idInstitucion]);
-    $array = $stmt->fetchAll();
-    $response->getBody()->write(json_encode($array));
+    $response->getBody()->write(json_encode(query("SELECT * FROM institucion where id = ?",$args['institucion-id'], $this->db)));
     return $response;
 });
 
 $app->get('/instituciones/', function (Request $request, Response $response, array $args) {
-    $stmt = $this->db->prepare("SELECT * FROM institucion");
-    $stmt->execute();
-    $array = $stmt->fetchAll();
-    $response->getBody()->write(json_encode($array));
+    $response->getBody()->write(json_encode(query("SELECT * FROM institucion",null, $this->db)));    
+    return $response;
+});
+
+$app->get('/instituciones/region-sanitaria/{region-sanitaria}', function (Request $request, Response $response, array $args) {
+    $response->getBody()->write(json_encode(query("SELECT * FROM institucion where region_sanitaria_id = ?",$args['region-sanitaria'], $this->db)));
     return $response;
 });
 
