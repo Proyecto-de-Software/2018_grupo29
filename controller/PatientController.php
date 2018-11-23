@@ -59,7 +59,7 @@ class PatientController {
                 if (in_array('paciente_index', $_SESSION['permisos'])) {
                     $pacientes = PatientRepository::getInstance()->getPacientes();                   
                     //$pacientes = $this->getPacientes();
-                    var_dump($pacientes);
+                    
                     ResourceController::getInstance()->setPaginado($parametros,$pacientes);
                     $pacientes = array_chunk($pacientes, $parametros['cantElementosPorPagina']);
                     $parametros['pacientes'] = $pacientes[ResourceController::getInstance()->paginaActual()];
@@ -235,7 +235,7 @@ class PatientController {
     }
 
     public function validarFormularioPaciente($datos,&$msj){
-        var_dump($datos);
+        
         if (! $this->tieneSoloLetras($datos['nombre'])) {
             $msj = "El nombre debe tener solo letras";
             return false;
@@ -318,7 +318,7 @@ class PatientController {
 
     public function crearPacienteNuevo(){
         //cambios de api no aplicados
-        var_dump($_POST);
+        
         $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id']) && ($_POST !== array())){
             $parametros["session"] = $_SESSION;

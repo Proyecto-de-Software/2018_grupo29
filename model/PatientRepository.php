@@ -156,6 +156,11 @@ class PatientRepository extends PDORepository {
         return $answer;
     }
 
+    public function getGeneros(){
+        $answer = $this->queryList("SELECT * FROM genero",[]);
+        return $answer;
+    }
+
     public function getConsultas($id){
         $answer = $this->queryList("
             SELECT c.id, c.fecha, c.articulacion_con_instituciones, c.internacion, c.diagnostico, c.observaciones, a.nombre_acompanamiento, mc.nombre, tm.nombre_tratamiento FROM consulta c 
@@ -228,6 +233,11 @@ class PatientRepository extends PDORepository {
 
     public function deleteConsulta($id) {
         $this->queryList("DELETE FROM consulta WHERE id = :id",["id" => $id]);
+    }
+
+    public function cantConsultas(){
+        $answer = $this->queryList("SELECT COUNT(*) as cantidad FROM consulta",[]);
+        return $answer;
     }
 }
 

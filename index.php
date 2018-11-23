@@ -13,6 +13,7 @@ require_once('controller/SessionController.php');
 require_once('controller/UserController.php');
 require_once('controller/PatientController.php');
 require_once('controller/ConfigurationController.php');
+require_once('controller/ReportesController.php');
 require_once('model/PDORepository.php');
 require_once('model/UserRepository.php');
 require_once('model/PatientRepository.php');
@@ -21,6 +22,7 @@ require_once('model/ConfigurationRepository.php');
 require_once('view/TwigView.php');
 require_once('view/SimpleResourceList.php');
 require_once('view/Home.php');
+
 
 $GLOBALS["conf"] = ConfigurationRepository::getInstance()->getConfiguraciones();
 
@@ -99,6 +101,12 @@ if(!(isset($_GET["action"]))) {
 	PatientController::getInstance()->updateConsulta();
 }elseif ($_GET["action"] == 'deleteConsulta'){
 	PatientController::getInstance()->deleteConsulta();
+}elseif ($_GET["action"] == 'moduloReportes'){
+	ReportesController::getInstance()->mostrarReportes();
+}elseif ($_GET["action"] == 'mostrarGraficosPorMotivo'){
+	ReportesController::getInstance()->mostrarPorMotivo();
+}elseif ($_GET["action"] == 'mostrarGraficosPorGenero'){
+	ReportesController::getInstance()->mostrarPorGenero();
 }else{
 	ResourceController::getInstance()->menuPrincipal('home.html.twig');
 }
