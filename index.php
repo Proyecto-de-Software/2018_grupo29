@@ -107,6 +107,8 @@ if(!(isset($_GET["action"]))) {
 	ReportesController::getInstance()->mostrarPorMotivo();
 }elseif ($_GET["action"] == 'mostrarGraficosPorGenero'){
 	ReportesController::getInstance()->mostrarPorGenero();
+}elseif ($_GET["action"] == 'mostrarGraficosPorLocalidad'){
+	ReportesController::getInstance()->mostrarPorLocalidad();
 }else{
 	ResourceController::getInstance()->menuPrincipal('home.html.twig');
 }

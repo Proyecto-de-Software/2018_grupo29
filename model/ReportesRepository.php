@@ -44,5 +44,18 @@ class ReportesRepository extends PDORepository {
         
         return $answer;
     }
+
+    public function getConsultasPorLocalidad($id_localidad){
+         $answer = $this->queryList("
+            SELECT c.id, c.fecha, c.diagnostico, p.nombre as nombre_paciente, p.apellido, p.genero_id, p.localidad_id as forma
+            FROM consulta c 
+            INNER JOIN paciente p ON c.paciente_id = p.id_paciente
+            INNER JOIN genero g ON p.genero_id = g.id
+            WHERE p.localidad_id = :id"
+
+            ,["id" => $id_localidad]);
+        
+        return $answer;
+    }
 }
 

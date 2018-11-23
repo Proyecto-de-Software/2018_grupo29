@@ -1,5 +1,6 @@
 <?php
 require_once('controller/ResourceController.php');
+require_once('controller/APIController.php');
 require_once('model/PatientRepository.php');
 require_once('model/ReportesRepository.php');
 
@@ -31,6 +32,12 @@ class ReportesController {
     	}
     }
 
+    public function cantidadConsultas(){
+        $totalConsultas = PatientRepository::getInstance()->cantConsultas();
+        $totalConsultas = ($totalConsultas[0]['cantidad']);
+        return $totalConsultas;
+    }
+
     public function mostrarPorMotivo(){
         $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id'])) {
@@ -42,8 +49,7 @@ class ReportesController {
             }
             $parametros['todo'] = $aux;
             
-            $totalConsultas = PatientRepository::getInstance()->cantConsultas();
-            $totalConsultas = ($totalConsultas[0]['cantidad']);
+            $totalConsultas = $this->cantidadConsultas();
             $series = array
               (
               array("name" => 'Receta Medica', "y" => ($cantConsultas[1]*100)/$totalConsultas),
@@ -74,8 +80,7 @@ class ReportesController {
             }
             $parametros['todo'] = $aux;
             
-            $totalConsultas = PatientRepository::getInstance()->cantConsultas();
-            $totalConsultas = ($totalConsultas[0]['cantidad']);
+            $totalConsultas = $this->cantidadConsultas();
             $series = array
               (
               array("name" => 'Masculino', "y" => ($cantConsultas[1]*100)/$totalConsultas),
@@ -85,6 +90,37 @@ class ReportesController {
 
             $parametros['titulo'] = 'Consultas agrupadas por género';
             $arr = array('series' => $series, 'titulo' => 'Gráfico por género');
+            $parametros['data'] = json_encode($arr);
+            ResourceController::getInstance()->mostrarHTMLConParametros('mostrarReporte.html.twig',$parametros);
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+        }
+    }
+
+    public function mostrarPorLocalidad(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        if (isset($_SESSION['id'])) {
+            $parametros["session"] = $_SESSION;
+            $localidades = APIController::getInstance()->obtenerAPI("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad");
+            foreach ($localidades as $localidad) {
+                $aux[$localidad['id']] = ReportesRepository::getInstance()->getConsultasPorLocalidad($localidad['id']);
+                $cantConsultas[$localidad['id']] = count($aux[$localidad['id']]);
+                if ($cantConsultas[$localidad['id']] != 0) {
+                    $aux[$localidad['id']][0]['forma'] = $localidad['nombre'];
+                }
+            }
+            $parametros['todo'] = $aux;
+            $totalConsultas = $this->cantidadConsultas();
+            
+            $series = array();
+
+            foreach ($localidades as $loc) {
+                array_push($series, array("name" => $loc['nombre'], "y" => ($cantConsultas[$loc['id']]*100)/$totalConsultas));
+            }
+
+            $parametros['titulo'] = 'Consultas agrupadas por localidad';
+            $arr = array('series' => $series, 'titulo' => 'Gráfico por localidad');
             $parametros['data'] = json_encode($arr);
             ResourceController::getInstance()->mostrarHTMLConParametros('mostrarReporte.html.twig',$parametros);
         }
