@@ -421,19 +421,29 @@ class PatientController {
 
     public function mostrarFormularioConsulta($datos){
         $parametros = ResourceController::getInstance()->getConfiguration();
-        $parametros['session'] = $_SESSION;
-        $parametros['motivos'] = PatientRepository::getInstance()->getMotivos(); 
-        if ($datos != array()) {
-            $parametros['nombre_paciente'] = $datos['nombre_paciente'];
-            $parametros['apellido_paciente'] = $datos['apellido_paciente'];
-            $parametros['mensaje'] = 'Se ha creado un nuevo Paciente';
-            $parametros['tipo_mensaje'] = 'text-success';
-            $parametros['id_paciente'] = $datos['id_paciente'];
+        if (isset($_SESSION['id'])) {
+            $parametros['session'] = $_SESSION;
+            if (in_array('consulta_new', $_SESSION['permisos'])) {
+                $parametros['motivos'] = PatientRepository::getInstance()->getMotivos(); 
+                if ($datos != array()) {
+                    $parametros['nombre_paciente'] = $datos['nombre_paciente'];
+                    $parametros['apellido_paciente'] = $datos['apellido_paciente'];
+                    $parametros['mensaje'] = 'Se ha creado un nuevo Paciente';
+                    $parametros['tipo_mensaje'] = 'text-success';
+                    $parametros['id_paciente'] = $datos['id_paciente'];
+                }
+                else {
+                    $parametros['pacientes'] = PatientRepository::getInstance()->getPacientes();
+                }
+                ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaConsulta.html.twig', $parametros);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            }
         }
         else {
-            $parametros['pacientes'] = PatientRepository::getInstance()->getPacientes();
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
-        ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaConsulta.html.twig', $parametros);
     }
 
     public function utf8ize($mixed) {
@@ -481,6 +491,98 @@ class PatientController {
                     $parametros['mensaje'] = $msj;
                     $parametros['tipo_mensaje'] = 'text-danger';
                     ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaConsulta.html.twig', $parametros);
+                }
+            } 
+            else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);   
+        }
+    }
+
+    public function showConsulta(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        if (isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
+            if (in_array('consulta_show', $_SESSION['permisos'])){
+                $parametros['consulta'] = PatientRepository::getInstance()->getConsulta($_POST['id_consulta']);
+                ResourceController::getInstance()->mostrarHTMLConParametros('mostrarConsulta.html.twig',$parametros);
+            } 
+            else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);   
+        }
+    }
+
+    public function editConsulta(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        if (isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
+            if (in_array('consulta_update', $_SESSION['permisos'])){
+                $parametros['motivos'] = PatientRepository::getInstance()->getMotivos();
+                $parametros['consulta'] = PatientRepository::getInstance()->getConsulta($_POST['id_consulta']);
+                ResourceController::getInstance()->mostrarHTMLConParametros('editarConsulta.html.twig',$parametros);
+            } 
+            else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);   
+        }
+    }
+
+    public function updateConsulta() {
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        if (isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
+            if (in_array('consulta_update', $_SESSION['permisos'])){
+                $msj = '';
+                if ($this->validarFormularioConsulta($_POST,$msj)) {
+                    PatientRepository::getInstance()->updateConsulta($_POST);
+                    $parametros['mensaje'] = 'Consulta modificada';
+                    $parametros['tipo_mensaje'] = 'text-success';
+                    $parametros['motivos'] = PatientRepository::getInstance()->getMotivos();
+                    $parametros['pacientes'] = PatientRepository::getInstance()->getPacientes();
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaConsulta.html.twig', $parametros);
+                }
+                else {
+                    $parametros['motivos'] = PatientRepository::getInstance()->getMotivos();
+                    $parametros['pacientes'] = PatientRepository::getInstance()->getPacientes();
+                    $parametros['mensaje'] = $msj;
+                    $parametros['tipo_mensaje'] = 'text-danger';
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaConsulta.html.twig', $parametros);
+                }
+            } 
+            else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);   
+        }
+    }
+
+    public function deleteConsulta() {
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        if (isset($_SESSION['id'])){
+            $parametros["session"] = $_SESSION;
+            if (in_array('consulta_destroy', $_SESSION['permisos'])){
+                if ($_POST != array()) {
+                    PatientRepository::getInstance()->deleteConsulta($_POST['id_consulta']);
+                    $parametros['mensaje'] = 'Consulta eliminada';
+                    $parametros['tipo_mensaje'] = 'text-success';
+                    $parametros['motivos'] = PatientRepository::getInstance()->getMotivos();
+                    $parametros['pacientes'] = PatientRepository::getInstance()->getPacientes();
+                    ResourceController::getInstance()->mostrarHTMLConParametros('formularioAltaConsulta.html.twig', $parametros);
+                }
+                else {
+
                 }
             } 
             else {

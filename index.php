@@ -91,6 +91,14 @@ if(!(isset($_GET["action"]))) {
 	PatientController::getInstance()->obtenerConsultas($_POST);
 }elseif ($_GET["action"] == 'agregarConsulta'){
 	PatientController::getInstance()->agregarConsulta($_POST);
+}elseif ($_GET["action"] == 'showConsulta'){
+	PatientController::getInstance()->showConsulta();
+}elseif ($_GET["action"] == 'editConsulta'){
+	PatientController::getInstance()->editConsulta();
+}elseif ($_GET["action"] == 'updateConsulta'){
+	PatientController::getInstance()->updateConsulta();
+}elseif ($_GET["action"] == 'deleteConsulta'){
+	PatientController::getInstance()->deleteConsulta();
 }else{
 	ResourceController::getInstance()->menuPrincipal('home.html.twig');
 }
