@@ -37,7 +37,7 @@ $app->get('/instituciones/{institucion-id}', function (Request $request, Respons
     return $response;
 });
 
-$app->get('/instituciones/', function (Request $request, Response $response, array $args) {
+$app->get('/instituciones', function (Request $request, Response $response, array $args) {
     $response->getBody()->write(json_encode(query("SELECT * FROM institucion",null, $this->db)));    
     return $response;
 });

@@ -38,19 +38,19 @@ switch ($cmd) {
     case '/help':
         $msg['text']  = 'Los comandos disponibles son estos:' . PHP_EOL;
         $msg['text'] .= '/start Inicializa el bot' . PHP_EOL;
-        $msg['text'] .= '/turnos dd-mm-aaaa Muestra los turnos disponibles del día' . PHP_EOL;
-        $msg['text'] .= '/reservar dd-mm-aaaa hh:mm Realiza la reserva del turno' . PHP_EOL;
+        $msg['text'] .= '/instituciones Muestra las instituciones disponibles' . PHP_EOL;
+        $msg['text'] .= '/instituciones/region-sanitaria Muestra las instituciones correspondientes a la region sanitaria' . PHP_EOL;
         $msg['text'] .= '/help Muestra la lista de comandos disponibles';
         $msg['reply_to_message_id'] = null;
         break;
 
-    case '/reservar':
+    case '/instituciones':
         $msg['text']  = 'Te confirmamos el turno para:' . PHP_EOL;
         $msg['text'] .= '10:30' . PHP_EOL;
         $msg['reply_to_message_id'] = null;
         break;
 
-    case '/turnos':
+    case '/instituciones/region-sanitaria':
         $msg['text']  = 'Los turnos disponibles son: 10:30 | 11:45 | 15:15';
         break;
 
