@@ -9,23 +9,74 @@
 {% include "navBar.html.twig" %}
 
 {% if datos.session is not defined %}
-<div class="row container-fluid alMedio">
-  	<div class="col-sm-4">
-  		<h2 class="text-center">Avances y seguridad de las vacunas y su contribución a la salud pública</h2>
-  		<p>Los adelantos en la vacunación han disminuido dramáticamente los casos de infecciones comunes. A través de la historia moderna de la producción de vacunas, tanto los profesionales de la salud como el público, expresaron su preocupación con la seguridad de las vacunas y productos relacionados. Hoy día este aspecto está altamente regulado: desde el comienzo del desarrollo de la vacuna, durante los ensayos clínicos y después que la vacuna se aprueba y administra a la población general. En este artículo repasaremos los procesos que permiten identificar áreas con problemas ó que requieran modificación con la meta de asegurar que las vacunas utilizadas son las más seguras.</p>
-  		<a href="#"> <p class="text-center text-muted"> Ver detalles </p></a>
-  	</div>
-  	<div class="col-sm-4">
-  		<h2 class="text-center">Desórdenes neurocognitivos en mujeres infectadas con el Virus de Inmunodeficiencia Humana (VIH)</h2>
-  		<p>"La infección de VIH envuelve el sistema nervioso central (cerebro) desde etapas tempranas de la infección y durante la enfermedad de VIH. Hoy día, con el advenimiento de los medicamentos antiretrovirales efectivos, podemos decir que la infección de VIH se ha convertido en una enfermedad crónica. Los medicamentos antiretrovirales de alta potencia y diversos mecanismos de acción han controlado marcadamente la infección y una reducción del daño cognitivo severo. Sin embargo, a pesar del tratamiento efectivo, el 50% de los pacientes van a presentar algún deterioro de su estado cognitivo, pero en su forma más leve. Recientemente se identificó que los pacientes con daño cognitivo leve pueden progresar a estados más severos y que las mujeres están 3 veces más vulnerables a progresar que los hombres. Por eso es importante identificar las personas que presenten deterioro cognitivo para evaluarlos y descartar posibles co-morbilidades.</p>
-  		<a href="#"> <p class="text-center text-muted"> Ver detalles </p></a>
-  	</div>
-  	<div class="col-sm-4">
-  		<h2 class="text-center">Los ojos, una ventana para detectar otras enfermedades</h2>
-  		<p>La pupila es una ventana para llegar al fondo de los ojos donde los vasos sanguíneos, el tejido de la retina o el nervio óptico pueden dar pistas de la existencia de enfermedades no oftalmológicas. Determinados tipos de cánceres, esclerosis múltiple, diabetes o tiroides son algunos ejemplos</p>
-  		<a href="#"> <p class="text-center text-muted"> Ver detalles </p></a>
-  	</div>
+
+    <div class="row container-fluid alMedio">
+    <div class="col-sm-12 text-center">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="./templates/img/TelSlide.jpg" alt="First slide">
+       <div class="carousel-caption back bg-info" style="opacity: 0.7">
+        <h4 class="text-dark">TURNOS AL 0800-222-1212</h4>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="./templates/img/TerapInfSlide.jpg" alt="Second slide">
+       <div class="carousel-caption back bg-info"  style="opacity: 0.7">
+          <h4 class="text-dark">UNIDAD DE TERAPIA INTENSIVA PEDIÁTRICA</h4>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="./templates/img/ResonadorSlide.jpg" alt="Third slide">
+       <div class="carousel-caption back bg-info"  style="opacity: 0.7">
+          <h4 class="text-dark">INCORPORAMOS UN NUEVO RESONADOR</h4>
+      </div>
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Siguiente</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Anterior</span>
+  </a>
+</div>
+</div>
+
+</div>
+<br><br><br><br>
+
+<div class="row container-fluid">
+  <div class="col-sm-4">
+    <div class="container">
+      <img src="./templates/img/recepcion.jpg" class="image" style="width:100%">
+      <div class="middle">
+        <div class="text">Las mejores instalaciones</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="container">
+      <img src="./templates/img/estetoscopio.jpg" class="image" style="width:100%">
+      <div class="middle">
+        <div class="text">Servicios ambulatorios</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="container">
+      <img src="./templates/img/doctor.jpg" class="image" style="width:100%">
+      <div class="middle">
+        <div class="text">Grandes profesionales</div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endif %}
-
 {% include "footer.html.twig" %}

@@ -23,7 +23,7 @@ class APIController {
 
     public function obtenerAPI($url){
     	
-    	//este codigo comentado quedo de cuando usamos CURL, ahora estamos usando httpful
+    	//este codigo comentado quedo de cuando usamos CURL, ahora estamos la funcion file_get_contents de php
     	/*$curl = curl_init();
 		curl_setopt_array($curl, array(
 		CURLOPT_URL => $url,

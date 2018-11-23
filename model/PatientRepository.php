@@ -31,16 +31,9 @@ class PatientRepository extends PDORepository {
             *
             FROM
                 paciente p
-            INNER JOIN localidad l ON
-                l.id = p.localidad_id
-            INNER JOIN region_sanitaria rs ON
-                rs.id = p.region_sanitaria_id
             INNER JOIN genero g ON
                 g.id = p.genero_id
-            INNER JOIN tipo_documento td ON
-                td.id = p.tipo_doc_id
-            INNER JOIN obra_social os ON
-                os.id = p.obra_social_id"
+            ORDER BY p.apellido, p.nombre"
             ,[]);
         return $answer;
     }
@@ -51,25 +44,17 @@ class PatientRepository extends PDORepository {
             *
             FROM
                 paciente p
-            INNER JOIN localidad l ON
-                l.id = p.localidad_id
-            INNER JOIN region_sanitaria rs ON
-                rs.id = p.region_sanitaria_id
             INNER JOIN genero g ON
                 g.id = p.genero_id
-            INNER JOIN tipo_documento td ON
-                td.id = p.tipo_doc_id
-            INNER JOIN obra_social os ON
-                os.id = p.obra_social_id
             WHERE 
                 p.nombre LIKE CONCAT('%', :nombre, '%') AND
                 p.apellido LIKE CONCAT('%', :apellido, '%') AND
-                td.nombre_tipo_documento LIKE CONCAT('%', :nombre_tipo_documento, '%') AND
+                p.tipo_doc_id LIKE CONCAT('%', :tipo_doc, '%') AND
                 p.numero LIKE CONCAT('%', :numero_documento, '%') AND
                 p.nro_historia_clinica LIKE CONCAT('%', :nro_historia_clinica ,'%')",
             ["nombre" => $datos['nombre'],
              "apellido" => $datos['apellido'],
-             "nombre_tipo_documento" => $datos['nombre_tipo_documento'],
+             "tipo_doc" => $datos['nombre_tipo_documento'],
              "numero_documento" => $datos['numero_documento'],
              "nro_historia_clinica" => $datos['nro_historia_clinica']
             ]);
@@ -91,7 +76,7 @@ class PatientRepository extends PDORepository {
         $this->queryList("DELETE FROM paciente WHERE id_paciente = :id",["id" => $id]);
     }
 
-    public function obtenerRegionSanitaria($datos){
+    /*public function obtenerRegionSanitaria($datos){
         $answer = $this->queryList("SELECT region_sanitaria_id FROM partido WHERE id=:id",["id" => $datos]);
         return $answer[0];
     }
@@ -104,10 +89,10 @@ class PatientRepository extends PDORepository {
     public function getLocalidades($idPartido) {
         $answer = $this->queryList("SELECT id, nombre_localidad FROM localidad WHERE partido_id = :id",["id" => $idPartido['id_partido']]);
         return $answer;
-    }
+    }*/
 
     public function crearPaciente($datos) {
-        $answer = $this->queryList("INSERT INTO paciente (apellido, nombre, fecha_nac, lugar_nac, localidad_id, region_sanitaria_id, domicilio, genero_id, tiene_documento, tipo_doc_id, numero, tel, nro_historia_clinica, nro_carpeta, obra_social_id) VALUES ( :apellido, :nombre, :fecha, :partido, :localidad, :region_sanitaria , :domicilio, :genero_id, :tiene_documento, :tipo_documento_id, :numero , :tel, :nro_historia_clinica, :nro_carpeta, :obra_social_id);"
+        $answer = $this->queryDevuelveId("INSERT INTO paciente (apellido, nombre, fecha_nac, lugar_nac, localidad_id, region_sanitaria_id, domicilio, genero_id, tiene_documento, tipo_doc_id, numero, tel, nro_historia_clinica, nro_carpeta, obra_social_id) VALUES ( :apellido, :nombre, :fecha, :partido, :localidad, :region_sanitaria , :domicilio, :genero_id, :tiene_documento, :tipo_documento_id, :numero , :tel, :nro_historia_clinica, :nro_carpeta, :obra_social_id);"
 
         ,[
             "apellido" => $datos['apellido'],
@@ -126,7 +111,7 @@ class PatientRepository extends PDORepository {
             "region_sanitaria" => $datos['region_sanitaria_id'],
             "partido" => $datos['partidos']
         ]);
-        //Benja, no se por que esto no anda... $answer->debugDumpParams();
+        return $answer;
     }
 
     public function datosPaciente($id){
@@ -166,6 +151,84 @@ class PatientRepository extends PDORepository {
         return $answer;
     }
 
+    public function getMotivos(){
+        $answer = $this->queryList("SELECT * FROM motivo_consulta",[]);
+        return $answer;
+    }
+
+    public function getConsultas($id){
+        $answer = $this->queryList("
+            SELECT c.id, c.fecha, c.articulacion_con_instituciones, c.internacion, c.diagnostico, c.observaciones, a.nombre_acompanamiento, mc.nombre, tm.nombre_tratamiento FROM consulta c 
+            INNER JOIN motivo_consulta mc ON c.motivo_id = mc.id 
+            INNER JOIN acompanamiento a ON c.acompanamiento_id = a.id 
+            INNER JOIN tratamiento_farmacologico tm ON c.tratamiento_farmacologico_id = tm.id
+            WHERE paciente_id = :id"
+
+            ,["id" => $id]);
+        return $answer;
+    }
+
+    public function agregarConsulta($datos) {
+        $this->queryList("
+            INSERT INTO `consulta` (`id`, `paciente_id`, `fecha`, `motivo_id`, `derivacion_id`, `articulacion_con_instituciones`, `internacion`, `diagnostico`, `observaciones`, `tratamiento_farmacologico_id`, `acompanamiento_id`)
+            VALUES (NULL, :id_paciente, :fecha , :id_motivo, '1', :articulacion, :internacion, :diagnostico, :observaciones, :tratamiento, :acompanamiento)"
+            ,[
+                "id_paciente" => $datos['id_paciente'],
+                "fecha" => $datos['fecha'],
+                "id_motivo" => $datos['id_motivo'],
+                "articulacion" => $datos['articulacion'],
+                "diagnostico" => $datos['diagnostico'],
+                "observaciones" => $datos['observaciones'],
+                "tratamiento" => $datos['tratamiento_farmacologico'],
+                "acompanamiento" => $datos['acompanamiento'],
+                "internacion" => $datos['internacion']
+            ]);
+    }
+
+    public function getConsulta($id){
+        $answer = $this->queryList("
+            SELECT c.id, c.fecha, c.motivo_id, c.tratamiento_farmacologico_id, c.articulacion_con_instituciones, c.internacion, c.diagnostico, c.observaciones, a.nombre_acompanamiento, mc.nombre, tm.nombre_tratamiento, p.nombre as nombre_paciente, p.apellido
+            FROM consulta c 
+            INNER JOIN motivo_consulta mc ON c.motivo_id = mc.id 
+            INNER JOIN acompanamiento a ON c.acompanamiento_id = a.id 
+            INNER JOIN tratamiento_farmacologico tm ON c.tratamiento_farmacologico_id = tm.id
+            INNER JOIN paciente p ON c.paciente_id = p.id_paciente
+            WHERE c.id = :id"
+
+            ,["id" => $id]);
+        return $answer;
+    }
+
+    public function updateConsulta($datos) {
+        $answer = $this->queryList("
+            UPDATE `consulta` 
+            SET fecha = :fecha ,
+            motivo_id = :motivo_id ,
+            articulacion_con_instituciones = :articulacion ,
+            internacion = :internacion ,
+            diagnostico = :diagnostico ,
+            observaciones = :observaciones ,
+            tratamiento_farmacologico_id = :tratamiento ,
+            acompanamiento_id = :acompanamiento
+            WHERE `consulta`.`id` = :id_consulta
+
+            ",[
+                "fecha" => $datos['fecha'],
+                "motivo_id" => $datos['motivo'],
+                "articulacion" => $datos['articulacion'],
+                "internacion" => $datos['internacion'],
+                "diagnostico" => $datos['diagnostico'],
+                "observaciones" => $datos['observaciones'],
+                "tratamiento" => $datos['tratamiento_farmacologico'],
+                "acompanamiento" => $datos['acompanamiento'],
+                "id_consulta" => $datos['id_consulta']
+            ]);
+        return $answer;
+    }
+
+    public function deleteConsulta($id) {
+        $this->queryList("DELETE FROM consulta WHERE id = :id",["id" => $id]);
+    }
 }
 
 

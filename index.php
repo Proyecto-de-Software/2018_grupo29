@@ -1,4 +1,6 @@
 <?php
+
+
 session_start();
 ini_set('display_startup_errors',1);
 ini_set('display_errors',1);
@@ -51,11 +53,7 @@ if(!(isset($_GET["action"]))) {
 	PatientController::getInstance()->crearPaciente(); 
 }elseif ($_GET["action"] == 'eliminarPaciente'){
 	PatientController::getInstance()->eliminarPaciente();
-}/*elseif ($_GET["action"] == 'obtenerPartidos'){
-	PatientController::getInstance()->obtenerPartidos();
-}elseif ($_GET["action"] == 'obtenerLocalidades'){
-	PatientController::getInstance()->obtenerLocalidades();
-}*/elseif ($_GET["action"] == 'moduloConfiguracion'){
+}elseif ($_GET["action"] == 'moduloConfiguracion'){
 	ConfigurationController::getInstance()->menuConfiguracion();
 }elseif ($_GET["action"] == 'actualizarConfiguracion'){
 	ConfigurationController::getInstance()->actualizarConfiguracion();
@@ -87,7 +85,20 @@ if(!(isset($_GET["action"]))) {
 	UserController::getInstance()->asignarRol($_POST);
 }elseif ($_GET["action"] == 'desasignarRol'){
 	UserController::getInstance()->desasignarRol($_POST);
+}elseif ($_GET["action"] == 'mostrarFormularioConsulta'){
+	PatientController::getInstance()->mostrarFormularioConsulta(array());
+}elseif ($_GET["action"] == 'obtenerConsultas'){
+	PatientController::getInstance()->obtenerConsultas($_POST);
+}elseif ($_GET["action"] == 'agregarConsulta'){
+	PatientController::getInstance()->agregarConsulta($_POST);
+}elseif ($_GET["action"] == 'showConsulta'){
+	PatientController::getInstance()->showConsulta();
+}elseif ($_GET["action"] == 'editConsulta'){
+	PatientController::getInstance()->editConsulta();
+}elseif ($_GET["action"] == 'updateConsulta'){
+	PatientController::getInstance()->updateConsulta();
+}elseif ($_GET["action"] == 'deleteConsulta'){
+	PatientController::getInstance()->deleteConsulta();
 }else{
 	ResourceController::getInstance()->menuPrincipal('home.html.twig');
 }
-
