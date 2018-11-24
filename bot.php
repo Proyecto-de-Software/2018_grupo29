@@ -46,7 +46,11 @@ switch ($cmd) {
 
     case '/instituciones':
         $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones"));
-        $msg['text']  = 'Las instituciones disponibles son estas:' . PHP_EOL;
+        if (count($instituciones)==0) {
+            $msg['text'] = 'No hay instituciones con ese parametro.'
+        } else {
+            $msg['text'] = 'Las instituciones disponibles son estas:' . PHP_EOL;
+        }
         foreach ($instituciones as $institucion) {
             $msg['text'] .= 'Nombre de institucion: '.$institucion->nombre.PHP_EOL;
             $msg['text'] .= 'Director: '.$institucion->director.PHP_EOL;
