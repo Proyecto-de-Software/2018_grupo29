@@ -44,7 +44,7 @@ switch ($cmd) {
         $msg['reply_to_message_id'] = null;
         break;
 
-    case '/instituciones':
+    case '/instit-uciones':
         $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones"));
         $msg['text']  = 'Las instituciones disponibles son estas:' . PHP_EOL;
         foreach ($instituciones as $institucion) {
