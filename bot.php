@@ -50,6 +50,7 @@ switch ($cmd) {
             $msg['text'] = 'No hay instituciones con ese parametro.'
         } else {
             $msg['text'] = 'Las instituciones disponibles son estas:' . PHP_EOL;
+            $msg['text'] .= ''.PHP_EOL;
         }
         foreach ($instituciones as $institucion) {
             $msg['text'] .= 'Nombre de institucion: '.$institucion->nombre.PHP_EOL;
@@ -62,8 +63,12 @@ switch ($cmd) {
 
     case '/institucionesRegionSanitaria':
         $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/region-sanitaria/".$cmd_params));
-        $msg['text']  = 'Las instituciones disponibles de la region sanitaria '.$cmd_params.' son estas:' . PHP_EOL;
-        $msg['text'] .= ''.PHP_EOL;
+        if (count($instituciones)==0) {
+            $msg['text'] = 'No hay instituciones con ese parametro.'
+        } else {
+            $msg['text']  = 'Las instituciones disponibles de la region sanitaria '.$cmd_params.' son estas:' . PHP_EOL;
+            $msg['text'] .= ''.PHP_EOL;
+        }
         foreach ($instituciones as $institucion) {
             $msg['text'] .= 'Nombre de institucion: '.$institucion->nombre.PHP_EOL;
             $msg['text'] .= 'Director: '.$institucion->director.PHP_EOL;
