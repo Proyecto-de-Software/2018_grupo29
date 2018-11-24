@@ -56,7 +56,7 @@ switch ($cmd) {
         $msg['reply_to_message_id'] = null;
         break;
 
-    case '/instituciones-region-sanitaria':
+    case '/instituciones-region-sanitaria ':
         $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/region-sanitaria/".$cmd_params));
         $msg['text']  = 'Las instituciones disponibles de la region sanitaria'.$cmd_params.'son estas:' . PHP_EOL;
         foreach ($instituciones as $institucion) {
