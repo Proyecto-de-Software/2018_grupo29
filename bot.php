@@ -51,12 +51,21 @@ switch ($cmd) {
             $msg['text'] .= 'Nombre de institucion: '.$institucion->nombre.PHP_EOL;
             $msg['text'] .= 'Director: '.$institucion->director.PHP_EOL;
             $msg['text'] .= 'Telefono: '.$institucion->telefono.PHP_EOL;
+            $msg['text'] .= ''.PHP_EOL;
         }
         $msg['reply_to_message_id'] = null;
         break;
 
     case '/instituciones-region-sanitaria':
-        $msg['text']  = 'Los turnos disponibles son: 10:30 | 11:45 | 15:15';
+        $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/region-sanitaria/".$cmd_params));
+        $msg['text']  = 'Las instituciones disponibles de la region sanitaria'.$cmd_params.'son estas:' . PHP_EOL;
+        foreach ($instituciones as $institucion) {
+            $msg['text'] .= 'Nombre de institucion: '.$institucion->nombre.PHP_EOL;
+            $msg['text'] .= 'Director: '.$institucion->director.PHP_EOL;
+            $msg['text'] .= 'Telefono: '.$institucion->telefono.PHP_EOL;
+            $msg['text'] .= ''.PHP_EOL;
+        }
+        $msg['reply_to_message_id'] = null;
         break;
 
     default:
