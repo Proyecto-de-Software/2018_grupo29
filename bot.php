@@ -48,9 +48,9 @@ switch ($cmd) {
         $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones"));
         $msg['text']  = 'Las instituciones disponibles son estas:' . PHP_EOL;
         foreach ($instituciones as $institucion) {
-            $msg['text'] .= $institucion["nombre"].": ";
+            $msg['text'] .= $institucion->nombre.": ";
             foreach ($institucion as $key => $value) {
-                $msg['text'] .= $key.": ".$value;
+                $msg['text'] .= $key.": ".$value." ";
             }
             $msg['text'] .= PHP_EOL;
         }
