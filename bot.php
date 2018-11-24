@@ -39,18 +39,25 @@ switch ($cmd) {
         $msg['text']  = 'Los comandos disponibles son estos:' . PHP_EOL;
         $msg['text'] .= '/start Inicializa el bot' . PHP_EOL;
         $msg['text'] .= '/instituciones Muestra las instituciones disponibles' . PHP_EOL;
-        $msg['text'] .= '/instituciones/region-sanitaria Muestra las instituciones correspondientes a la region sanitaria' . PHP_EOL;
+        $msg['text'] .= '/instituciones-region-sanitaria Muestra las instituciones correspondientes a la region sanitaria' . PHP_EOL;
         $msg['text'] .= '/help Muestra la lista de comandos disponibles';
         $msg['reply_to_message_id'] = null;
         break;
 
     case '/instituciones':
-        $msg['text']  = 'Te confirmamos el turno para:' . PHP_EOL;
-        $msg['text'] .= '10:30' . PHP_EOL;
+        $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones"));
+        $msg['text']  = 'Las instituciones disponibles son estas:' . PHP_EOL;
+        foreach ($instituciones as $institucion) {
+            $msg['text'] .= $institucion["nombre"].": ";
+            foreach ($institucion as $key => $value) {
+                $msg['text'] .= $key.": ".$value;
+            }
+            $msg['text'] .= PHP_EOL;
+        }
         $msg['reply_to_message_id'] = null;
         break;
 
-    case '/instituciones/region-sanitaria':
+    case '/instituciones-region-sanitaria':
         $msg['text']  = 'Los turnos disponibles son: 10:30 | 11:45 | 15:15';
         break;
 
