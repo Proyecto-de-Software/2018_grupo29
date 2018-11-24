@@ -38,8 +38,8 @@ switch ($cmd) {
     case '/help':
         $msg['text']  = 'Los comandos disponibles son estos:' . PHP_EOL;
         $msg['text'] .= '/start Inicializa el bot' . PHP_EOL;
-        $msg['text'] .= '/instituciones Muestra las instituciones disponibles' . PHP_EOL;
-        $msg['text'] .= '/institucionesRegionSanitaria Muestra las instituciones correspondientes a la region sanitaria' . PHP_EOL;
+        $msg['text'] .= '/instituciones muestra las instituciones disponibles' . PHP_EOL;
+        $msg['text'] .= '/institucionesRegionSanitaria muestra las instituciones correspondientes a la region sanitaria' . PHP_EOL;
         $msg['text'] .= '/help Muestra la lista de comandos disponibles';
         $msg['reply_to_message_id'] = null;
         break;
