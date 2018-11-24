@@ -92,7 +92,6 @@ class UserRepository extends PDORepository {
     }
 
     public function actualizarUsuario($datos){
-        var_dump($datos);
         $this->queryList("UPDATE usuario set username=:username, email=:email, password=:pwd, activo=0, first_name=:first_name, last_name=:last_name where id=:id"
             ,[
                 "username" => $datos["username"],

@@ -38,20 +38,44 @@ switch ($cmd) {
     case '/help':
         $msg['text']  = 'Los comandos disponibles son estos:' . PHP_EOL;
         $msg['text'] .= '/start Inicializa el bot' . PHP_EOL;
-        $msg['text'] .= '/turnos dd-mm-aaaa Muestra los turnos disponibles del día' . PHP_EOL;
-        $msg['text'] .= '/reservar dd-mm-aaaa hh:mm Realiza la reserva del turno' . PHP_EOL;
+        $msg['text'] .= '/instituciones muestra las instituciones disponibles' . PHP_EOL;
+        $msg['text'] .= '/institucionesRegionSanitaria muestra las instituciones correspondientes a la region sanitaria' . PHP_EOL;
         $msg['text'] .= '/help Muestra la lista de comandos disponibles';
         $msg['reply_to_message_id'] = null;
         break;
 
-    case '/reservar':
-        $msg['text']  = 'Te confirmamos el turno para:' . PHP_EOL;
-        $msg['text'] .= '10:30' . PHP_EOL;
+    case '/instituciones':
+        $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones"));
+        if (count($instituciones)==0) {
+            $msg['text'] = 'No hay instituciones con ese parametro.';
+        } else {
+            $msg['text'] = 'Las instituciones disponibles son estas:' . PHP_EOL;
+            $msg['text'] .= ''.PHP_EOL;
+        }
+        foreach ($instituciones as $institucion) {
+            $msg['text'] .= 'Nombre de institucion: '.$institucion->nombre.PHP_EOL;
+            $msg['text'] .= 'Director: '.$institucion->director.PHP_EOL;
+            $msg['text'] .= 'Telefono: '.$institucion->telefono.PHP_EOL;
+            $msg['text'] .= ''.PHP_EOL;
+        }
         $msg['reply_to_message_id'] = null;
         break;
 
-    case '/turnos':
-        $msg['text']  = 'Los turnos disponibles son: 10:30 | 11:45 | 15:15';
+    case '/institucionesRegionSanitaria':
+        $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/region-sanitaria/".$cmd_params));
+        if (count($instituciones)==0) {
+            $msg['text'] = 'No hay instituciones con ese parametro.';
+        } else {
+            $msg['text']  = 'Las instituciones disponibles de la region sanitaria '.$cmd_params.' son estas:' . PHP_EOL;
+            $msg['text'] .= ''.PHP_EOL;
+        }
+        foreach ($instituciones as $institucion) {
+            $msg['text'] .= 'Nombre de institucion: '.$institucion->nombre.PHP_EOL;
+            $msg['text'] .= 'Director: '.$institucion->director.PHP_EOL;
+            $msg['text'] .= 'Telefono: '.$institucion->telefono.PHP_EOL;
+            $msg['text'] .= ''.PHP_EOL;
+        }
+        $msg['reply_to_message_id'] = null;
         break;
 
     default:
@@ -60,7 +84,7 @@ switch ($cmd) {
             break;
 }
 
-$url = 'https://api.telegram.org/bot739044975:AAGd03rxoQsMXZyNWz5Am5zyB5VOet4Plbs/sendMessage';
+$url = 'https://api.telegram.org/bot689626573:AAHM_xehhC7H-EVA9FDiaS3WGe7OOBPtjoA/sendMessage';
 
     $options = array(
     'http' => array(
