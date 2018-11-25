@@ -3,7 +3,7 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
+ * (c) 2010 Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -37,7 +37,3 @@ interface Twig_TokenParserInterface
      */
     public function getTag();
 }
-
-class_alias('Twig_TokenParserInterface', 'Twig\TokenParser\TokenParserInterface', false);
-class_exists('Twig_Parser');
-class_exists('Twig_Token');

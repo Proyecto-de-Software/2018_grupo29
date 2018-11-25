@@ -9,10 +9,9 @@
  * file that was distributed with this source code.
  */
 
-class Twig_Tests_Extension_SandboxTest extends \PHPUnit\Framework\TestCase
+class Twig_Tests_Extension_SandboxTest extends PHPUnit_Framework_TestCase
 {
-    protected static $params;
-    protected static $templates;
+    protected static $params, $templates;
 
     protected function setUp()
     {
@@ -35,8 +34,6 @@ class Twig_Tests_Extension_SandboxTest extends \PHPUnit\Framework\TestCase
             '1_basic' => '{% if obj.foo %}{{ obj.foo|upper }}{% endif %}',
             '1_layout' => '{% block content %}{% endblock %}',
             '1_child' => "{% extends \"1_layout\" %}\n{% block content %}\n{{ \"a\"|json_encode }}\n{% endblock %}",
-            '1_include' => '{{ include("1_basic1", sandboxed=true) }}',
-            '1_range_operator' => '{{ (1..2)[0] }}',
         );
     }
 
@@ -144,18 +141,6 @@ class Twig_Tests_Extension_SandboxTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    public function testSandboxUnallowedRangeOperator()
-    {
-        $twig = $this->getEnvironment(true, array(), self::$templates);
-        try {
-            $twig->loadTemplate('1_range_operator')->render(self::$params);
-            $this->fail('Sandbox throws a SecurityError exception if the unallowed range operator is called');
-        } catch (Twig_Sandbox_SecurityError $e) {
-            $this->assertInstanceOf('Twig_Sandbox_SecurityNotAllowedFunctionError', $e, 'Exception should be an instance of Twig_Sandbox_SecurityNotAllowedFunctionError');
-            $this->assertEquals('range', $e->getFunctionName(), 'Exception should be raised on the "range" function');
-        }
-    }
-
     public function testSandboxAllowMethodFoo()
     {
         $twig = $this->getEnvironment(true, array(), self::$templates, array(), array(), array('FooObject' => 'foo'));
@@ -202,12 +187,6 @@ class Twig_Tests_Extension_SandboxTest extends \PHPUnit\Framework\TestCase
     {
         $twig = $this->getEnvironment(true, array(), self::$templates, array(), array(), array(), array(), array('cycle'));
         $this->assertEquals('bar', $twig->loadTemplate('1_basic7')->render(self::$params), 'Sandbox allow some functions');
-    }
-
-    public function testSandboxAllowRangeOperator()
-    {
-        $twig = $this->getEnvironment(true, array(), self::$templates, array(), array(), array(), array(), array('range'));
-        $this->assertEquals('1', $twig->loadTemplate('1_range_operator')->render(self::$params), 'Sandbox allow the range operator');
     }
 
     public function testSandboxAllowFunctionsCaseInsensitive()
@@ -259,23 +238,6 @@ EOF
         ), array('macro', 'import'), array('escape'));
 
         $this->assertEquals('<p>username</p>', $twig->loadTemplate('index')->render(array()));
-    }
-
-    public function testSandboxDisabledAfterIncludeFunctionError()
-    {
-        $twig = $this->getEnvironment(false, array(), self::$templates);
-
-        $e = null;
-        try {
-            $twig->loadTemplate('1_include')->render(self::$params);
-        } catch (Throwable $e) {
-        } catch (Exception $e) {
-        }
-        if (null === $e) {
-            $this->fail('An exception should be thrown for this test to be valid.');
-        }
-
-        $this->assertFalse($twig->getExtension('Twig_Extension_Sandbox')->isSandboxed(), 'Sandboxed include() function call should not leave Sandbox enabled when an error occurs.');
     }
 
     protected function getEnvironment($sandboxed, $options, $templates, $tags = array(), $filters = array(), $methods = array(), $properties = array(), $functions = array())

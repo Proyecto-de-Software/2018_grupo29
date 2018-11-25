@@ -3,7 +3,7 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
+ * (c) 2009 Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,8 +13,6 @@
  * Twig_NodeTraverser is a node traverser.
  *
  * It visits all nodes and their children and calls the given visitor for each.
- *
- * @final
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -70,10 +68,8 @@ class Twig_NodeTraverser
         $node = $visitor->enterNode($node, $this->env);
 
         foreach ($node as $k => $n) {
-            if (false !== $m = $this->traverseForVisitor($visitor, $n)) {
-                if ($m !== $n) {
-                    $node->setNode($k, $m);
-                }
+            if (false !== $n = $this->traverseForVisitor($visitor, $n)) {
+                $node->setNode($k, $n);
             } else {
                 $node->removeNode($k);
             }
@@ -82,5 +78,3 @@ class Twig_NodeTraverser
         return $visitor->leaveNode($node, $this->env);
     }
 }
-
-class_alias('Twig_NodeTraverser', 'Twig\NodeTraverser', false);

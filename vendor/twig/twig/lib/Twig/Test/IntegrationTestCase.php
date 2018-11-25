@@ -3,13 +3,11 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
+ * (c) 2010 Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-use PHPUnit\Framework\TestCase;
 
 /**
  * Integration test helper.
@@ -17,20 +15,12 @@ use PHPUnit\Framework\TestCase;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Karma Dordrak <drak@zikula.org>
  */
-abstract class Twig_Test_IntegrationTestCase extends TestCase
+abstract class Twig_Test_IntegrationTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * @return string
      */
     abstract protected function getFixturesDir();
-
-    /**
-     * @return Twig_RuntimeLoaderInterface[]
-     */
-    protected function getRuntimeLoaders()
-    {
-        return array();
-    }
 
     /**
      * @return Twig_ExtensionInterface[]
@@ -131,10 +121,6 @@ abstract class Twig_Test_IntegrationTestCase extends TestCase
 
     protected function doIntegrationTest($file, $message, $condition, $templates, $exception, $outputs)
     {
-        if (!$outputs) {
-            $this->markTestSkipped('no tests to run');
-        }
-
         if ($condition) {
             eval('$ret = '.$condition.';');
             if (!$ret) {
@@ -151,10 +137,6 @@ abstract class Twig_Test_IntegrationTestCase extends TestCase
             ), $match[2] ? eval($match[2].';') : array());
             $twig = new Twig_Environment($loader, $config);
             $twig->addGlobal('global', 'global');
-            foreach ($this->getRuntimeLoaders() as $runtimeLoader) {
-                $twig->addRuntimeLoader($runtimeLoader);
-            }
-
             foreach ($this->getExtensions() as $extension) {
                 $twig->addExtension($extension);
             }
@@ -191,6 +173,12 @@ abstract class Twig_Test_IntegrationTestCase extends TestCase
                     return;
                 }
 
+                if ($e instanceof Twig_Error_Syntax) {
+                    $e->setTemplateName($file);
+
+                    throw $e;
+                }
+
                 throw new Twig_Error(sprintf('%s: %s', get_class($e), $e->getMessage()), -1, $file, $e);
             }
 
@@ -203,15 +191,18 @@ abstract class Twig_Test_IntegrationTestCase extends TestCase
                     return;
                 }
 
-                $e = new Twig_Error(sprintf('%s: %s', get_class($e), $e->getMessage()), -1, $file, $e);
+                if ($e instanceof Twig_Error_Syntax) {
+                    $e->setTemplateName($file);
+                } else {
+                    $e = new Twig_Error(sprintf('%s: %s', get_class($e), $e->getMessage()), -1, $file, $e);
+                }
 
                 $output = trim(sprintf('%s: %s', get_class($e), $e->getMessage()));
             }
 
             if (false !== $exception) {
                 list($class) = explode(':', $exception);
-                $constraintClass = class_exists('PHPUnit\Framework\Constraint\Exception') ? 'PHPUnit\Framework\Constraint\Exception' : 'PHPUnit_Framework_Constraint_Exception';
-                $this->assertThat(null, new $constraintClass($class));
+                $this->assertThat(null, new PHPUnit_Framework_Constraint_Exception($class));
             }
 
             $expected = trim($match[3], "\n ");
@@ -245,5 +236,3 @@ abstract class Twig_Test_IntegrationTestCase extends TestCase
         return $templates;
     }
 }
-
-class_alias('Twig_Test_IntegrationTestCase', 'Twig\Test\IntegrationTestCase', false);

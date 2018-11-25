@@ -3,8 +3,8 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
- * (c) Armin Ronacher
+ * (c) 2009 Fabien Potencier
+ * (c) 2009 Armin Ronacher
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -32,12 +32,7 @@ class Twig_Node_Expression_Name extends Twig_Node_Expression
             if ($this->isSpecial()) {
                 $compiler->repr(true);
             } else {
-                $compiler
-                    ->raw('(isset($context[')
-                    ->string($name)
-                    ->raw(']) || array_key_exists(')
-                    ->string($name)
-                    ->raw(', $context))');
+                $compiler->raw('array_key_exists(')->repr($name)->raw(', $context)');
             }
         } elseif ($this->isSpecial()) {
             $compiler->raw($this->specialVars[$name]);
@@ -103,5 +98,3 @@ class Twig_Node_Expression_Name extends Twig_Node_Expression
         return !$this->isSpecial() && !$this->getAttribute('is_defined_test');
     }
 }
-
-class_alias('Twig_Node_Expression_Name', 'Twig\Node\Expression\NameExpression', false);

@@ -3,7 +3,7 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
+ * (c) 2012 Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,8 +11,6 @@
 
 /**
  * Embeds a template.
- *
- * @final
  */
 class Twig_TokenParser_Embed extends Twig_TokenParser_Include
 {
@@ -63,5 +61,3 @@ class Twig_TokenParser_Embed extends Twig_TokenParser_Include
         return 'embed';
     }
 }
-
-class_alias('Twig_TokenParser_Embed', 'Twig\TokenParser\EmbedTokenParser', false);

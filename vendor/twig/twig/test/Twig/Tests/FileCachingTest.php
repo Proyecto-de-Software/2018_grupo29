@@ -11,7 +11,7 @@
 
 require_once dirname(__FILE__).'/FilesystemHelper.php';
 
-class Twig_Tests_FileCachingTest extends \PHPUnit\Framework\TestCase
+class Twig_Tests_FileCachingTest extends PHPUnit_Framework_TestCase
 {
     private $env;
     private $tmpDir;
@@ -44,7 +44,7 @@ class Twig_Tests_FileCachingTest extends \PHPUnit\Framework\TestCase
         $this->env->loadTemplate($name);
         $cacheFileName = $this->env->getCacheFilename($name);
 
-        $this->assertFileExists($cacheFileName, 'Cache file does not exist.');
+        $this->assertTrue(file_exists($cacheFileName), 'Cache file does not exist.');
     }
 
     /**
@@ -56,8 +56,8 @@ class Twig_Tests_FileCachingTest extends \PHPUnit\Framework\TestCase
         $this->env->loadTemplate($name);
         $cacheFileName = $this->env->getCacheFilename($name);
 
-        $this->assertFileExists($cacheFileName, 'Cache file does not exist.');
+        $this->assertTrue(file_exists($cacheFileName), 'Cache file does not exist.');
         $this->env->clearCacheFiles();
-        $this->assertFileNotExists($cacheFileName, 'Cache file was not cleared.');
+        $this->assertFalse(file_exists($cacheFileName), 'Cache file was not cleared.');
     }
 }

@@ -58,11 +58,10 @@ class PatientController {
             if (($_POST['fueBusqueda']) == 0) {
                 if (in_array('paciente_index', $_SESSION['permisos'])) {
                     $pacientes = PatientRepository::getInstance()->getPacientes();                   
-                    //$pacientes = $this->getPacientes();
-                    
+                    $this->agregarDatosApi($pacientes);                    
                     ResourceController::getInstance()->setPaginado($parametros,$pacientes);
-                    $pacientes = array_chunk($pacientes, $parametros['cantElementosPorPagina']);
-                    $parametros['pacientes'] = $pacientes[ResourceController::getInstance()->paginaActual()];
+                    $listaPacientes = array_chunk($pacientes, $parametros['cantElementosPorPagina']);
+                    $parametros['pacientes'] = $listaPacientes[ResourceController::getInstance()->paginaActual()];
                     $parametros['fueBusqueda'] = 0;
                     ResourceController::getInstance()->mostrarHTMLConParametros('listadoPacientes.html.twig', $parametros);
                 }
@@ -78,6 +77,15 @@ class PatientController {
             ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }    
+
+    public function agregarDatosApi(&$vector){
+        foreach ($vector as $id => $paciente) {
+            $vector[$id]["nombre_tipo_documento"] = json_decode(file_get_contents("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento/".$paciente["tipo_doc_id"]))->nombre;
+            $vector[$id]["nombre_obra_social"] = json_decode(file_get_contents("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social/".$paciente["obra_social_id"]))->nombre;
+            $vector[$id]["nombre_region_sanitaria"] = json_decode(file_get_contents("https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria/".$paciente["region_sanitaria_id"]))->nombre;
+            $vector[$id]["nombre_localidad"] = json_decode(file_get_contents("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad/".$paciente["localidad_id"]))->nombre;
+        }
+    }
 
     public function mostrarFormulario($dato){
         $parametros = ResourceController::getInstance()->getConfiguration();
@@ -135,6 +143,7 @@ class PatientController {
                     $this->mostrarFormulario($noHubo);
                 }
                 else {
+                    $this->agregarDatosApi($pacientes);                    
                     ResourceController::getInstance()->setPaginado($parametros,$pacientes);
                     $pacientes = array_chunk($pacientes, $parametros['cantElementosPorPagina']);
                     $parametros['pacientes'] = $pacientes[ResourceController::getInstance()->paginaActual()];
