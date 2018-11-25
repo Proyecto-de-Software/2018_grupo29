@@ -70,9 +70,9 @@
 				 <label for="Derivacion">Derivacion</label>
 				 <div class="form-group">
 				 	<select name="derivacion" class="form-control">
-				 		<option>Aca</option>
-				 		<option>Irian</option>
-				 		<option>Todas</option>
+				 		{% for derivacion in datos.derivaciones %}
+				 			<option value="{{derivacion.id}}">{{derivacion.nombre}}</option>
+				 		{% endfor %}
 				 	</select>
 				 </div>
 				 <label for="articulacion">Articulacion</label>

@@ -434,6 +434,7 @@ class PatientController {
             $parametros['session'] = $_SESSION;
             if (in_array('consulta_new', $_SESSION['permisos'])) {
                 $parametros['motivos'] = PatientRepository::getInstance()->getMotivos(); 
+                $parametros['derivaciones'] = APIController::getInstance()->obtenerAPI('https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones');
                 if ($datos != array()) {
                     $parametros['nombre_paciente'] = $datos['nombre_paciente'];
                     $parametros['apellido_paciente'] = $datos['apellido_paciente'];
@@ -487,6 +488,7 @@ class PatientController {
             if (in_array('consulta_new', $_SESSION['permisos'])){
                 $msj = '';
                 if ($this->validarFormularioConsulta($datos,$msj)) {
+                    var_dump($_POST);
                     PatientRepository::getInstance()->agregarConsulta($_POST);
                     $parametros['mensaje'] = 'Consulta agregada';
                     $parametros['tipo_mensaje'] = 'text-success';
@@ -517,6 +519,8 @@ class PatientController {
             $parametros["session"] = $_SESSION;
             if (in_array('consulta_show', $_SESSION['permisos'])){
                 $parametros['consulta'] = PatientRepository::getInstance()->getConsulta($_POST['id_consulta']);
+                $id_d = ($parametros['consulta'][0]['derivacion_id']);
+                $parametros['derivacion'] = APIController::getInstance()->obtenerAPI("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/".$id_d);
                 ResourceController::getInstance()->mostrarHTMLConParametros('mostrarConsulta.html.twig',$parametros);
             } 
             else {
@@ -534,6 +538,7 @@ class PatientController {
             $parametros["session"] = $_SESSION;
             if (in_array('consulta_update', $_SESSION['permisos'])){
                 $parametros['motivos'] = PatientRepository::getInstance()->getMotivos();
+                $parametros['derivaciones'] = APIController::getInstance()->obtenerAPI('https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones');
                 $parametros['consulta'] = PatientRepository::getInstance()->getConsulta($_POST['id_consulta']);
                 ResourceController::getInstance()->mostrarHTMLConParametros('editarConsulta.html.twig',$parametros);
             } 
