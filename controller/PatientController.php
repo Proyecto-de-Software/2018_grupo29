@@ -469,6 +469,11 @@ class PatientController {
 
     public function obtenerConsultas($datos) {
         $answer = PatientRepository::getInstance()->getConsultas($datos['id']);
+        foreach ($answer as $key => $value) {
+            $answer[$key]["nombreInstitucion"] = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/".$answer[$key]["derivacion_id"]))[0]->nombre;
+            $answer[$key]["X"] = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/".$answer[$key]["derivacion_id"]))[0]->coordenadaX;
+            $answer[$key]["Y"] = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/".$answer[$key]["derivacion_id"]))[0]->coordenadaY;
+        }
         $clean = $this->utf8ize($answer);
         echo json_encode($clean);
     }
@@ -488,7 +493,7 @@ class PatientController {
             if (in_array('consulta_new', $_SESSION['permisos'])){
                 $msj = '';
                 if ($this->validarFormularioConsulta($datos,$msj)) {
-                    var_dump($_POST);
+                    //var_dump($_POST);
                     PatientRepository::getInstance()->agregarConsulta($_POST);
                     $parametros['mensaje'] = 'Consulta agregada';
                     $parametros['tipo_mensaje'] = 'text-success';
