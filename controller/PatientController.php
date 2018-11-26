@@ -58,11 +58,10 @@ class PatientController {
             if (($_POST['fueBusqueda']) == 0) {
                 if (in_array('paciente_index', $_SESSION['permisos'])) {
                     $pacientes = PatientRepository::getInstance()->getPacientes();                   
-                    //$pacientes = $this->getPacientes();
-                    var_dump($pacientes);
+                    $this->agregarDatosApi($pacientes);                    
                     ResourceController::getInstance()->setPaginado($parametros,$pacientes);
-                    $pacientes = array_chunk($pacientes, $parametros['cantElementosPorPagina']);
-                    $parametros['pacientes'] = $pacientes[ResourceController::getInstance()->paginaActual()];
+                    $listaPacientes = array_chunk($pacientes, $parametros['cantElementosPorPagina']);
+                    $parametros['pacientes'] = $listaPacientes[ResourceController::getInstance()->paginaActual()];
                     $parametros['fueBusqueda'] = 0;
                     ResourceController::getInstance()->mostrarHTMLConParametros('listadoPacientes.html.twig', $parametros);
                 }
@@ -78,6 +77,15 @@ class PatientController {
             ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
         }
     }    
+
+    public function agregarDatosApi(&$vector){
+        foreach ($vector as $id => $paciente) {
+            $vector[$id]["nombre_tipo_documento"] = json_decode(file_get_contents("https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento/".$paciente["tipo_doc_id"]))->nombre;
+            $vector[$id]["nombre_obra_social"] = json_decode(file_get_contents("https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social/".$paciente["obra_social_id"]))->nombre;
+            $vector[$id]["nombre_region_sanitaria"] = json_decode(file_get_contents("https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria/".$paciente["region_sanitaria_id"]))->nombre;
+            $vector[$id]["nombre_localidad"] = json_decode(file_get_contents("https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad/".$paciente["localidad_id"]))->nombre;
+        }
+    }
 
     public function mostrarFormulario($dato){
         $parametros = ResourceController::getInstance()->getConfiguration();
@@ -135,6 +143,7 @@ class PatientController {
                     $this->mostrarFormulario($noHubo);
                 }
                 else {
+                    $this->agregarDatosApi($pacientes);                    
                     ResourceController::getInstance()->setPaginado($parametros,$pacientes);
                     $pacientes = array_chunk($pacientes, $parametros['cantElementosPorPagina']);
                     $parametros['pacientes'] = $pacientes[ResourceController::getInstance()->paginaActual()];
@@ -235,7 +244,7 @@ class PatientController {
     }
 
     public function validarFormularioPaciente($datos,&$msj){
-        var_dump($datos);
+        
         if (! $this->tieneSoloLetras($datos['nombre'])) {
             $msj = "El nombre debe tener solo letras";
             return false;
@@ -318,7 +327,7 @@ class PatientController {
 
     public function crearPacienteNuevo(){
         //cambios de api no aplicados
-        var_dump($_POST);
+        
         $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id']) && ($_POST !== array())){
             $parametros["session"] = $_SESSION;
@@ -425,6 +434,7 @@ class PatientController {
             $parametros['session'] = $_SESSION;
             if (in_array('consulta_new', $_SESSION['permisos'])) {
                 $parametros['motivos'] = PatientRepository::getInstance()->getMotivos(); 
+                $parametros['derivaciones'] = APIController::getInstance()->obtenerAPI('https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones');
                 if ($datos != array()) {
                     $parametros['nombre_paciente'] = $datos['nombre_paciente'];
                     $parametros['apellido_paciente'] = $datos['apellido_paciente'];
@@ -459,6 +469,11 @@ class PatientController {
 
     public function obtenerConsultas($datos) {
         $answer = PatientRepository::getInstance()->getConsultas($datos['id']);
+        foreach ($answer as $key => $value) {
+            $answer[$key]["nombreInstitucion"] = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/".$answer[$key]["derivacion_id"]))[0]->nombre;
+            $answer[$key]["X"] = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/".$answer[$key]["derivacion_id"]))[0]->coordenadaX;
+            $answer[$key]["Y"] = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/".$answer[$key]["derivacion_id"]))[0]->coordenadaY;
+        }
         $clean = $this->utf8ize($answer);
         echo json_encode($clean);
     }
@@ -478,6 +493,7 @@ class PatientController {
             if (in_array('consulta_new', $_SESSION['permisos'])){
                 $msj = '';
                 if ($this->validarFormularioConsulta($datos,$msj)) {
+                    //var_dump($_POST);
                     PatientRepository::getInstance()->agregarConsulta($_POST);
                     $parametros['mensaje'] = 'Consulta agregada';
                     $parametros['tipo_mensaje'] = 'text-success';
@@ -508,6 +524,8 @@ class PatientController {
             $parametros["session"] = $_SESSION;
             if (in_array('consulta_show', $_SESSION['permisos'])){
                 $parametros['consulta'] = PatientRepository::getInstance()->getConsulta($_POST['id_consulta']);
+                $id_d = ($parametros['consulta'][0]['derivacion_id']);
+                $parametros['derivacion'] = APIController::getInstance()->obtenerAPI("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/".$id_d);
                 ResourceController::getInstance()->mostrarHTMLConParametros('mostrarConsulta.html.twig',$parametros);
             } 
             else {
@@ -525,6 +543,7 @@ class PatientController {
             $parametros["session"] = $_SESSION;
             if (in_array('consulta_update', $_SESSION['permisos'])){
                 $parametros['motivos'] = PatientRepository::getInstance()->getMotivos();
+                $parametros['derivaciones'] = APIController::getInstance()->obtenerAPI('https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones');
                 $parametros['consulta'] = PatientRepository::getInstance()->getConsulta($_POST['id_consulta']);
                 ResourceController::getInstance()->mostrarHTMLConParametros('editarConsulta.html.twig',$parametros);
             } 

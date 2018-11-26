@@ -1,5 +1,4 @@
 $(document).ready(function(){  
-    //traer partidos con ajax
     $('#pacientes').change(function () {
         var id = $(this).find(':selected')[0].value;
         $.ajax({
@@ -11,19 +10,23 @@ $(document).ready(function(){
             success: function (data) {
                 var options = '';
                 var isAuthenticated = $('.js-user-rating').data('isAuthenticated');
-                console.log(data);
-                options += '<li class="list-group-item row d-flex text-center">';
-                options += '<div id="consultas" class="row container-fluid">';
-                options += '<div class="col-2 text-info"> Fecha </div>';
-                options += '<div class="col-2 text-info"> Motivo </div>';
-                options += '<div class="col-5 text-info"> Diagnóstico </div>';
-                options += '<div class="col-1 text-info"></div>';
-                options += '<div class="col-1 text-info"></div>';
-                options += '<div class="col-1 text-info"></div>';
-                options += '</div>';
-                options += '</li>';
-                
-                console.log()
+                if (data.length != 0){
+                    options += '<div id="mapdiv" class="mapdiv" style="height: 300px; margin-left: 10%; margin-right:10%"></div>';
+                    options += '<ul id="lista" class="list-group">'
+                    options += '<li class="list-group-item row d-flex text-center">';
+                    options += '<div id="consultas" class="row container-fluid">';
+                    options += '<div class="col-2 text-info"> Fecha </div>';
+                    options += '<div class="col-2 text-info"> Motivo </div>';
+                    options += '<div class="col-5 text-info"> Diagnóstico </div>';
+                    options += '<div class="col-1 text-info"></div>';
+                    options += '<div class="col-1 text-info"></div>';
+                    options += '<div class="col-1 text-info"></div>';
+                    options += '</div>';
+                    options += '</li>';
+                    options += '</ul>';
+                } else {
+                    options += '<p class="alMedio text-center">No hay consultas previas</p>';
+                }
                 for (consulta in data) {
                 	options += '<li class="list-group-item row d-flex text-center">';
                     options += '<div id="consultas" class="row container-fluid">';
@@ -39,6 +42,32 @@ $(document).ready(function(){
                     options += '</li>';
                 }
                 $("#lista").html(options);
+                map = new OpenLayers.Map("mapdiv");
+                map.addLayer(new OpenLayers.Layer.OSM());
+
+    
+                for (var i = data.length - 1; i >= 0; i--) {
+                    var lonLat = new OpenLayers.LonLat( data[i].Y, data[i].X ).transform(
+                        new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                        map.getProjectionObject() // to Spherical Mercator Projection
+                    );
+          
+                    var zoom=16;
+
+                    var markers = new OpenLayers.Layer.Markers( "Markers" );
+                    map.addLayer(markers);
+    
+                    markers.addMarker(new OpenLayers.Marker(lonLat));
+    
+                    map.setCenter (lonLat, zoom);
+                }
+                /*var vectorSource = new ol.source.Vector({
+                    features: features      //add an array of features
+                });
+                var vectorLayer = new ol.layer.Vector({
+                    source: vectorSource
+                });
+                map.addLayer(vectorLayer);*/
             },
             dataType: "json"
         });

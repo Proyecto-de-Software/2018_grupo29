@@ -156,9 +156,14 @@ class PatientRepository extends PDORepository {
         return $answer;
     }
 
+    public function getGeneros(){
+        $answer = $this->queryList("SELECT * FROM genero",[]);
+        return $answer;
+    }
+
     public function getConsultas($id){
         $answer = $this->queryList("
-            SELECT c.id, c.fecha, c.articulacion_con_instituciones, c.internacion, c.diagnostico, c.observaciones, a.nombre_acompanamiento, mc.nombre, tm.nombre_tratamiento FROM consulta c 
+            SELECT c.id, c.fecha, c.articulacion_con_instituciones, c.internacion, c.diagnostico, c.observaciones, a.nombre_acompanamiento, mc.nombre, tm.nombre_tratamiento, c.derivacion_id FROM consulta c 
             INNER JOIN motivo_consulta mc ON c.motivo_id = mc.id 
             INNER JOIN acompanamiento a ON c.acompanamiento_id = a.id 
             INNER JOIN tratamiento_farmacologico tm ON c.tratamiento_farmacologico_id = tm.id
@@ -171,7 +176,7 @@ class PatientRepository extends PDORepository {
     public function agregarConsulta($datos) {
         $this->queryList("
             INSERT INTO `consulta` (`id`, `paciente_id`, `fecha`, `motivo_id`, `derivacion_id`, `articulacion_con_instituciones`, `internacion`, `diagnostico`, `observaciones`, `tratamiento_farmacologico_id`, `acompanamiento_id`)
-            VALUES (NULL, :id_paciente, :fecha , :id_motivo, '1', :articulacion, :internacion, :diagnostico, :observaciones, :tratamiento, :acompanamiento)"
+            VALUES (NULL, :id_paciente, :fecha , :id_motivo, :derivacion_id, :articulacion, :internacion, :diagnostico, :observaciones, :tratamiento, :acompanamiento)"
             ,[
                 "id_paciente" => $datos['id_paciente'],
                 "fecha" => $datos['fecha'],
@@ -181,13 +186,14 @@ class PatientRepository extends PDORepository {
                 "observaciones" => $datos['observaciones'],
                 "tratamiento" => $datos['tratamiento_farmacologico'],
                 "acompanamiento" => $datos['acompanamiento'],
-                "internacion" => $datos['internacion']
+                "internacion" => $datos['internacion'],
+                "derivacion_id" => $datos['derivacion']
             ]);
     }
 
     public function getConsulta($id){
         $answer = $this->queryList("
-            SELECT c.id, c.fecha, c.motivo_id, c.tratamiento_farmacologico_id, c.articulacion_con_instituciones, c.internacion, c.diagnostico, c.observaciones, a.nombre_acompanamiento, mc.nombre, tm.nombre_tratamiento, p.nombre as nombre_paciente, p.apellido
+            SELECT c.id, c.derivacion_id, c.fecha, c.motivo_id, c.tratamiento_farmacologico_id, c.articulacion_con_instituciones, c.internacion, c.diagnostico, c.observaciones, a.nombre_acompanamiento, mc.nombre, tm.nombre_tratamiento, p.nombre as nombre_paciente, p.apellido
             FROM consulta c 
             INNER JOIN motivo_consulta mc ON c.motivo_id = mc.id 
             INNER JOIN acompanamiento a ON c.acompanamiento_id = a.id 
@@ -208,6 +214,7 @@ class PatientRepository extends PDORepository {
             internacion = :internacion ,
             diagnostico = :diagnostico ,
             observaciones = :observaciones ,
+            derivacion_id= :derivacion ,
             tratamiento_farmacologico_id = :tratamiento ,
             acompanamiento_id = :acompanamiento
             WHERE `consulta`.`id` = :id_consulta
@@ -221,13 +228,19 @@ class PatientRepository extends PDORepository {
                 "observaciones" => $datos['observaciones'],
                 "tratamiento" => $datos['tratamiento_farmacologico'],
                 "acompanamiento" => $datos['acompanamiento'],
-                "id_consulta" => $datos['id_consulta']
+                "id_consulta" => $datos['id_consulta'],
+                "derivacion" => $datos['derivacion']
             ]);
         return $answer;
     }
 
     public function deleteConsulta($id) {
         $this->queryList("DELETE FROM consulta WHERE id = :id",["id" => $id]);
+    }
+
+    public function cantConsultas(){
+        $answer = $this->queryList("SELECT COUNT(*) as cantidad FROM consulta",[]);
+        return $answer;
     }
 }
 
