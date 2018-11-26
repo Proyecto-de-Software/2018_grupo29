@@ -44,7 +44,7 @@ $(document).ready(function(){
                 $("#lista").html(options);
                 map = new OpenLayers.Map("mapdiv");
                 map.addLayer(new OpenLayers.Layer.OSM());
-
+                //var icon = new OpenLayers.Icon('./templates/img/marker.png');
     
                 for (var i = data.length - 1; i >= 0; i--) {
                     var lonLat = new OpenLayers.LonLat( data[i].Y, data[i].X ).transform(
@@ -56,8 +56,10 @@ $(document).ready(function(){
 
                     var markers = new OpenLayers.Layer.Markers( "Markers" );
                     map.addLayer(markers);
-    
-                    markers.addMarker(new OpenLayers.Marker(lonLat));
+                    var size = new OpenLayers.Size(21,25);
+                    var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+                    var icon = new OpenLayers.Icon('./templates/img/marker.png', size, offset);
+                    markers.addMarker(new OpenLayers.Marker(lonLat,icon));
     
                     map.setCenter (lonLat, zoom);
                 }
