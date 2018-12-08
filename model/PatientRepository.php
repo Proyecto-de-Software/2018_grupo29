@@ -163,7 +163,7 @@ class PatientRepository extends PDORepository {
 
     public function getConsultas($id){
         $answer = $this->queryList("
-            SELECT c.id, c.fecha, c.articulacion_con_instituciones, c.internacion, c.diagnostico, c.observaciones, a.nombre_acompanamiento, mc.nombre, tm.nombre_tratamiento FROM consulta c 
+            SELECT c.id, c.fecha, c.articulacion_con_instituciones, c.internacion, c.diagnostico, c.observaciones, a.nombre_acompanamiento, mc.nombre, tm.nombre_tratamiento, c.derivacion_id FROM consulta c 
             INNER JOIN motivo_consulta mc ON c.motivo_id = mc.id 
             INNER JOIN acompanamiento a ON c.acompanamiento_id = a.id 
             INNER JOIN tratamiento_farmacologico tm ON c.tratamiento_farmacologico_id = tm.id
