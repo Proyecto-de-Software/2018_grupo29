@@ -14,10 +14,12 @@ require_once('controller/UserController.php');
 require_once('controller/PatientController.php');
 require_once('controller/ConfigurationController.php');
 require_once('controller/ReportesController.php');
+require_once('controller/RolesController.php');
 require_once('model/PDORepository.php');
 require_once('model/UserRepository.php');
 require_once('model/PatientRepository.php');
 require_once('model/Resource.php');
+require_once('model/RolesRepository.php');
 require_once('model/ConfigurationRepository.php');
 require_once('view/TwigView.php');
 require_once('view/SimpleResourceList.php');
@@ -109,6 +111,12 @@ if(!(isset($_GET["action"]))) {
 	ReportesController::getInstance()->mostrarPorGenero();
 }elseif ($_GET["action"] == 'mostrarGraficosPorLocalidad'){
 	ReportesController::getInstance()->mostrarPorLocalidad();
+}elseif ($_GET["action"] == 'moduloRoles'){
+	RolesController::getInstance()->menuRoles();
+}elseif ($_GET["action"] == 'listadoRoles'){
+	RolesController::getInstance()->listarRoles();
+}elseif ($_GET["action"] == 'formularioNuevoRol'){
+	RolesController::getInstance()->mostrarFormulario();
 }else{
 	ResourceController::getInstance()->menuPrincipal('home.html.twig');
 }

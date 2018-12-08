@@ -1,0 +1,21 @@
+{% include "home.html.twig" %}
+
+<h2 class="alMedio text-center">Listado de Roles</h2>
+<br><br>
+
+<div class="row container-fluid">
+	
+		{% for rol in datos.permisosPorRol %}
+			<div class="col-sm-3">
+				<h4>{{rol.nombreRol}}</h4>
+				<button class="btn bg-warning">Editar</button>
+				<button class="btn bg-danger">Eliminar</button>
+				<br><br>
+				{% for permiso in rol %} 
+						<p>{{permiso.nombre}}</p>
+				{% endfor %}
+				<br><br>
+			</div>
+		{% endfor %}
+
+</div>

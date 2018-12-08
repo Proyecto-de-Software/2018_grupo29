@@ -1,0 +1,41 @@
+{% include "home.html.twig" %}
+<link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+<script type="text/javascript" src="./templates/js/openLayers.js"></script>
+<script type="text/javascript" src="./templates/js/jquery.js"></script>
+<script type="text/javascript" src="./templates/js/ajaxParaConsulta.js"></script>
+<script type="text/javascript" src="./templates/js/validacionesConsulta.js"></script>
+<script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js" type="module"></script>
+	<div class="row container-fluid alMedio">
+		<div class="col-sm-4"> </div>
+		<div class="col-sm-4">
+			<h1 class="alMedio text-center">Nuevo rol</h1>
+		<div class="col-sm-4"> </div>
+	</div>
+
+	<div class="row container-fluid">
+		<div class="col-sm-3"></div>
+		<div class="col-sm-6">
+			<form action="" name="formularioAltaRol" method="POST">
+				<label for="nombre">Nombre</label>
+				<div class="form-group">
+				    <input type="text" name="nombre" class="form-control" required>
+				</div>
+				<label for="nombre">Permisos</label>
+				<div class="form-check">
+
+					{% for permiso in datos.permisos %}
+					 	<label class="container">{{ permiso.nombre }}
+							<input type="checkbox" name="permiso[]" value="{{ permiso.id }}">
+							<span class="checkmark"></span>		
+						</label>	
+					{% endfor %}
+				</div>
+				<div class="form-group">
+				 	<button class="btn btn-outline-primary text-black btn my-2 my-sm-0 btn-lg" type="submit">¡Listo!
+					</button>
+				 </div>
+			</form> 
+		</div>
+		<div class="col-sm-3"></div>
+	</div>
+</div>
