@@ -117,6 +117,14 @@ if(!(isset($_GET["action"]))) {
 	RolesController::getInstance()->listarRoles();
 }elseif ($_GET["action"] == 'formularioNuevoRol'){
 	RolesController::getInstance()->mostrarFormulario();
+}elseif ($_GET["action"] == 'agregarNuevoRol'){
+	RolesController::getInstance()->agregarNuevoRol();
+}elseif ($_GET["action"] == 'deleteRol'){
+	RolesController::getInstance()->deleteRol();
+}elseif ($_GET["action"] == 'updateRol'){
+	RolesController::getInstance()->updateRol();
+}elseif ($_GET["action"] == 'editarRol'){
+	RolesController::getInstance()->editarRol();
 }else{
 	ResourceController::getInstance()->menuPrincipal('home.html.twig');
 }
