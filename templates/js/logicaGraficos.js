@@ -27,8 +27,33 @@ function dibujar(datos) {
         data: datos['series']
     }],
     exporting: {
-            enabled: true
+    chartOptions: {
+      chart: {
+        height: 600,
+        marginBottom: 300,
+        events: {
+          load: function() {
+            var renderer = this.renderer;
+
+            renderer.path(['M', 30, 385, 'L', 570, 385, 'Z']).attr({
+              stroke: 'black',
+              'stroke-width': 1
+            }).add();
+            var text = document.getElementById("listado").textContent;
+            renderer.text(text, 30, 400).add();
+          }
+        }
+      },
+      legend: {
+        y: -220
+      },
+      credits: {
+        position: {
+          y: -220
+        }
+      }
     }
+  }
 });
 }
 
@@ -50,7 +75,6 @@ $(document).ready(function(){
 function pruebaDivAPdf() {
         var pdf = new jsPDF('p', 'pt', 'letter');
         source = $('#listado')[0];
-
         specialElementHandlers = {
             '#bypassme': function (element, renderer) {
                 return true

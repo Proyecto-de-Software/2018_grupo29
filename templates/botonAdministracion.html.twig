@@ -7,7 +7,7 @@
 			{% endif %}
 			
 			{% if ("rol_index" in datos.session.permisos) or ("rol_new" in datos.session.permisos) or ("rol_update" in datos.session.permisos) or ("rol_destroy" in datos.session.permisos) or ("rol_show" in datos.session.permisos) %}
-			<a class="dropdown-item" href="#">Roles</a>	
+			<a class="dropdown-item" href="./index.php?action=moduloRoles">Roles</a>	
 			{% endif %}
 
 			{% if ("permiso_index" in datos.session.permisos) or ("permiso_new" in datos.session.permisos) or ("permiso_update" in datos.session.permisos) or ("permiso_destroy" in datos.session.permisos) or ("permiso_show" in datos.session.permisos) %}

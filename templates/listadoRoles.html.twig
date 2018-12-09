@@ -1,0 +1,46 @@
+{% include "home.html.twig" %}
+
+<h2 class="alMedio text-center">Listado de Roles</h2>
+<br>
+<p class="text-center {{datos.tipo_mensaje}}">{{datos.mensaje}}</p>
+<br>
+<div class="row container-fluid">
+	
+		{% for rol in datos.permisosPorRol %}
+			<div class="col-sm-3">
+				<h4>{{rol.nombreRol}}</h4>
+				{% if ("rol_update" in datos.session.permisos) and (rol.nombreRol != 'Administrador') %}
+					<form method="POST" action="./index.php?action=updateRol">
+						<input type="hidden" name="id_rol" value="{{rol.id_rol}}">
+						<input type="hidden" name="nombre_rol" value="{{rol.nombreRol}}">
+						<input type="submit" name="enviar" value="Editar" class="btn btn-warning">
+					</form>
+					<br>
+					<form method="POST" action="./index.php?action=mostrarRolesPermisos">
+						<input type="hidden" name="id_rol" value="{{rol.id_rol}}">
+						<input type="hidden" name="nombre_rol" value="{{rol.nombreRol}}">
+						<input type="submit" name="enviar" value="Permisos" class="btn btn-muted">
+					</form>
+				{% else %}
+					<button class="btn btn-warning">No disp.</button><br><br>
+					<button class="btn btn-muted">No disp.</button>
+				{% endif %}
+				<br>
+				{% if ("rol_destroy" in datos.session.permisos) and (rol.nombreRol != 'Administrador') %}
+					<form method="POST" action="./index.php?action=deleteRol" onsubmit="return confirmacion('¿Está seguro que quiere eliminar este rol?')">
+						<input type="hidden" name="id_rol" value="{{rol.id_rol}}">
+						<input type="submit" name="enviar" value="Eliminar" class="btn btn-danger">
+					</form>
+				{% else %}
+					<br>
+					<button class="btn btn-danger">No disp.</button>
+				{% endif %}
+				<br><br>
+				{% for permiso in rol %} 
+						<p>{{permiso.nombre}}</p>
+				{% endfor %}
+				<br>
+			</div>
+		{% endfor %}
+
+</div>
