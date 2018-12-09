@@ -15,8 +15,15 @@
 						<input type="hidden" name="nombre_rol" value="{{rol.nombreRol}}">
 						<input type="submit" name="enviar" value="Editar" class="btn btn-warning">
 					</form>
+					<br>
+					<form method="POST" action="./index.php?action=mostrarRolesPermisos">
+						<input type="hidden" name="id_rol" value="{{rol.id_rol}}">
+						<input type="hidden" name="nombre_rol" value="{{rol.nombreRol}}">
+						<input type="submit" name="enviar" value="Permisos" class="btn btn-muted">
+					</form>
 				{% else %}
-					<button class="btn btn-warning">No disp.</button>
+					<button class="btn btn-warning">No disp.</button><br><br>
+					<button class="btn btn-muted">No disp.</button>
 				{% endif %}
 				<br>
 				{% if ("rol_destroy" in datos.session.permisos) and (rol.nombreRol != 'Administrador') %}

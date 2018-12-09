@@ -103,11 +103,13 @@ class RolesController {
                     $parametros['tipo_mensaje'] = "text-success";
                     $parametros['mensaje'] = "Se ha agregado un nuevo rol";
                     $parametros['permisos'] = RolesRepository::getInstance()->getPermisos();
+                    $parametros['titulo'] = "Nuevo rol"; 
                     ResourceController::getInstance()->mostrarHTMLConParametros('formularioNuevoRol.html.twig',$parametros);
                 }   
                 else {
                     $parametros['tipo_mensaje'] = "text-danger";
                     $parametros['mensaje'] = "El nombre del rol debe ser único";
+                    $parametros['titulo'] = "Nuevo rol"; 
                     $parametros['permisos'] = RolesRepository::getInstance()->getPermisos();
                     ResourceController::getInstance()->mostrarHTMLConParametros('formularioNuevoRol.html.twig',$parametros);
                 }
@@ -181,9 +183,15 @@ class RolesController {
         if (isset($_SESSION['id'])) { 
             $parametros["session"] = $_SESSION;
             if (in_array('rol_update', $_SESSION['permisos'])){
-               RolesRepository::getInstance()->updateNombreRol($_POST);
-               $parametros['tipo_mensaje'] = "text-success";
-               $parametros['mensaje'] = "Se actualizado el nombre del rol";
+               if ($this->verificarUnicidad($_POST['nombre'])){
+                    RolesRepository::getInstance()->updateNombreRol($_POST);
+                    $parametros['tipo_mensaje'] = "text-success";
+                    $parametros['mensaje'] = "Se actualizado el nombre del rol";
+               }
+               else {
+                   $parametros['tipo_mensaje'] = "text-danger";
+                   $parametros['mensaje'] = "El nombre de rol debe ser único";
+                }
                $permisosPorRol = array();
                 $roles = RolesRepository::getInstance()->getRoles();
                 foreach ($roles as $rol) {
@@ -194,6 +202,60 @@ class RolesController {
                 }
                 $parametros['permisosPorRol'] = $permisosPorRol;
                 ResourceController::getInstance()->mostrarHTMLConParametros('listadoRoles.html.twig', $parametros);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+        }
+    }
+
+    public function manejoRolesPermisos(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        if (isset($_SESSION['id'])) { 
+            $parametros["session"] = $_SESSION;
+            if (in_array('rol_update', $_SESSION['permisos'])){
+                $parametros['permisosDelRol'] = RolesRepository::getInstance()->getPermisosPorRol($_POST['id_rol']);
+                $parametros['permisos'] = RolesRepository::getInstance()->getPermisosQueRolNoTiene($_POST['id_rol']);
+                $parametros['nombreRol'] = $_POST['nombre_rol'];
+                $parametros['id_rol'] = $_POST['id_rol'];
+                ResourceController::getInstance()->mostrarHTMLConParametros('manejoRolesPermisos.html.twig',$parametros);
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+        }
+    }
+    public function asignarPermiso(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        if (isset($_SESSION['id'])) { 
+            $parametros["session"] = $_SESSION;
+            if (in_array('rol_update', $_SESSION['permisos'])){
+                $datos['id'] = $_POST['id_rol'];
+                $datos['permiso'] = $_POST['id_permiso'];
+                RolesRepository::getInstance()->agregarPermisoARol($datos);
+                $this->manejoRolesPermisos();
+            }
+            else {
+                ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+            }
+        }
+        else {
+            ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
+        }
+    }
+    public function desasignarPermiso(){
+        $parametros = ResourceController::getInstance()->getConfiguration();
+        if (isset($_SESSION['id'])) { 
+            $parametros["session"] = $_SESSION;
+            if (in_array('rol_update', $_SESSION['permisos'])){
+                RolesRepository::getInstance()->desasignarPermiso($_POST);
+                $this->manejoRolesPermisos();
             }
             else {
                 ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);

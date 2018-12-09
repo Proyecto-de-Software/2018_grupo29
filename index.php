@@ -125,6 +125,14 @@ if(!(isset($_GET["action"]))) {
 	RolesController::getInstance()->updateRol();
 }elseif ($_GET["action"] == 'editarRol'){
 	RolesController::getInstance()->editarRol();
+}elseif ($_GET["action"] == 'mostrarRolesPermisos'){
+	RolesController::getInstance()->manejoRolesPermisos();
+}elseif ($_GET["action"] == 'asignarPermiso'){
+	RolesController::getInstance()->asignarPermiso();
+}elseif ($_GET["action"] == 'desasignarPermiso'){
+	RolesController::getInstance()->desasignarPermiso();
 }else{
 	ResourceController::getInstance()->menuPrincipal('home.html.twig');
 }
+
+

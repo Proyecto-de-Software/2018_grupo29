@@ -58,4 +58,13 @@ class RolesRepository extends PDORepository {
         $this->queryList("UPDATE `rol` SET `nombre` = :nombre WHERE `rol`.`id` = :id",["nombre" => $datos['nombre'],"id" => $datos['id_rol']]);
     }
 
+    public function getPermisosQueRolNoTiene($id) {
+        $answer = $this->queryList("SELECT * FROM permiso p WHERE p.id NOT IN (SELECT p.id FROM rol_tiene_permiso rtp INNER JOIN permiso p ON p.id = rtp.permiso_id WHERE rtp.rol_id = :id)",["id" => $id]);
+        return $answer;
+    }
+
+    public function desasignarPermiso($datos){
+        $this->queryList("DELETE FROM rol_tiene_permiso WHERE rol_id = :rol_id AND permiso_id = :permiso_id",["rol_id" => $datos['id_rol'], "permiso_id" => $datos['id_permiso']]);
+    }
+
 }
