@@ -51,7 +51,7 @@ class PatientRepository extends PDORepository {
                 p.apellido LIKE CONCAT('%', :apellido, '%') AND
                 p.tipo_doc_id LIKE CONCAT('%', :tipo_doc, '%') AND
                 p.numero LIKE CONCAT('%', :numero_documento, '%') AND
-                p.nro_historia_clinica LIKE CONCAT('%', :nro_historia_clinica ,'%')",
+                p.id_paciente LIKE CONCAT('%', :nro_historia_clinica ,'%')",
             ["nombre" => $datos['nombre'],
              "apellido" => $datos['apellido'],
              "tipo_doc" => $datos['nombre_tipo_documento'],
@@ -62,14 +62,14 @@ class PatientRepository extends PDORepository {
     }
     
     public function crearPacienteNN($datos) {
-        $answer = $this->queryList("INSERT INTO `paciente` (`id_paciente`, `apellido`, `nombre`, `fecha_nac`, `lugar_nac`, `localidad_id`, `region_sanitaria_id`, `domicilio`, `genero_id`, `tiene_documento`, `tipo_doc_id`, `numero`, `tel`, `nro_historia_clinica`, `nro_carpeta`, `obra_social_id`) VALUES (NULL, 'NN', '', '', NULL, '1', '1', '', '1', '0', '1', '', '', :nro_historia_clinica, NULL, '1')",["nro_historia_clinica" => $datos['historiaClinicaRandom']]);
+        $answer = $this->queryList("INSERT INTO `paciente` (`id_paciente`, `apellido`, `nombre`, `fecha_nac`, `lugar_nac`, `localidad_id`, `region_sanitaria_id`, `domicilio`, `genero_id`, `tiene_documento`, `tipo_doc_id`, `numero`, `tel`, `nro_carpeta`, `obra_social_id`) VALUES (NULL, 'NN', '', '', NULL, '1', '1', '', '1', '0', '1', '', '', NULL, '1')",[]);
         return $answer;
     }
 
-    public function getHistoriasClinicas() {
+    /*public function getHistoriasClinicas() {
         $answer = $this->queryList("SELECT nro_historia_clinica FROM getPacientes",[]);
         return $answer;
-    }
+    }*/
 
     public function eliminarPaciente($id) {
         $this->queryList("DELETE FROM consulta WHERE paciente_id = :id",["id" => $id]);
@@ -92,7 +92,7 @@ class PatientRepository extends PDORepository {
     }*/
 
     public function crearPaciente($datos) {
-        $answer = $this->queryDevuelveId("INSERT INTO paciente (apellido, nombre, fecha_nac, lugar_nac, localidad_id, region_sanitaria_id, domicilio, genero_id, tiene_documento, tipo_doc_id, numero, tel, nro_historia_clinica, nro_carpeta, obra_social_id) VALUES ( :apellido, :nombre, :fecha, :partido, :localidad, :region_sanitaria , :domicilio, :genero_id, :tiene_documento, :tipo_documento_id, :numero , :tel, :nro_historia_clinica, :nro_carpeta, :obra_social_id);"
+        $answer = $this->queryDevuelveId("INSERT INTO paciente (apellido, nombre, fecha_nac, lugar_nac, localidad_id, region_sanitaria_id, domicilio, genero_id, tiene_documento, tipo_doc_id, numero, tel, nro_carpeta, obra_social_id) VALUES ( :apellido, :nombre, :fecha, :partido, :localidad, :region_sanitaria , :domicilio, :genero_id, :tiene_documento, :tipo_documento_id, :numero , :tel, :nro_carpeta, :obra_social_id);"
 
         ,[
             "apellido" => $datos['apellido'],
@@ -105,7 +105,6 @@ class PatientRepository extends PDORepository {
             "tipo_documento_id" => $datos['tipo_documento'],
             "numero" => $datos['numero'],
             "tel" => $datos['tel'],
-            "nro_historia_clinica" => $datos['nro_historia_clinica'],
             "nro_carpeta" => $datos['nro_carpeta'],
             "obra_social_id" => $datos['obra_social_id'],
             "region_sanitaria" => $datos['region_sanitaria_id'],
@@ -120,7 +119,7 @@ class PatientRepository extends PDORepository {
     }
 
     public function actualizarPaciente($datos){
-        $this->queryList("UPDATE paciente set nombre=:nombre, apellido=:apellido, domicilio=:domicilio, localidad_id=:localidad, tiene_documento=:tieneDoc, obra_social_id=:obraSoc, genero_id=:genero, tipo_doc_id=:tipoDoc, fecha_nac=:fecha, numero=:nro, nro_historia_clinica=:nroHC, nro_carpeta=:nroC, tel=:tel WHERE id_paciente=:id"
+        $this->queryList("UPDATE paciente set nombre=:nombre, apellido=:apellido, domicilio=:domicilio, localidad_id=:localidad, tiene_documento=:tieneDoc, obra_social_id=:obraSoc, genero_id=:genero, tipo_doc_id=:tipoDoc, fecha_nac=:fecha, numero=:nro, nro_carpeta=:nroC, tel=:tel WHERE id_paciente=:id"
             ,[
                 "nombre" => $datos["nombre"],
                 "apellido" => $datos["apellido"],
@@ -132,18 +131,17 @@ class PatientRepository extends PDORepository {
                 "tipoDoc" => $datos["tipo_documento"],
                 "fecha" => $datos["fecha_nac"],
                 "nro" => $datos["numero"],
-                "nroHC" => $datos["nro_historia_clinica"],
                 "nroC" => $datos["nro_carpeta"],
                 "tel" => $datos["tel"],
                 "id" => $datos["id_paciente"],
             ]);
     }
 
-    public function unicidadNroHistoriaClinica($numero,$id) {
+    /*public function unicidadNroHistoriaClinica($numero,$id) {
         $answer = $this->queryList("SELECT nro_historia_clinica FROM paciente WHERE nro_historia_clinica = :nro and id_paciente != :id",[
             "nro" => $numero, "id" => $id]);
         return $answer;
-    }
+    }*/
 
     public function unicidadNroCarpeta($numero,$id) {
         $answer = $this->queryList("SELECT nro_carpeta FROM paciente WHERE nro_carpeta = :nro and id_paciente != :id",[

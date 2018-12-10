@@ -92,7 +92,7 @@ class PatientController {
         if (isset($_SESSION['id'])) {
             $parametros["session"] = $_SESSION;
             if (in_array('paciente_index', $_SESSION['permisos'])) {
-                $historiasClinicas = PatientRepository::getInstance()->getHistoriasClinicas();
+                /*$historiasClinicas = PatientRepository::getInstance()->getHistoriasClinicas();
                 $i = 0;
                 $numerosHistoriasClinicas = array();
                 foreach ($historiasClinicas as $historia) {
@@ -102,7 +102,7 @@ class PatientController {
                 do {
                     $numero = rand(1, 999999);
                 } while (in_array($numero, $numerosHistoriasClinicas));
-                $parametros['historiaClinicaRandom'] = $numero;
+                $parametros['historiaClinicaRandom'] = $numero;*/
                 if ($dato == 1) {
                     $parametros['mensaje'] = 'No se ha encontrado ningún paciente con esos datos.';
                     $parametros['tipo_mensaje'] = 'text-danger';
@@ -136,7 +136,7 @@ class PatientController {
                 if ($_POST['numero_documento'] != NULL) {$parametro['numero_documento'] = $_POST['numero_documento'];}
                 else {$parametro['numero_documento'] = '';}
                 if ($_POST['nro_historia_clinica'] != NULL) {$parametro['nro_historia_clinica'] = $_POST['nro_historia_clinica'];}
-                else {$parametro['nro_historia_clinica'] = '';} 
+                else {$parametro['nro_historia_clinica'] = '';}
                 $pacientes = PatientRepository::getInstance()->buscarPaciente($parametro);
                 if (count($pacientes)==0){
                     $noHubo = 1;
@@ -166,9 +166,9 @@ class PatientController {
             if(in_array('paciente_new', $_SESSION['permisos'])){
                 //$parametro['nro_historia_clinica'] = $datos;
                 PatientRepository::getInstance()->crearPacienteNN($datos);
-                $parametros['mensaje'] = 'Se ha creado un NN con historia clínica '.$datos["historiaClinicaRandom"];
+                $parametros['mensaje'] = 'Se ha creado un NN con historia clínica '.$datos["id_paciente"];
                 $parametros['tipo_mensaje'] = 'text-success';
-                $parametros['historiaClinicaRandom'] = 0;
+                //$parametros['historiaClinicaRandom'] = 0;
                 $parametros["session"] = $_SESSION;
                 ResourceController::getInstance()->mostrarHTMLConParametros('busquedaPaciente.html.twig', $parametros);
             } else {
@@ -257,12 +257,12 @@ class PatientController {
             $msj = "El número de documento debe tener solo números";
             return false;
         }
-        if ($datos['nro_historia_clinica'] != NULL) {
+        /*if ($datos['nro_historia_clinica'] != NULL) {
             if ((! $this->tieneSoloNumeros($datos['nro_historia_clinica'])) || (strlen($datos['nro_historia_clinica']) > 6 )){
                 $msj = "El número de historia clínica debe tener solo números y máximo 6 dígitos";
                 return false;
             }
-        }
+        }*/
         if ($datos['nro_carpeta'] != NULL) {
             if ((! $this->tieneSoloNumeros($datos['nro_carpeta'])) || (strlen($datos['nro_carpeta']) > 5)) {
                 $msj = "El número de carpeta debe tener solo números y máximo 5 dígitos";
@@ -275,18 +275,18 @@ class PatientController {
                 return false;
             }
         }
-        if(!$this->existeLaHistoriaClinica()){
+        /*if(!$this->existeLaHistoriaClinica()){
             $msj = 'El número de historia clinica ya existe';
             return false;
-        }     
+        }*/     
         if(!$this->existeLaCarpeta()){
             $msj = 'El número de carpeta ya existe';
             return false;
-        }   
+        }  
         return true;
     }
 
-    public function existeLaHistoriaClinica(){
+    /*public function existeLaHistoriaClinica(){
         if ($_POST['nro_historia_clinica'] !== "") {
             if (count(PatientRepository::getInstance()->unicidadNroHistoriaClinica($_POST['nro_historia_clinica'],$_POST["id_paciente"])) != 0){
                 return false;
@@ -307,7 +307,7 @@ class PatientController {
             }
         } else {
             return true;
-        }
+        }*/
 
         /*$parametros = ResourceController::getInstance()->getConfiguration();
         if ($_POST['nro_carpeta'] != 0) {
@@ -322,11 +322,10 @@ class PatientController {
         }
         else {
             $_POST['nro_carpeta'] = '';
-        }*/
-    }
+        }
+    }*/
 
     public function crearPacienteNuevo(){
-        //cambios de api no aplicados
         
         $parametros = ResourceController::getInstance()->getConfiguration();
         if (isset($_SESSION['id']) && ($_POST !== array())){
@@ -349,7 +348,7 @@ class PatientController {
                         $_POST['region_sanitaria_id'] = '1';
                     }
                     if ($_POST['nro_carpeta'] == "") $_POST['nro_carpeta'] = 0;
-                    if ($_POST['nro_historia_clinica'] == "") $_POST['nro_historia_clinica'] = 0;
+                    //if ($_POST['nro_historia_clinica'] == "") $_POST['nro_historia_clinica'] = 0;
                     if ($_POST['obra_social_id'] == 0) $_POST['obra_social_id'] = 1;
                     $answer = PatientRepository::getInstance()->crearPaciente($_POST);
                     $parametros['id_paciente'] = $answer;
@@ -402,7 +401,7 @@ class PatientController {
                 $msj = '';
                 if ($this->validarFormularioPaciente($_POST,$msj)) {
                     if ($_POST['nro_carpeta'] == "") $_POST['nro_carpeta'] = 0;
-                    if ($_POST['nro_historia_clinica'] == "") $_POST['nro_historia_clinica'] = 0;
+                    //if ($_POST['nro_historia_clinica'] == "") $_POST['nro_historia_clinica'] = 0;
                     PatientRepository::getInstance()->actualizarPaciente($_POST);
                     PatientController::getInstance()->obtenerPacientes();
                 }
