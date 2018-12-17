@@ -1,60 +1,84 @@
 function dibujar(datos) {
-	Highcharts.chart('container', {
-    chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie'
-    },
-    title: {
-        text: datos['titulo']
-    },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: false
-            },
-            showInLegend: true
-        }
-    },
-    series: [{
-        colorByPoint: true,
-        data: datos['series']
-    }],
-    exporting: {
-    chartOptions: {
-      chart: {
-        height: 600,
-        marginBottom: 300,
-        events: {
-          load: function() {
-            var renderer = this.renderer;
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        title: {
+            text: datos['titulo']
+        },
+        data: [{
+            type: "pie",
+            startAngle: 240,
+            yValueFormatString: "##0.00\"%\"",
+            indexLabel: "{name} {y}",
+            dataPoints: datos['series']
+        }]
+    });
+    chart.render();
+    var canvas = $("#chartContainer .canvasjs-chart-canvas").get(0);
+    var dataURL = canvas.toDataURL();
+    //console.log(dataURL);
+    $("#exportButton").click(function(){
+        var dataURL = canvas.toDataURL();
+        var pdf = new jsPDF('p', 'pt', 'letter');
+        pdf.addImage(dataURL, 'JPEG', 100, 20, 450, 120); //addImage(image, format, x-coordinate, y-coordinate, width, height)
+        var x = 20;
+        var y = 160;
+        $('#listado ul').each( function (index){
+            //console.log($(this).find('li'));
+            //console.log($(this).contents());
+            pageHeight= pdf.internal.pageSize.height;
+            console.log(pdf.internal.pageSize.height,y);
+            if (y >= pageHeight - 100){
+                pdf.addPage();
+                y = 20 // Restart height position
+            }
+            //console.log($(this).attr("id"));
+            pdf.text(x, y, $(this).attr("id"));
+            var amount = 1;
+            $(this).find('li').each( function(index){
+                //console.log($(this).text());
+                //console.log($(this).contents());
+                // Before adding new content
+                y += 50; // Height position of new content
+                amount += 1;
+                if (y >= pageHeight - 100){
+                    pdf.addPage();
+                    y = 100 // Restart height position
+                }
+                pdf.text(x, y, $(this).text());
+                //addToPDF($(this),pdf);
+            });
+            y += amount*30;
+        });
+        pdf.save("download.pdf");
+    });
 
-            renderer.path(['M', 30, 385, 'L', 570, 385, 'Z']).attr({
-              stroke: 'black',
-              'stroke-width': 1
-            }).add();
-            var text = document.getElementById("listado").textContent;
-            renderer.text(text, 30, 400).add();
-          }
+}
+
+function addToPDF(source,pdf){
+    specialElementHandlers = {
+        '#bypassme': function (element, renderer) {
+            return true
         }
-      },
-      legend: {
-        y: -220
-      },
-      credits: {
-        position: {
-          y: -220
-        }
-      }
+    };
+    pageHeight= pdf.internal.pageSize.height;
+    var tm = 80;
+    if (tm >= pageHeight){
+        doc.addPage();
+        tm = 0 // Restart height position
     }
-  }
-});
+    margins = {
+        top: tm,
+        bottom: 60,
+        left: 40,
+        width: 522
+    };        
+    pdf.fromHTML(
+    source, 
+    margins.left, // x coord
+    margins.top, { // y coord
+        'width': margins.width, 
+        'elementHandlers': specialElementHandlers
+    });
 }
 
 $(document).ready(function(){
@@ -70,33 +94,3 @@ $(document).ready(function(){
         $("#listado").toggle();
     });
 });
-
-
-function pruebaDivAPdf() {
-        var pdf = new jsPDF('p', 'pt', 'letter');
-        source = $('#listado')[0];
-        specialElementHandlers = {
-            '#bypassme': function (element, renderer) {
-                return true
-            }
-        };
-        margins = {
-            top: 80,
-            bottom: 60,
-            left: 40,
-            width: 522
-        };
-
-        pdf.fromHTML(
-            source, 
-            margins.left, // x coord
-            margins.top, { // y coord
-                'width': margins.width, 
-                'elementHandlers': specialElementHandlers
-            },
-
-            function (dispose) {
-                pdf.save('Listado.pdf');
-            }, margins
-        );
-    }

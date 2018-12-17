@@ -62,7 +62,7 @@ class ReportesController {
             $parametros['titulo'] = 'Consultas agrupadas por motivo';
             $arr = array('series' => $series, 'titulo' => 'Gráfico por motivo');
             $parametros['data'] = json_encode($arr);
-            ResourceController::getInstance()->mostrarHTMLConParametros('mostrarReporte.html.twig',$parametros);
+            ResourceController::getInstance()->mostrarHTMLConParametros('mostrarReporte2.html.twig',$parametros);
         }
         else {
             ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
@@ -91,7 +91,7 @@ class ReportesController {
             $parametros['titulo'] = 'Consultas agrupadas por género';
             $arr = array('series' => $series, 'titulo' => 'Gráfico por género');
             $parametros['data'] = json_encode($arr);
-            ResourceController::getInstance()->mostrarHTMLConParametros('mostrarReporte.html.twig',$parametros);
+            ResourceController::getInstance()->mostrarHTMLConParametros('mostrarReporte2.html.twig',$parametros);
         }
         else {
             ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);
@@ -122,7 +122,7 @@ class ReportesController {
             $parametros['titulo'] = 'Consultas agrupadas por localidad';
             $arr = array('series' => $series, 'titulo' => 'Gráfico por localidad');
             $parametros['data'] = json_encode($arr);
-            ResourceController::getInstance()->mostrarHTMLConParametros('mostrarReporte.html.twig',$parametros);
+            ResourceController::getInstance()->mostrarHTMLConParametros('mostrarReporte2.html.twig',$parametros);
         }
         else {
             ResourceController::getInstance()->mostrarHTMLConParametros('error.html.twig',$parametros);

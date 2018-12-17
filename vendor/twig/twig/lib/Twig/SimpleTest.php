@@ -3,7 +3,7 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2010-2012 Fabien Potencier
+ * (c) Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,6 +12,8 @@
 /**
  * Represents a template test.
  *
+ * @final
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class Twig_SimpleTest
@@ -19,6 +21,8 @@ class Twig_SimpleTest
     protected $name;
     protected $callable;
     protected $options;
+
+    private $arguments = array();
 
     public function __construct($name, $callable, array $options = array())
     {
@@ -66,4 +70,16 @@ class Twig_SimpleTest
     {
         return $this->options['alternative'];
     }
+
+    public function setArguments($arguments)
+    {
+        $this->arguments = $arguments;
+    }
+
+    public function getArguments()
+    {
+        return $this->arguments;
+    }
 }
+
+class_alias('Twig_SimpleTest', 'Twig\TwigTest', false);
