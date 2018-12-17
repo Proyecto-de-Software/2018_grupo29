@@ -1,17 +1,20 @@
 <?php
 
 if (!defined('ENT_SUBSTITUTE')) {
-    // use 0 as hhvm does not support several flags yet
-    define('ENT_SUBSTITUTE', 0);
+    define('ENT_SUBSTITUTE', 8);
 }
 
 /*
  * This file is part of Twig.
  *
- * (c) 2009 Fabien Potencier
+ * (c) Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ */
+
+/**
+ * @final
  */
 class Twig_Extension_Core extends Twig_Extension
 {
@@ -95,9 +98,9 @@ class Twig_Extension_Core extends Twig_Extension
     /**
      * Sets the default format to be used by the number_format filter.
      *
-     * @param int    $decimal      The number of decimal places to use.
-     * @param string $decimalPoint The character(s) to use for the decimal point.
-     * @param string $thousandSep  The character(s) to use for the thousands separator.
+     * @param int    $decimal      the number of decimal places to use
+     * @param string $decimalPoint the character(s) to use for the decimal point
+     * @param string $thousandSep  the character(s) to use for the thousands separator
      */
     public function setNumberFormat($decimal, $decimalPoint, $thousandSep)
     {
@@ -133,6 +136,7 @@ class Twig_Extension_Core extends Twig_Extension
             new Twig_TokenParser_Do(),
             new Twig_TokenParser_Embed(),
             new Twig_TokenParser_With(),
+            new Twig_TokenParser_Deprecated(),
         );
     }
 
@@ -159,7 +163,7 @@ class Twig_Extension_Core extends Twig_Extension
             new Twig_SimpleFilter('upper', 'strtoupper'),
             new Twig_SimpleFilter('lower', 'strtolower'),
             new Twig_SimpleFilter('striptags', 'strip_tags'),
-            new Twig_SimpleFilter('trim', 'trim'),
+            new Twig_SimpleFilter('trim', 'twig_trim_filter'),
             new Twig_SimpleFilter('nl2br', 'nl2br', array('pre_escape' => 'html', 'is_safe' => array('html'))),
 
             // array helpers
@@ -299,7 +303,7 @@ function twig_cycle($values, $position)
  * @param Twig_Environment                   $env
  * @param Traversable|array|int|float|string $values The values to pick a random item from
  *
- * @throws Twig_Error_Runtime When $values is an empty array (does not apply to an empty string which is returned as is).
+ * @throws Twig_Error_Runtime when $values is an empty array (does not apply to an empty string which is returned as is)
  *
  * @return mixed A random value from the given sequence
  */
@@ -464,7 +468,7 @@ function twig_date_converter(Twig_Environment $env, $date = null, $timezone = nu
  *
  * @param string            $str  String to replace in
  * @param array|Traversable $from Replace values
- * @param string|null       $to   Replace to, deprecated (@see http://php.net/manual/en/function.strtr.php)
+ * @param string|null       $to   Replace to, deprecated (@see https://secure.php.net/manual/en/function.strtr.php)
  *
  * @return string
  */
@@ -514,9 +518,9 @@ function twig_round($value, $precision = 0, $method = 'common')
  *
  * @param Twig_Environment $env
  * @param mixed            $number       A float/int/string of the number to format
- * @param int              $decimal      The number of decimal points to display.
- * @param string           $decimalPoint The character(s) to use for the decimal point.
- * @param string           $thousandSep  The character(s) to use for the thousands separator.
+ * @param int              $decimal      the number of decimal points to display
+ * @param string           $decimalPoint the character(s) to use for the decimal point
+ * @param string           $thousandSep  the character(s) to use for the thousands separator
  *
  * @return string The formatted number
  */
@@ -562,7 +566,7 @@ if (PHP_VERSION_ID < 50300) {
     /**
      * JSON encodes a variable.
      *
-     * @param mixed $value   The value to encode.
+     * @param mixed $value   the value to encode
      * @param int   $options Not used on PHP 5.2.x
      *
      * @return mixed The JSON encoded value
@@ -581,7 +585,7 @@ if (PHP_VERSION_ID < 50300) {
     /**
      * JSON encodes a variable.
      *
-     * @param mixed $value   The value to encode.
+     * @param mixed $value   the value to encode
      * @param int   $options Bitmask consisting of JSON_HEX_QUOT, JSON_HEX_TAG, JSON_HEX_AMP, JSON_HEX_APOS, JSON_NUMERIC_CHECK, JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES, JSON_FORCE_OBJECT
      *
      * @return mixed The JSON encoded value
@@ -652,13 +656,13 @@ function twig_array_merge($arr1, $arr2)
 function twig_slice(Twig_Environment $env, $item, $start, $length = null, $preserveKeys = false)
 {
     if ($item instanceof Traversable) {
-        if ($item instanceof IteratorAggregate) {
+        while ($item instanceof IteratorAggregate) {
             $item = $item->getIterator();
         }
 
         if ($start >= 0 && $length >= 0 && $item instanceof Iterator) {
             try {
-                return iterator_to_array(new LimitIterator($item, $start, $length === null ? -1 : $length), $preserveKeys);
+                return iterator_to_array(new LimitIterator($item, $start, null === $length ? -1 : $length), $preserveKeys);
             } catch (OutOfBoundsException $exception) {
                 return array();
             }
@@ -821,7 +825,27 @@ function _twig_default_filter($value, $default = '')
 function twig_get_array_keys_filter($array)
 {
     if ($array instanceof Traversable) {
-        return array_keys(iterator_to_array($array));
+        while ($array instanceof IteratorAggregate) {
+            $array = $array->getIterator();
+        }
+
+        if ($array instanceof Iterator) {
+            $keys = array();
+            $array->rewind();
+            while ($array->valid()) {
+                $keys[] = $array->key();
+                $array->next();
+            }
+
+            return $keys;
+        }
+
+        $keys = array();
+        foreach ($array as $key => $item) {
+            $keys[] = $key;
+        }
+
+        return $keys;
     }
 
     if (!is_array($array)) {
@@ -901,10 +925,49 @@ function twig_in_filter($value, $compare)
     } elseif (is_string($compare) && (is_string($value) || is_int($value) || is_float($value))) {
         return '' === $value || false !== strpos($compare, (string) $value);
     } elseif ($compare instanceof Traversable) {
-        return in_array($value, iterator_to_array($compare, false), is_object($value) || is_resource($value));
+        if (is_object($value) || is_resource($value)) {
+            foreach ($compare as $item) {
+                if ($item === $value) {
+                    return true;
+                }
+            }
+        } else {
+            foreach ($compare as $item) {
+                if ($item == $value) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     return false;
+}
+
+/**
+ * Returns a trimmed string.
+ *
+ * @return string
+ *
+ * @throws Twig_Error_Runtime When an invalid trimming side is used (not a string or not 'left', 'right', or 'both')
+ */
+function twig_trim_filter($string, $characterMask = null, $side = 'both')
+{
+    if (null === $characterMask) {
+        $characterMask = " \t\n\r\0\x0B";
+    }
+
+    switch ($side) {
+        case 'both':
+            return trim($string, $characterMask);
+        case 'left':
+            return ltrim($string, $characterMask);
+        case 'right':
+            return rtrim($string, $characterMask);
+        default:
+            throw new Twig_Error_Runtime('Trimming side must be "left", "right" or "both".');
+    }
 }
 
 /**
@@ -932,41 +995,37 @@ function twig_escape_filter(Twig_Environment $env, $string, $strategy = 'html', 
         }
     }
 
+    if ('' === $string) {
+        return '';
+    }
+
     if (null === $charset) {
         $charset = $env->getCharset();
     }
 
     switch ($strategy) {
         case 'html':
-            // see http://php.net/htmlspecialchars
+            // see https://secure.php.net/htmlspecialchars
 
             // Using a static variable to avoid initializing the array
             // each time the function is called. Moving the declaration on the
             // top of the function slow downs other escaping strategies.
-            static $htmlspecialcharsCharsets;
-
-            if (null === $htmlspecialcharsCharsets) {
-                if (defined('HHVM_VERSION')) {
-                    $htmlspecialcharsCharsets = array('utf-8' => true, 'UTF-8' => true);
-                } else {
-                    $htmlspecialcharsCharsets = array(
-                        'ISO-8859-1' => true, 'ISO8859-1' => true,
-                        'ISO-8859-15' => true, 'ISO8859-15' => true,
-                        'utf-8' => true, 'UTF-8' => true,
-                        'CP866' => true, 'IBM866' => true, '866' => true,
-                        'CP1251' => true, 'WINDOWS-1251' => true, 'WIN-1251' => true,
-                        '1251' => true,
-                        'CP1252' => true, 'WINDOWS-1252' => true, '1252' => true,
-                        'KOI8-R' => true, 'KOI8-RU' => true, 'KOI8R' => true,
-                        'BIG5' => true, '950' => true,
-                        'GB2312' => true, '936' => true,
-                        'BIG5-HKSCS' => true,
-                        'SHIFT_JIS' => true, 'SJIS' => true, '932' => true,
-                        'EUC-JP' => true, 'EUCJP' => true,
-                        'ISO8859-5' => true, 'ISO-8859-5' => true, 'MACROMAN' => true,
-                    );
-                }
-            }
+            static $htmlspecialcharsCharsets = array(
+                'ISO-8859-1' => true, 'ISO8859-1' => true,
+                'ISO-8859-15' => true, 'ISO8859-15' => true,
+                'utf-8' => true, 'UTF-8' => true,
+                'CP866' => true, 'IBM866' => true, '866' => true,
+                'CP1251' => true, 'WINDOWS-1251' => true, 'WIN-1251' => true,
+                '1251' => true,
+                'CP1252' => true, 'WINDOWS-1252' => true, '1252' => true,
+                'KOI8-R' => true, 'KOI8-RU' => true, 'KOI8R' => true,
+                'BIG5' => true, '950' => true,
+                'GB2312' => true, '936' => true,
+                'BIG5-HKSCS' => true,
+                'SHIFT_JIS' => true, 'SJIS' => true, '932' => true,
+                'EUC-JP' => true, 'EUCJP' => true,
+                'ISO8859-5' => true, 'ISO-8859-5' => true, 'MACROMAN' => true,
+            );
 
             if (isset($htmlspecialcharsCharsets[$charset])) {
                 return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
@@ -986,12 +1045,12 @@ function twig_escape_filter(Twig_Environment $env, $string, $strategy = 'html', 
 
         case 'js':
             // escape all non-alphanumeric characters
-            // into their \xHH or \uHHHH representations
+            // into their \x or \uHHHH representations
             if ('UTF-8' !== $charset) {
                 $string = twig_convert_encoding($string, 'UTF-8', $charset);
             }
 
-            if (0 == strlen($string) ? false : 1 !== preg_match('/^./su', $string)) {
+            if (!preg_match('//u', $string)) {
                 throw new Twig_Error_Runtime('The string to escape is not a valid UTF-8 string.');
             }
 
@@ -1008,7 +1067,7 @@ function twig_escape_filter(Twig_Environment $env, $string, $strategy = 'html', 
                 $string = twig_convert_encoding($string, 'UTF-8', $charset);
             }
 
-            if (0 == strlen($string) ? false : 1 !== preg_match('/^./su', $string)) {
+            if (!preg_match('//u', $string)) {
                 throw new Twig_Error_Runtime('The string to escape is not a valid UTF-8 string.');
             }
 
@@ -1025,7 +1084,7 @@ function twig_escape_filter(Twig_Environment $env, $string, $strategy = 'html', 
                 $string = twig_convert_encoding($string, 'UTF-8', $charset);
             }
 
-            if (0 == strlen($string) ? false : 1 !== preg_match('/^./su', $string)) {
+            if (!preg_match('//u', $string)) {
                 throw new Twig_Error_Runtime('The string to escape is not a valid UTF-8 string.');
             }
 
@@ -1094,62 +1153,78 @@ if (function_exists('mb_convert_encoding')) {
     }
 }
 
+if (function_exists('mb_ord')) {
+    function twig_ord($string)
+    {
+        return mb_ord($string, 'UTF-8');
+    }
+} else {
+    function twig_ord($string)
+    {
+        $code = ($string = unpack('C*', substr($string, 0, 4))) ? $string[1] : 0;
+        if (0xF0 <= $code) {
+            return (($code - 0xF0) << 18) + (($string[2] - 0x80) << 12) + (($string[3] - 0x80) << 6) + $string[4] - 0x80;
+        }
+        if (0xE0 <= $code) {
+            return (($code - 0xE0) << 12) + (($string[2] - 0x80) << 6) + $string[3] - 0x80;
+        }
+        if (0xC0 <= $code) {
+            return (($code - 0xC0) << 6) + $string[2] - 0x80;
+        }
+
+        return $code;
+    }
+}
+
 function _twig_escape_js_callback($matches)
 {
     $char = $matches[0];
 
-    // \xHH
-    if (!isset($char[1])) {
-        return '\\x'.strtoupper(substr('00'.bin2hex($char), -2));
+    /*
+     * A few characters have short escape sequences in JSON and JavaScript.
+     * Escape sequences supported only by JavaScript, not JSON, are ommitted.
+     * \" is also supported but omitted, because the resulting string is not HTML safe.
+     */
+    static $shortMap = array(
+        '\\' => '\\\\',
+        '/' => '\\/',
+        "\x08" => '\b',
+        "\x0C" => '\f',
+        "\x0A" => '\n',
+        "\x0D" => '\r',
+        "\x09" => '\t',
+    );
+
+    if (isset($shortMap[$char])) {
+        return $shortMap[$char];
     }
 
     // \uHHHH
     $char = twig_convert_encoding($char, 'UTF-16BE', 'UTF-8');
+    $char = strtoupper(bin2hex($char));
 
-    return '\\u'.strtoupper(substr('0000'.bin2hex($char), -4));
+    if (4 >= strlen($char)) {
+        return sprintf('\u%04s', $char);
+    }
+
+    return sprintf('\u%04s\u%04s', substr($char, 0, -4), substr($char, -4));
 }
 
 function _twig_escape_css_callback($matches)
 {
     $char = $matches[0];
 
-    // \xHH
-    if (!isset($char[1])) {
-        $hex = ltrim(strtoupper(bin2hex($char)), '0');
-        if (0 === strlen($hex)) {
-            $hex = '0';
-        }
-
-        return '\\'.$hex.' ';
-    }
-
-    // \uHHHH
-    $char = twig_convert_encoding($char, 'UTF-16BE', 'UTF-8');
-
-    return '\\'.ltrim(strtoupper(bin2hex($char)), '0').' ';
+    return sprintf('\\%X ', 1 === strlen($char) ? ord($char) : twig_ord($char));
 }
 
 /**
  * This function is adapted from code coming from Zend Framework.
  *
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (https://www.zend.com)
+ * @license   https://framework.zend.com/license/new-bsd New BSD License
  */
 function _twig_escape_html_attr_callback($matches)
 {
-    /*
-     * While HTML supports far more named entities, the lowest common denominator
-     * has become HTML5's XML Serialisation which is restricted to the those named
-     * entities that XML supports. Using HTML entities would result in this error:
-     *     XML Parsing Error: undefined entity
-     */
-    static $entityMap = array(
-        34 => 'quot', /* quotation mark */
-        38 => 'amp',  /* ampersand */
-        60 => 'lt',   /* less-than sign */
-        62 => 'gt',   /* greater-than sign */
-    );
-
     $chr = $matches[0];
     $ord = ord($chr);
 
@@ -1157,7 +1232,7 @@ function _twig_escape_html_attr_callback($matches)
      * The following replaces characters undefined in HTML with the
      * hex entity for the Unicode replacement character.
      */
-    if (($ord <= 0x1f && $chr != "\t" && $chr != "\n" && $chr != "\r") || ($ord >= 0x7f && $ord <= 0x9f)) {
+    if (($ord <= 0x1f && "\t" != $chr && "\n" != $chr && "\r" != $chr) || ($ord >= 0x7f && $ord <= 0x9f)) {
         return '&#xFFFD;';
     }
 
@@ -1165,23 +1240,32 @@ function _twig_escape_html_attr_callback($matches)
      * Check if the current character to escape has a name entity we should
      * replace it with while grabbing the hex value of the character.
      */
-    if (strlen($chr) == 1) {
-        $hex = strtoupper(substr('00'.bin2hex($chr), -2));
-    } else {
-        $chr = twig_convert_encoding($chr, 'UTF-16BE', 'UTF-8');
-        $hex = strtoupper(substr('0000'.bin2hex($chr), -4));
-    }
+    if (1 == strlen($chr)) {
+        /*
+         * While HTML supports far more named entities, the lowest common denominator
+         * has become HTML5's XML Serialisation which is restricted to the those named
+         * entities that XML supports. Using HTML entities would result in this error:
+         *     XML Parsing Error: undefined entity
+         */
+        static $entityMap = array(
+            34 => '&quot;', /* quotation mark */
+            38 => '&amp;',  /* ampersand */
+            60 => '&lt;',   /* less-than sign */
+            62 => '&gt;',   /* greater-than sign */
+        );
 
-    $int = hexdec($hex);
-    if (array_key_exists($int, $entityMap)) {
-        return sprintf('&%s;', $entityMap[$int]);
+        if (isset($entityMap[$ord])) {
+            return $entityMap[$ord];
+        }
+
+        return sprintf('&#x%02X;', $ord);
     }
 
     /*
      * Per OWASP recommendations, we'll use hex entities for any other
      * characters where a named entity does not exist.
      */
-    return sprintf('&#x%s;', $hex);
+    return sprintf('&#x%04X;', twig_ord($chr));
 }
 
 // add multibyte extensions if possible
@@ -1196,7 +1280,31 @@ if (function_exists('mb_get_info')) {
      */
     function twig_length_filter(Twig_Environment $env, $thing)
     {
-        return is_scalar($thing) ? mb_strlen($thing, $env->getCharset()) : count($thing);
+        if (null === $thing) {
+            return 0;
+        }
+
+        if (is_scalar($thing)) {
+            return mb_strlen($thing, $env->getCharset());
+        }
+
+        if ($thing instanceof \SimpleXMLElement) {
+            return count($thing);
+        }
+
+        if (is_object($thing) && method_exists($thing, '__toString') && !$thing instanceof \Countable) {
+            return mb_strlen((string) $thing, $env->getCharset());
+        }
+
+        if ($thing instanceof \Countable || is_array($thing)) {
+            return count($thing);
+        }
+
+        if ($thing instanceof \IteratorAggregate) {
+            return iterator_count($thing);
+        }
+
+        return 1;
     }
 
     /**
@@ -1279,7 +1387,31 @@ else {
      */
     function twig_length_filter(Twig_Environment $env, $thing)
     {
-        return is_scalar($thing) ? strlen($thing) : count($thing);
+        if (null === $thing) {
+            return 0;
+        }
+
+        if (is_scalar($thing)) {
+            return strlen($thing);
+        }
+
+        if ($thing instanceof \SimpleXMLElement) {
+            return count($thing);
+        }
+
+        if (is_object($thing) && method_exists($thing, '__toString') && !$thing instanceof \Countable) {
+            return strlen((string) $thing);
+        }
+
+        if ($thing instanceof \Countable || is_array($thing)) {
+            return count($thing);
+        }
+
+        if ($thing instanceof \IteratorAggregate) {
+            return iterator_count($thing);
+        }
+
+        return 1;
     }
 
     /**
@@ -1341,6 +1473,10 @@ function twig_test_empty($value)
         return 0 == count($value);
     }
 
+    if (is_object($value) && method_exists($value, '__toString')) {
+        return '' === (string) $value;
+    }
+
     return '' === $value || false === $value || null === $value || array() === $value;
 }
 
@@ -1349,7 +1485,7 @@ function twig_test_empty($value)
  *
  * <pre>
  * {# evaluates to true if the foo variable is an array or a traversable object #}
- * {% if foo is traversable %}
+ * {% if foo is iterable %}
  *     {# ... #}
  * {% endif %}
  * </pre>
@@ -1391,7 +1527,7 @@ function twig_include(Twig_Environment $env, $context, $template, $variables = a
         }
     }
 
-    $result = null;
+    $result = '';
     try {
         $result = $env->resolveTemplate($template)->render($variables);
     } catch (Twig_Error_Loader $e) {
@@ -1402,6 +1538,18 @@ function twig_include(Twig_Environment $env, $context, $template, $variables = a
 
             throw $e;
         }
+    } catch (Throwable $e) {
+        if ($isSandboxed && !$alreadySandboxed) {
+            $sandbox->disableSandbox();
+        }
+
+        throw $e;
+    } catch (Exception $e) {
+        if ($isSandboxed && !$alreadySandboxed) {
+            $sandbox->disableSandbox();
+        }
+
+        throw $e;
     }
 
     if ($isSandboxed && !$alreadySandboxed) {
@@ -1501,3 +1649,5 @@ function twig_array_batch($items, $size, $fill = null)
 
     return $result;
 }
+
+class_alias('Twig_Extension_Core', 'Twig\Extension\CoreExtension', false);

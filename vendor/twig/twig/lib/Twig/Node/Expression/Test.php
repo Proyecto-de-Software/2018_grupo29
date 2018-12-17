@@ -3,7 +3,7 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2010 Fabien Potencier
+ * (c) Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -28,6 +28,9 @@ class Twig_Node_Expression_Test extends Twig_Node_Expression_Call
         $this->setAttribute('name', $name);
         $this->setAttribute('type', 'test');
         $this->setAttribute('thing', $test);
+        if ($test instanceof Twig_SimpleTest) {
+            $this->setAttribute('arguments', $test->getArguments());
+        }
         if ($test instanceof Twig_TestCallableInterface || $test instanceof Twig_SimpleTest) {
             $this->setAttribute('callable', $test->getCallable());
         }
@@ -38,3 +41,5 @@ class Twig_Node_Expression_Test extends Twig_Node_Expression_Call
         $this->compileCallable($compiler);
     }
 }
+
+class_alias('Twig_Node_Expression_Test', 'Twig\Node\Expression\TestExpression', false);
