@@ -15,6 +15,6 @@ $factory->define(Consultation::class, function (Faker $faker) {
         'observations' => $faker->sentence,
         
         #Esto puede fallar si es que borro patients.
-        'patient_id' =>$faker->numberBetween($min = 22, $max = 26),
+        'patient_id' =>$faker->numberBetween($min = 1, $max = 3),
     ];
 });

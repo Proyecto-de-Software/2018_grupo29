@@ -16,7 +16,7 @@ class PatientController extends Controller
     {
         $patients = Patient::all();
 
-        return $patients;
+        return view('patients.index')->with('patients',$patients);
     }
 
     /**
