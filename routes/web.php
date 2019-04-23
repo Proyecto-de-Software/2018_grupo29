@@ -11,10 +11,15 @@
 |
 */
 
-Route::resource('patients', 'PatientController');
+Route::resource('patients', 'PatientController')->middleware('auth');
+
+# La siguiente ruta es para no tener que hacer un formulario para tener que eliminar
+# un paciente. Así, se puede hacer con un solo tag 'a'.
+Route::get('patients/{id}/destroy', [
+	'uses' => 'PatientController@destroy',
+	'as' => 'patients.destroy'
+])->middleware('auth');
 
 Auth::routes();
 
-Route::redirect('/', '/home', 301);
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');

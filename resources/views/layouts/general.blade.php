@@ -16,27 +16,50 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-	  <ul class="navbar-nav">
-	  	<a class="navbar-brand" href="#">Hospital Dr. Alejandro Korn </a>
-	    <li class="nav-item active">
-	      <a class="nav-link" href="{{ route('patients.index') }}">Pacientes</a>
-	    </li>
-	    <li class="nav-item active">
-	      <a class="nav-link" href="#">Consultas</a>
-	    </li>
-		<li class="nav-item dropdown active">
-			<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-expanded="false">Administración</a>
-			<div class="dropdown-menu">
-				<a class="dropdown-item" href="#">Usuarios</a>	
-				<a class="dropdown-item" href="#">Roles</a>	
-				<a class="dropdown-item" href="#">Reportes</a>
-				<div class="dropdown-divider"></div>
-				<a class="dropdown-item" href="#">Configuración</a>	
-			</div>
-		</li>
-	  </ul>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	  <a class="navbar-brand" href="#">Hospital Dr. Alejandro Korn</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+	  	@if (Auth::user())
+	    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">      
+	      <li class="nav-item active">
+		      <a class="nav-link" href="{{ route('patients.index') }}">Pacientes</a>
+		    </li>
+		    <li class="nav-item active">
+		      <a class="nav-link" href="#">Consultas</a>
+		    </li>
+			<li class="nav-item dropdown active">
+				<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-expanded="false">Administración</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="#">Usuarios</a>	
+					<a class="dropdown-item" href="#">Roles</a>	
+					<a class="dropdown-item" href="#">Reportes</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="#">Configuración</a>	
+				</div>
+			</li>
+	    </ul>
+	    <span class="navbar-text">
+		    Bienvenido {{ Auth::user()->first_name }}
+		</span>
+		&nbsp;
+	    <form method="POST" class="form-inline my-2 my-lg-0" action="{{ route('logout') }}">
+	      	@csrf
+		    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="return confirm('¿Está seguro que quiere cerrar sesión?')">Cerrar sesión</button>
+	    </form>
+	    @else
+	    	<ul class="navbar-nav mr-auto mt-2 mt-lg-0"> </ul>
+	    	<form method="GET" class="form-inline my-2 my-lg-0" action="{{ route('login') }}">
+	    		<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Iniciar sesión</button>
+	    	</form>
+	    @endif
+	  </div>
 	</nav>
+	
 	<br><br>
 	@yield('content')
 	<br>

@@ -14,9 +14,9 @@ class PatientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $patients = Patient::paginate(3);
+        $patients = Patient::search($request->first_name, $request->last_name, $request->dni_number)->paginate(3);
 
         return view('patients.index')->with('patients',$patients);
     }
@@ -54,11 +54,11 @@ class PatientController extends Controller
      * @param  \App\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function show(Patient $patient)
+    public function show($id)
     {
-        $patient = Patient::find($patient);
+        $patient = Patient::findOrFail($id);
 
-        return $patient;
+        return view('patients.show')->with('patient',$patient);
     }
 
     /**
@@ -90,11 +90,9 @@ class PatientController extends Controller
      * @param  \App\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Patient $patient)
+    public function destroy($id)
     {
-
-        #Aca es donde deje...
-        $patient = Patient::find($patient);
+        $patient = Patient::find($id);
         $patient->delete();
         flash('El paciente ' . $patient->first_name . ' ' . $patient->last_name . ' ha sido eliminado')->warning();
 
