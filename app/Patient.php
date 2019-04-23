@@ -15,4 +15,8 @@ class Patient extends Model
 
     	return $this->belongsTo('App\Gender');
     }
+
+    protected $fillable = [
+        'first_name', 'last_name', 'birthdate', 'home', 'gender_id', 'has_document', 'dni_number', 'phone_number'
+    ];
 }

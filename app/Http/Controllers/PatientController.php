@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Patient;
+use App\Gender;
 use Illuminate\Http\Request;
+use App\Http\Requests\StorePatient;
 
 class PatientController extends Controller
 {
@@ -14,7 +16,7 @@ class PatientController extends Controller
      */
     public function index()
     {
-        $patients = Patient::all();
+        $patients = Patient::paginate(3);
 
         return view('patients.index')->with('patients',$patients);
     }
@@ -26,7 +28,8 @@ class PatientController extends Controller
      */
     public function create()
     {
-        //
+
+        return view('patients.create');
     }
 
     /**
@@ -35,9 +38,14 @@ class PatientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePatient $request)
     {
-        //
+        $patient = new Patient;
+        $patient->fill($request->all());
+        $patient->save();
+        flash('El registro de ' . $patient->first_name . ' ' . $patient->last_name . ' ha sido exitoso')->success();
+
+        return redirect()->route('patients.index');
     }
 
     /**
@@ -84,6 +92,12 @@ class PatientController extends Controller
      */
     public function destroy(Patient $patient)
     {
-        //
+
+        #Aca es donde deje...
+        $patient = Patient::find($patient);
+        $patient->delete();
+        flash('El paciente ' . $patient->first_name . ' ' . $patient->last_name . ' ha sido eliminado')->warning();
+
+        return redirect()->route('patients.index');
     }
 }
