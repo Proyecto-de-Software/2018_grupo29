@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use App\Patient;
 
 class StorePatient extends FormRequest
 {
@@ -23,12 +25,21 @@ class StorePatient extends FormRequest
      */
     public function rules()
     {
+        $id = $this->input('id');
+
         return [
             'first_name' => 'required|min:3|max:60',
             'last_name' => 'required|min:3|max:60',
             'birthdate' => 'required|date',
             'home' => 'required|min:3|max:60',
-            'dni_number' => 'required|numeric|digits_between:6,10|unique:patients',
+            'dni_number' =>  [
+                'required',
+                'numeric',
+                'digits_between:6,10',
+                
+                # Esto es para que no tire error diciendo que el dni ya esta en uso.
+                Rule::unique('patients')->ignore($id),
+            ],
             'phone_number' => 'nullable|numeric|digits_between:7,15'
         ];
     }

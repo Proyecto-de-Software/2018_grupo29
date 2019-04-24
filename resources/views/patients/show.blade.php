@@ -4,6 +4,8 @@
 
 @section('content')
 	<h2 class="text-center"> Paciente {{ $patient->first_name }} {{ $patient->last_name }}</h2>
+	<hr>
+	&nbsp; <a href="{{ URL::previous() }}"> <button class="btn btn-primary"> Volver </button></a>
 	<br>
 	<div class="container">
 	    <div class="row">
@@ -34,7 +36,7 @@
 	                	@endif
 	                </p>
 	                <p class="list-group-item list-group-item-action">{{ $patient->dni_number }}</p>
-	                <p class="list-group-item list-group-item-action">{{ $patient->phone_number }}</p>
+	                <p class="list-group-item list-group-item-action"> &nbsp; {{ $patient->phone_number }}</p>
 	            </div>
 	        </div>
 	    </div>

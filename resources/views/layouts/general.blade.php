@@ -35,7 +35,7 @@
 			<li class="nav-item dropdown active">
 				<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-expanded="false">Administración</a>
 				<div class="dropdown-menu">
-					<a class="dropdown-item" href="#">Usuarios</a>	
+					<a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>	
 					<a class="dropdown-item" href="#">Roles</a>	
 					<a class="dropdown-item" href="#">Reportes</a>
 					<div class="dropdown-divider"></div>
@@ -46,15 +46,19 @@
 	    <span class="navbar-text">
 		    Bienvenido {{ Auth::user()->first_name }}
 		</span>
-		&nbsp;
+		&nbsp;&nbsp;&nbsp;
 	    <form method="POST" class="form-inline my-2 my-lg-0" action="{{ route('logout') }}">
 	      	@csrf
-		    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="return confirm('¿Está seguro que quiere cerrar sesión?')">Cerrar sesión</button>
+		    <button class="btn btn-primary my-2 my-sm-0" type="submit" onclick="return confirm('¿Está seguro que quiere cerrar sesión?')">Cerrar sesión</button>
 	    </form>
 	    @else
 	    	<ul class="navbar-nav mr-auto mt-2 mt-lg-0"> </ul>
 	    	<form method="GET" class="form-inline my-2 my-lg-0" action="{{ route('login') }}">
-	    		<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Iniciar sesión</button>
+	    		<button class="btn btn-primary my-2 my-sm-0" type="submit">Iniciar sesión</button>
+	    	</form>
+	    	&nbsp;
+	    	<form method="GET" class="form-inline my-2 my-lg-0" action="{{ route('register') }}">
+	    		<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Registrarse</button>
 	    	</form>
 	    @endif
 	  </div>

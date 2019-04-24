@@ -67,9 +67,11 @@ class PatientController extends Controller
      * @param  \App\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function edit(Patient $patient)
+    public function edit($id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+
+        return view('patients.edit')->with('patient',$patient);
     }
 
     /**
@@ -79,9 +81,13 @@ class PatientController extends Controller
      * @param  \App\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Patient $patient)
+    public function update(StorePatient $request, $id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+        $patient->update($request->all());
+        flash('Los datos de ' . $patient->first_name . ' ' . $patient->last_name . ' han sido actualizados exitosamente')->success();
+
+        return redirect()->route('patients.index');
     }
 
     /**
@@ -92,7 +98,7 @@ class PatientController extends Controller
      */
     public function destroy($id)
     {
-        $patient = Patient::find($id);
+        $patient = Patient::findOrFail($id);
         $patient->delete();
         flash('El paciente ' . $patient->first_name . ' ' . $patient->last_name . ' ha sido eliminado')->warning();
 

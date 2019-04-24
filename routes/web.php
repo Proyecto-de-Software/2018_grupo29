@@ -20,6 +20,9 @@ Route::get('patients/{id}/destroy', [
 	'as' => 'patients.destroy'
 ])->middleware('auth');
 
+
+Route::resource('users', 'UserController')->middleware('auth');
+
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
