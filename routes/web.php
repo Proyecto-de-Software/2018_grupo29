@@ -20,12 +20,8 @@ Route::get('patients/{id}/destroy', [
 	'as' => 'patients.destroy'
 ])->middleware('auth');
 
-<<<<<<< HEAD
-Route::resource('consultations', 'ConsultationController');
 
-Auth::routes();
-=======
->>>>>>> 0b2988e0d83d956948069506bb4b80188eae836a
+Route::resource('consultations', 'ConsultationController');
 
 Route::resource('users', 'UserController')->middleware('auth');
 

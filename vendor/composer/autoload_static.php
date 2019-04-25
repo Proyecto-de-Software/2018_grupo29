@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit60e66bc5a1633f9057f2f9e66a825808
+class ComposerStaticInit2034382281b74b3d186dfad79f6715ea
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -383,10 +383,12 @@ class ComposerStaticInit60e66bc5a1633f9057f2f9e66a825808
         'App\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
         'App\\Http\\Controllers\\Auth\\VerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerificationController.php',
+        'App\\Http\\Controllers\\ConsultationController' => __DIR__ . '/../..' . '/app/Http/Controllers/ConsultationController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\PatientController' => __DIR__ . '/../..' . '/app/Http/Controllers/PatientController.php',
         'App\\Http\\Controllers\\TestController' => __DIR__ . '/../..' . '/app/Http/Controllers/TestController.php',
+        'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckForMaintenanceMode' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckForMaintenanceMode.php',
@@ -397,6 +399,8 @@ class ComposerStaticInit60e66bc5a1633f9057f2f9e66a825808
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Requests\\StorePatient' => __DIR__ . '/../..' . '/app/Http/Requests/StorePatient.php',
         'App\\Patient' => __DIR__ . '/../..' . '/app/Patient.php',
+        'App\\Permission' => __DIR__ . '/../..' . '/app/Permission.php',
+        'App\\Permission_role' => __DIR__ . '/../..' . '/app/Permission_role.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
@@ -3934,10 +3938,10 @@ class ComposerStaticInit60e66bc5a1633f9057f2f9e66a825808
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit60e66bc5a1633f9057f2f9e66a825808::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit60e66bc5a1633f9057f2f9e66a825808::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit60e66bc5a1633f9057f2f9e66a825808::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit60e66bc5a1633f9057f2f9e66a825808::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit2034382281b74b3d186dfad79f6715ea::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit2034382281b74b3d186dfad79f6715ea::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit2034382281b74b3d186dfad79f6715ea::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit2034382281b74b3d186dfad79f6715ea::$classMap;
 
         }, null, ClassLoader::class);
     }
