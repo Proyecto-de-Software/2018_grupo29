@@ -13,6 +13,8 @@
 
 Route::resource('patients', 'PatientController');
 
+Route::resource('consultations', 'ConsultationController');
+
 Auth::routes();
 
 Route::redirect('/', '/home', 301);
