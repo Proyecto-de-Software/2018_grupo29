@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Patient;
+use App\Gender;
 use Illuminate\Http\Request;
+use App\Http\Requests\StorePatient;
 
 class PatientController extends Controller
 {
@@ -12,11 +14,11 @@ class PatientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $patients = Patient::all();
+        $patients = Patient::search($request->first_name, $request->last_name, $request->dni_number)->paginate(3);
 
-        return $patients;
+        return view('patients.index')->with('patients',$patients);
     }
 
     /**
@@ -26,7 +28,8 @@ class PatientController extends Controller
      */
     public function create()
     {
-        //
+
+        return view('patients.create');
     }
 
     /**
@@ -35,9 +38,14 @@ class PatientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePatient $request)
     {
-        //
+        $patient = new Patient;
+        $patient->fill($request->all());
+        $patient->save();
+        flash('El registro de ' . $patient->first_name . ' ' . $patient->last_name . ' ha sido exitoso')->success();
+
+        return redirect()->route('patients.index');
     }
 
     /**
@@ -46,11 +54,11 @@ class PatientController extends Controller
      * @param  \App\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function show(Patient $patient)
+    public function show($id)
     {
-        $patient = Patient::find($patient);
+        $patient = Patient::findOrFail($id);
 
-        return $patient;
+        return view('patients.show')->with('patient',$patient);
     }
 
     /**
@@ -59,9 +67,11 @@ class PatientController extends Controller
      * @param  \App\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function edit(Patient $patient)
+    public function edit($id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+
+        return view('patients.edit')->with('patient',$patient);
     }
 
     /**
@@ -71,9 +81,13 @@ class PatientController extends Controller
      * @param  \App\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Patient $patient)
+    public function update(StorePatient $request, $id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+        $patient->update($request->all());
+        flash('Los datos de ' . $patient->first_name . ' ' . $patient->last_name . ' han sido actualizados exitosamente')->success();
+
+        return redirect()->route('patients.index');
     }
 
     /**
@@ -82,8 +96,12 @@ class PatientController extends Controller
      * @param  \App\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Patient $patient)
+    public function destroy($id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+        $patient->delete();
+        flash('El paciente ' . $patient->first_name . ' ' . $patient->last_name . ' ha sido eliminado')->warning();
+
+        return redirect()->route('patients.index');
     }
 }

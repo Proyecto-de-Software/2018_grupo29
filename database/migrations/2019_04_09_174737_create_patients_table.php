@@ -20,16 +20,17 @@ class CreatePatientsTable extends Migration
             $table->bigIncrements('id');
             $table->string('first_name');
             $table->string('last_name');
-            $table->date('birthdate')->nullable();
+            $table->date('birthdate');
             $table->string('place_of_birth')->nullable();
-            $table->string('home')->nullable();;
-            $table->boolean('has_document')->nullable();
+            $table->string('home');
+            $table->boolean('has_document');
+            $table->bigInteger('dni_number');
             $table->bigInteger('phone_number')->nullable();
 
             # Aca se definen todas las columnas que tienen claves foraneas.
             $table->bigInteger('location_id')->unsigned()->nullable();
             $table->bigInteger('health_region_id')->unsigned()->nullable();
-            $table->bigInteger('gender_id')->unsigned()->nullable();
+            $table->bigInteger('gender_id')->unsigned();
             $table->bigInteger('documentation_type_id')->unsigned()->nullable();
             $table->bigInteger('social_work_id')->unsigned()->nullable();
             $table->timestamps();

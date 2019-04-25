@@ -16,6 +16,8 @@ class CreateHealthRegionsTable extends Migration
         Schema::create('health_regions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }
