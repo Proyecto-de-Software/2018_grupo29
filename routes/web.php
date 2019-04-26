@@ -23,7 +23,31 @@ Route::get('patients/{id}/destroy', [
 
 Route::resource('consultations', 'ConsultationController');
 
-Route::resource('users', 'UserController')->middleware('auth');
+Route::resource('users', 'UserController')->except([
+    'show'
+])->middleware('auth');
+
+Route::prefix('users')->group(function () {
+    Route::get('{id}/block', [
+	'uses' => 'UserController@block',
+	'as' => 'users.block'
+	]);
+
+	Route::get('{id}/unblock', [
+		'uses' => 'UserController@unblock',
+		'as' => 'users.unblock'
+	]);
+	Route::get('{id}/destroy', [
+		'uses' => 'UserController@destroy',
+		'as' => 'users.destroy'
+	]);
+	Route::get('{id}/roles', [
+		'uses' => 'UserController@roles',
+		'as' => 'users.roles'
+	])->middleware('auth');
+
+});
+
 
 Auth::routes();
 

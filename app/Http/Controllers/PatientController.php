@@ -100,7 +100,7 @@ class PatientController extends Controller
     {
         $patient = Patient::findOrFail($id);
         $patient->delete();
-        flash('El paciente ' . $patient->first_name . ' ' . $patient->last_name . ' ha sido eliminado')->warning();
+        flash('El/La paciente ' . $patient->first_name . ' ' . $patient->last_name . ' ha sido eliminado/a')->warning();
 
         return redirect()->route('patients.index');
     }

@@ -29,29 +29,41 @@
 	    <div class="row">
 	    	<ul class="list-group" style="width: 100%">
 		    	<li class="list-group-item row d-flex text-center">
-		    		<div class="col-2 text-info">Nombre</div>
-		    		<div class="col-2 text-info">Apellido</div>
-		    		<div class="col-2 text-info">¿Está activo?</div>
-		    		<div class="col-3 text-info">Email</div>
+		    		<div class="col-2 text-info">Nombre y apellido</div>
+		    		<div class="col-2 text-info">Nombre de usuario</div>
+		    		<div class="col-2 text-info">Email</div>
+		    		<div class="col-1 text-info">Estado</div>
+		    		<div class="col-2 text-info"></div>
 		    		<div class="col-1 text-info"></div>
 		    		<div class="col-1 text-info"></div>
 		    		<div class="col-1 text-info"></div>
 		    	</li>
 			    @foreach ($users as $user)
 			    <li class="list-group-item row d-flex text-center">
-			    	<div class="col-2"> {{ $user->first_name }} </div>
-			    	<div class="col-2"> {{ $user->last_name }} </div>
-			    	<div class="col-2">
-			    		@if ($user->is_active == 1)
-			    			Sí
-			    		@else
-			    			No
-			    		@endif
-			    	</div>
-			    	<div class="col-3"> {{ $user->email }} </div>
+			    	<div class="col-2"> {{ $user->first_name }} {{ $user->last_name }}</div>
+			    	<div class="col-2">  {{ $user->username}} </div>
+			    	<div class="col-2"> {{ $user->email }} </div>
 			    	<div class="col-1">
-			    		<a href="{{ route('users.show', $user->id) }}">
-			    			<button class="btn btn-success">Ver</button>
+			    		@if ($user->is_active == 1)
+			    			Activo
+			    			</div>
+					    	<div class="col-2">
+					    		<a href="{{ route('users.block', $user->id) }}">
+					    			<button class="btn btn-outline-warning">Bloquear</button>
+					    		</a>
+					    	</div>
+			    		@else
+			    			Bloqueado
+			    			</div>
+			    			<div class="col-2">
+					    		<a href="{{ route('users.unblock', $user->id) }}">
+					    			<button class="btn btn-outline-success">Desbloquear</button>
+					    		</a>
+					    	</div>
+			    		@endif	
+			    	<div class="col-1">
+			    		<a href="{{ route('users.roles', $user) }}">
+			    			<button class="btn btn-secondary">Roles</button>
 			    		</a>
 			    	</div>
 			    	<div class="col-1">
