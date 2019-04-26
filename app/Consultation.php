@@ -10,4 +10,8 @@ class Consultation extends Model
 
     	return $this->belongsTo('App\Patient');
     }
+
+    public function scopeSearch($query,$patient_id){
+    	return $query->where('patient_id',"%$patient_id%");
+    }
 }

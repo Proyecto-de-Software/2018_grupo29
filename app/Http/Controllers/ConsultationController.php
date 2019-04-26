@@ -12,9 +12,9 @@ class ConsultationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $consultations = Consultation::all();
+        $consultations = Consultation::search($request->patient_id);
 
         return $consultations;
     }

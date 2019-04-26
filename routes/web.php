@@ -13,21 +13,15 @@
 
 Route::resource('patients', 'PatientController')->middleware('auth');
 
+Route::resource('users', 'UserController')->middleware('auth');
+
+Route::resource('consultations', 'ConsultationController')->middleware('auth');
 # La siguiente ruta es para no tener que hacer un formulario para tener que eliminar
 # un paciente. Así, se puede hacer con un solo tag 'a'.
 Route::get('patients/{id}/destroy', [
 	'uses' => 'PatientController@destroy',
 	'as' => 'patients.destroy'
 ])->middleware('auth');
-
-<<<<<<< HEAD
-Route::resource('consultations', 'ConsultationController');
-
-Auth::routes();
-=======
->>>>>>> 0b2988e0d83d956948069506bb4b80188eae836a
-
-Route::resource('users', 'UserController')->middleware('auth');
 
 Auth::routes();
 

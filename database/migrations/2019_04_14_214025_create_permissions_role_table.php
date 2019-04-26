@@ -13,12 +13,12 @@ class CreatePermissionsRoleTable extends Migration
      */
     public function up()
     {
-        Schema::create('permissions_role', function (Blueprint $table) {
+        Schema::create('permission_role', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('role_id')->unsigned();
             $table->bigInteger('permission_id')->unsigned();
 
-            $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
+            $table->foreign('permission_id')->references('id')->on('permission')->onDelete('cascade');
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ class CreatePermissionsRoleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permissions_role');
+        Schema::dropIfExists('permission_role');
     }
 }
