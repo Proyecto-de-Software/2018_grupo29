@@ -52,3 +52,5 @@ Route::prefix('users')->group(function () {
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+
+Route::resource('roles', 'RoleController')->middleware('auth');

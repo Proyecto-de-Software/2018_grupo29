@@ -5,10 +5,12 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use EntrustUserTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -50,18 +52,5 @@ class User extends Authenticatable
     public function scopeUsername($query, $username)
     {
         return $query->where('username', 'LIKE', "%$username%");
-    }
-
-    public function rolesUserDoNotHave() {
-
-        /*
-            Asi lo teniamos antes
-
-             public function getRolesQueNoTieneUnUsuario($id) {
-                $answer = $this->queryList("SELECT r.id, r.nombre FROM rol r WHERE r.id NOT IN (SELECT r.id FROM usuario u INNER JOIN usuario_tiene_rol utr ON u.id = utr.usuario_id INNER JOIN rol r ON r.id = utr.rol_id WHERE u.id = :id)",["id" => $id]);
-                return $answer;
-            }
-
-        */
     }
 }
