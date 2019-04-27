@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit2034382281b74b3d186dfad79f6715ea
+class ComposerStaticInit8c0b23087d71b3eb721d3a068646c602
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -392,12 +392,14 @@ class ComposerStaticInit2034382281b74b3d186dfad79f6715ea
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckForMaintenanceMode' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckForMaintenanceMode.php',
+        'App\\Http\\Middleware\\CheckStatus' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckStatus.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Requests\\StorePatient' => __DIR__ . '/../..' . '/app/Http/Requests/StorePatient.php',
+        'App\\Http\\Requests\\StoreUser' => __DIR__ . '/../..' . '/app/Http/Requests/StoreUser.php',
         'App\\Patient' => __DIR__ . '/../..' . '/app/Patient.php',
         'App\\Permission' => __DIR__ . '/../..' . '/app/Permission.php',
         'App\\Permission_role' => __DIR__ . '/../..' . '/app/Permission_role.php',
@@ -3938,10 +3940,10 @@ class ComposerStaticInit2034382281b74b3d186dfad79f6715ea
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit2034382281b74b3d186dfad79f6715ea::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit2034382281b74b3d186dfad79f6715ea::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit2034382281b74b3d186dfad79f6715ea::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit2034382281b74b3d186dfad79f6715ea::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit8c0b23087d71b3eb721d3a068646c602::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit8c0b23087d71b3eb721d3a068646c602::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit8c0b23087d71b3eb721d3a068646c602::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit8c0b23087d71b3eb721d3a068646c602::$classMap;
 
         }, null, ClassLoader::class);
     }

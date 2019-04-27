@@ -6,6 +6,8 @@ use App\User;
 use Illuminate\Http\Request;
 use Auth;
 use App\Http\Requests\StoreUser;
+use Illuminate\Support\Facades\Hash;
+
 class UserController extends Controller
 {
     /**
@@ -40,7 +42,14 @@ class UserController extends Controller
     public function store(StoreUser $request)
     {
         $user = new User;
-        $user->fill($request->all());
+        
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->email = $request->email;
+        $user->is_active = true;
+        $user->username = $request->username;
+        $user->password = Hash::make($request->password);
+
         $user->save();
         flash('El registro de ' . $user->first_name . ' ' . $user->last_name . ' ha sido exitoso')->success();
 

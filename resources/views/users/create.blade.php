@@ -1,105 +1,52 @@
 @extends('layouts.general')
 
+@section('title', 'Crear nuevo usuario')
+
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Nuevo usuario') }}</div>
+	<h2 class="text-center"> Nuevo usuario </h2>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('users.store') }}">
-                        @csrf
-                        <input type="hidden" name="is_active" value="1">
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nombre') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ old('first_name') }}" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Apellido') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ old('last_name') }}" required autofocus>
-
-                                @if ($errors->has('last_name'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('last_name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Correo electronico') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Nombre de usuario') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="username" type="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required>
-
-                                @if ($errors->has('username'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Contrasena') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirmar contrasena') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Listo!') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+	@if ($errors->any())
+	    <div class="alert alert-danger">
+	    	<p>El formulario no cumple con las siguientes condiciones: </p>
+	        <ul>
+	            @foreach ($errors->all() as $error)
+	                <li>{{ $error }}</li>
+	            @endforeach
+	        </ul>
+	    </div>
+	@endif
+   
+	{!! Form::open(['route' => 'users.store']) !!}
+	@csrf
+	<input type="hidden" name="is_active" value="1">
+	<div class="form-row">	
+		<div class="form-group col-md-3"> </div>
+		<div class="form-group col-md-6">
+	    	{!! Form::label('first_name', 'Nombre') !!}
+	    	{!! Form::text('first_name', null, ['class' => 'form-control', 'required']) !!}
+	    	<br>
+	    	{!! Form::label('last_name', 'Apellido') !!}	
+			{!! Form::text('last_name', null, ['class' => 'form-control', 'required']) !!}
+			<br>
+			{!! Form::label('email', 'Correo electrónico') !!}	
+			{!! Form::email('email', null, ['class' => 'form-control', 'required']) !!}
+			<br>
+			{!! Form::label('username', 'Nombre de usuario') !!}	
+			{!! Form::text('username', null, ['class' => 'form-control', 'required']) !!}
+			<br>
+			{!! Form::label('password', 'Contraseña') !!}	
+			{!! Form::password('password', ['class' => 'form-control', 'required']) !!}
+			<br>
+			{!! Form::label('password_confirmation', 'Confirmar contraseña') !!}	
+			{!! Form::password('password_confirmation', ['class' => 'form-control', 'required']) !!}
+			<br>
+	    </div>
+	    <div class="form-group col-md-3"> </div>
+	</div>
+	<div class="row justify-content-center">
+		{!! Form::submit('¡Listo!', ['class' => 'btn btn-outline-primary text-black btn my-2 my-sm-0 btn-lg']) !!}
+	</div>
+	{!! Form::close() !!}
+	
+		
 @endsection

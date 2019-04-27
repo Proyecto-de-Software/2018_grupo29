@@ -51,4 +51,17 @@ class User extends Authenticatable
     {
         return $query->where('username', 'LIKE', "%$username%");
     }
+
+    public function rolesUserDoNotHave() {
+
+        /*
+            Asi lo teniamos antes
+
+             public function getRolesQueNoTieneUnUsuario($id) {
+                $answer = $this->queryList("SELECT r.id, r.nombre FROM rol r WHERE r.id NOT IN (SELECT r.id FROM usuario u INNER JOIN usuario_tiene_rol utr ON u.id = utr.usuario_id INNER JOIN rol r ON r.id = utr.rol_id WHERE u.id = :id)",["id" => $id]);
+                return $answer;
+            }
+
+        */
+    }
 }
