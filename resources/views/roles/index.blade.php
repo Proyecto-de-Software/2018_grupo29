@@ -7,9 +7,10 @@
 	<br>
 	<hr>
 	&nbsp;
-	<a href="#"> 
+	<a href="{{ route('roles.create') }}"> 
 		<button class="btn btn-success"> Nuevo rol </button>
 	</a>
+	<p class="text-center"> @include('flash::message') </p>
 	<br><br>
 	<div class="container">
 		<div class="row">
@@ -26,14 +27,17 @@
 					<div class="col-sm-2">{{ $rol->name }}</div>
 					<div class="col-sm-6">{{ $rol->description }}</div>
 					<div class="col-sm-2">
-						<button class="btn btn-success">Ver permisos</button>
+						<a href="{{ route('roles.show', $rol->id) }}"><button class="btn btn-success">Ver permisos</button> </a>
 					</div>
+					@unless ($rol->name == 'Administrador')
 					<div class="col-sm-1">
 						<button class="btn btn-warning">Editar</button>
 					</div>
+
 					<div class="col-sm-1">
-						<button class="btn btn-danger">Borrar</button>
+						<a onclick="return confirm('¿Está seguro?')" href="{{ route('roles.destroy', $rol->id) }}"><button class="btn btn-danger">Borrar</button> </a>
 					</div>
+					@endunless
 				</li>
 				@endforeach
 			</ul>

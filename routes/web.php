@@ -54,3 +54,7 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('roles', 'RoleController')->middleware('auth');
+Route::get('roles/{id}/destroy', [
+	'uses' => 'RoleController@destroy',
+	'as' => 'roles.destroy'
+])->middleware('auth');

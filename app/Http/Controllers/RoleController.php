@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Role;
+use App\Permission;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -26,7 +27,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $permissions = Permission::all();
+
+        return view('roles.create')->with('permissions',$permissions);
     }
 
     /**
@@ -37,7 +40,17 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $role = new Role;
+        $role->name = $request->name;
+        $role->description = $request->description;
+
+        $role->save();
+        $role->attachPermissions($request->permission);
+        
+        flash('El rol ha '. $role->name .' sido agregado exitosamente')->success();
+
+        return redirect()->route('roles.index');
+        
     }
 
     /**
@@ -46,9 +59,12 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show(Role $role)
+    public function show($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $permissions = $role->perms;
+
+        return view('roles.show')->with('role', $role)->with('permissions', $permissions);
     }
 
     /**
@@ -80,8 +96,12 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $role->delete();
+        flash('El rol ' . $role->name . ' ha sido eliminado')->warning();
+
+        return redirect()->route('roles.index');
     }
 }
