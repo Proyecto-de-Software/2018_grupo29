@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Patient;
+use App\Consultation;
 
 class PatientAjaxController extends Controller
 {
-    public function test()
+    public function patientConsultations(Request $request)
     {
-        return "view('consultations.create');";
+        $consultations = Consultation::search($request->id);
+        var_dump($consultations);
     }
 }

@@ -8,6 +8,7 @@ $(document).ready(function(){
             data:{'id': id},
             success:function(data) {
             	console.log(data);
+            	var options = '';
             }
         });
     });

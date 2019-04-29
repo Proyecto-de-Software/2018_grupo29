@@ -43,7 +43,7 @@
 				<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-expanded="false">Administración</a>
 				<div class="dropdown-menu">
 					<a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>	
-					<a class="dropdown-item" href="#">Roles</a>	
+					<a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>	
 					<a class="dropdown-item" href="#">Reportes</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="#">Configuración</a>	
@@ -73,7 +73,7 @@
 	
 	<br><br>
 	@yield('content')
-	<br>
+	<br> <br> <br>
 	<footer class="footer bg-dark">
       <div class="container">
         <span class="text-light">Hospital Dr. Alejandro Korn</span>

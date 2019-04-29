@@ -23,8 +23,39 @@ Route::get('patients/{id}/destroy', [
 	'as' => 'patients.destroy'
 ])->middleware('auth');
 
+Route::resource('users', 'UserController')->except([
+    'show'
+])->middleware('auth');
+
+Route::prefix('users')->group(function () {
+    Route::get('{id}/block', [
+	'uses' => 'UserController@block',
+	'as' => 'users.block'
+	]);
+
+	Route::get('{id}/unblock', [
+		'uses' => 'UserController@unblock',
+		'as' => 'users.unblock'
+	]);
+	Route::get('{id}/destroy', [
+		'uses' => 'UserController@destroy',
+		'as' => 'users.destroy'
+	]);
+	Route::get('{id}/roles', [
+		'uses' => 'UserController@roles',
+		'as' => 'users.roles'
+	])->middleware('auth');
+
+});
+
 Auth::routes();
 
-Route::get('/patient-ajax/{id}', 'PatientAjaxController@test')->middleware('auth');
+Route::get('/patient-ajax/{id}', 'PatientAjaxController@patientConsultations')->middleware('auth');
 
 Route::get('/', 'HomeController@index')->name('home');
+
+Route::resource('roles', 'RoleController')->middleware('auth');
+Route::get('roles/{id}/destroy', [
+	'uses' => 'RoleController@destroy',
+	'as' => 'roles.destroy'
+])->middleware('auth');

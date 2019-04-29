@@ -5,10 +5,12 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use EntrustUserTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -39,6 +41,16 @@ class User extends Authenticatable
 
     public function roles(){
 
-        return $this->belongsToMany('App\Role');
+        return $this->belongsToMany('App\Role', 'role_user');
+    }
+
+    public function scopeActive($query, $is_active)
+    {
+        return $query->where('is_active', 'LIKE', "%$is_active%");
+    }
+
+    public function scopeUsername($query, $username)
+    {
+        return $query->where('username', 'LIKE', "%$username%");
     }
 }
