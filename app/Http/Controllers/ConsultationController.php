@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Consultation;
+use App\Patient;
 use Illuminate\Http\Request;
 
 class ConsultationController extends Controller
@@ -12,11 +13,11 @@ class ConsultationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $consultations = Consultation::search($request->patient_id);
+        $patients = Patient::all();
 
-        return $consultations;
+        return view('consultations.index')->with('patients',$patients);
     }
 
     /**
@@ -26,7 +27,7 @@ class ConsultationController extends Controller
      */
     public function create()
     {
-        //
+        return view('consultations.create');
     }
 
     /**
@@ -46,9 +47,9 @@ class ConsultationController extends Controller
      * @param  \App\Consultation  $consultation
      * @return \Illuminate\Http\Response
      */
-    public function show(Consultation $consultation)
+    public function show($id)
     {
-        $consultation = Consultation::find($consultation);
+        $consultation = Consultation::find($id);
 
         return $consultation;
     }

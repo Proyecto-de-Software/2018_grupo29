@@ -25,4 +25,6 @@ Route::get('patients/{id}/destroy', [
 
 Auth::routes();
 
+Route::get('/patient-ajax/{id}', 'PatientAjaxController@test')->middleware('auth');
+
 Route::get('/', 'HomeController@index')->name('home');
