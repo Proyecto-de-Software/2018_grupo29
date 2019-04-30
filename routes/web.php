@@ -45,6 +45,14 @@ Route::prefix('users')->group(function () {
 		'uses' => 'UserController@roles',
 		'as' => 'users.roles'
 	])->middleware('auth');
+	Route::get('{id}/roles/remove/{role_id}', [
+		'uses' => 'UserController@removeRole',
+		'as' => 'users.roles.remove'
+	])->middleware('auth');
+	Route::get('{id}/roles/add/{role_id}', [
+		'uses' => 'UserController@addRole',
+		'as' => 'users.roles.add'
+	])->middleware('auth');
 
 });
 
@@ -58,3 +66,4 @@ Route::get('roles/{id}/destroy', [
 	'uses' => 'RoleController@destroy',
 	'as' => 'roles.destroy'
 ])->middleware('auth');
+
