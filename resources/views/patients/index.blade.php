@@ -6,7 +6,10 @@
     <h2 class="text-center">Pacientes del Hospital</h2>
     <br>
     <hr>
-    &nbsp; <a href="{{ route('patients.create') }}"> <button class="btn btn-success"> Nuevo paciente </button> </a>
+    &nbsp; 
+    @permission('patients_new')
+    <a href="{{ route('patients.create') }}"> <button class="btn btn-success"> Nuevo paciente </button> </a>
+    @endpermission
     <br><br>
     {!! Form::open(['route' => 'patients.index', 'method' => 'GET', 'class' => 'navbar-form pull-right']) !!}
     	<div class="form-group row">
@@ -50,21 +53,31 @@
 			    	<div class="col-2"> {{ $patient->dni_number }} </div>
 			    	<div class="col-1"> Estático por ahora </div>
 			    	<div class="col-2"> {{ $patient->birthdate }}</div>
+
+			    	@permission('patients_show')
 			    	<div class="col-1">
 			    		<a href="{{ route('patients.show', $patient->id) }}">
 			    			<button class="btn btn-success">Ver</button>
 			    		</a>
 			    	</div>
+			    	@endpermission
+
+			    	@permission('patients_update')
 			    	<div class="col-1">
 			    		<a href="{{ route('patients.edit', $patient->id) }}">
 			    			<button class="btn btn-warning">Editar</button>
 			    		</a>
 			    	</div>
+			    	@endpermission
+
+			    	@permission('patients_destroy')
 			    	<div class="col-1">
 			    		<a href="{{ route('patients.destroy', $patient->id) }}">
 			    			<button class="btn btn-danger" onclick="return confirm('¿Está seguro?')">Borrar</button>
 			    		</a>
 			    	</div>
+			    	@endpermission
+			    	
 			    </li>
 				@endforeach
 			</ul>

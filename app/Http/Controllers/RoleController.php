@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:roles_index', ['only' => ['index']]);
+        $this->middleware('permission:roles_show',   ['only' => ['show']]);
+        $this->middleware('permission:roles_new',   ['only' => ['create', 'store']]);
+        $this->middleware('permission:roles_destroy',   ['only' => ['delete', 'destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -45,9 +54,10 @@ class RoleController extends Controller
         $role->description = $request->description;
 
         $role->save();
-        $role->attachPermissions($request->permission);
+        if ($request->permission != NULL)
+            $role->attachPermissions($request->permission);
         
-        flash('El rol ha '. $role->name .' sido agregado exitosamente')->success();
+        flash('El rol '. $role->name .' ha sido agregado exitosamente')->success();
 
         return redirect()->route('roles.index');
         
@@ -63,8 +73,9 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         $permissions = $role->perms;
+        $other_permissions = $role->permissionsRoleDoNotOwn();
 
-        return view('roles.show')->with('role', $role)->with('permissions', $permissions);
+        return view('roles.show')->with('role', $role)->with('permissions', $permissions)->with('other_permissions', $other_permissions);
     }
 
     /**
@@ -103,5 +114,22 @@ class RoleController extends Controller
         flash('El rol ' . $role->name . ' ha sido eliminado')->warning();
 
         return redirect()->route('roles.index');
+    }
+
+    # Refactorizar estos últimos dos métodos
+    public function removePermission($role_id, $permission_id) {
+        $role = Role::findOrFail($role_id);
+        $permission = Permission::findOrFail($permission_id);
+        $role->perms()->detach($permission);
+
+        return redirect()->route('roles.show',[$role_id]);
+    }
+
+    public function addPermission($role_id, $permission_id) {
+        $role = Role::findOrFail($role_id);
+        $permission = Permission::findOrFail($permission_id);
+        $role->perms()->attach($permission);
+
+        return redirect()->route('roles.show',[$role_id]);
     }
 }

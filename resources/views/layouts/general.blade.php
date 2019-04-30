@@ -24,7 +24,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	  <a class="navbar-brand" href="#">Hospital Dr. Alejandro Korn</a>
+	  <a class="navbar-brand" href="{{ route('home') }}">Hospital Dr. Alejandro Korn</a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
@@ -32,18 +32,27 @@
 	  
 	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 	  	@if (Auth::user())
-	    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">      
-	      <li class="nav-item active">
-		      <a class="nav-link" href="{{ route('patients.index') }}">Pacientes</a>
-		    </li>
+	    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">   
+	    	@permission('patients_index')   
+		      <li class="nav-item active">
+			      <a class="nav-link" href="{{ route('patients.index') }}">Pacientes</a>
+			    </li>
+			@endpermission
 		    <li class="nav-item active">
 		      <a class="nav-link" href="#">Consultas</a>
 		    </li>
 			<li class="nav-item dropdown active">
 				<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-expanded="false">Administración</a>
 				<div class="dropdown-menu">
-					<a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>	
-					<a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>	
+					
+					@permission('users_index')
+						<a class="dropdown-item" href="{{ route('users.index') }}">Usuarios</a>
+					@endpermission	
+
+					@permission('roles_index')
+						<a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>	
+					@endpermission
+
 					<a class="dropdown-item" href="#">Reportes</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="#">Configuración</a>	

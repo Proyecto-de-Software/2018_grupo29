@@ -24,7 +24,7 @@ Route::get('patients/{id}/destroy', [
 ])->middleware('auth');
 
 Route::resource('users', 'UserController')->except([
-    'show'
+    'show',
 ])->middleware('auth');
 
 Route::prefix('users')->group(function () {
@@ -68,3 +68,12 @@ Route::get('roles/{id}/destroy', [
 	'as' => 'roles.destroy'
 ])->middleware('auth');
 
+Route::get('roles/{id}/permissions/add/{permission_id}', [
+	'uses' => 'RoleController@addPermission',
+	'as' => 'roles.permissions.add'
+])->middleware('auth');
+
+Route::get('roles/{id}/permissions/remove/{permission_id}', [
+	'uses' => 'RoleController@removePermission',
+	'as' => 'roles.permissions.remove'
+])->middleware('auth');
