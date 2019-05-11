@@ -8,9 +8,15 @@ use App\Consultation;
 
 class PatientAjaxController extends Controller
 {
+    /**
+     * Display the consultations of the patient.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+
     public function patientConsultations(Request $request)
     {
-        $consultations = Consultation::search($request->id);
-        var_dump($consultations);
+        return (new Consultation)->consultationsOfPatient($request->id);
     }
 }
