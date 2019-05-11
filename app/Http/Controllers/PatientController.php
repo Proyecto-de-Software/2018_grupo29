@@ -9,6 +9,14 @@ use App\Http\Requests\StorePatient;
 
 class PatientController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:patients_index', ['only' => ['index']]);
+        $this->middleware('permission:patients_show',   ['only' => ['show']]);
+        $this->middleware('permission:patients_new',   ['only' => ['create', 'store']]);
+        $this->middleware('permission:patients_destroy',   ['only' => ['delete', 'destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *

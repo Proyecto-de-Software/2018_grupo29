@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use App\Role;
 
 class User extends Authenticatable
 {
@@ -52,5 +53,14 @@ class User extends Authenticatable
     public function scopeUsername($query, $username)
     {
         return $query->where('username', 'LIKE', "%$username%");
+    }
+
+    public function rolesUserDoNotOwn() {
+        # Esto seguramente se puede hacer más elegante.
+        $arr = array();
+        foreach ($this->roles as $role) {
+            array_push($arr, $role->id);
+        }
+        return Role::whereNotIn('id', $arr)->get();
     }
 }

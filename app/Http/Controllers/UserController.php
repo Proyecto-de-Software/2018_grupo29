@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Role;
 use Illuminate\Http\Request;
 use Auth;
 use App\Http\Requests\StoreUser;
@@ -10,6 +11,15 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:users_index', ['only' => ['index']]);
+        $this->middleware('permission:users_new',   ['only' => ['create', 'store']]);
+        $this->middleware('permission:users_destroy',   ['only' => ['delete', 'destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -124,7 +134,25 @@ class UserController extends Controller
     public function roles($id) {
         $user = User::findOrFail($id);
         $roles = $user->roles;
+        $otherRoles = $user->rolesUserDoNotOwn();
 
-        return view('users.roles')->with('user', $user)->with('roles', $roles);
+        return view('users.roles')->with('user', $user)->with('roles', $roles)->with('otherRoles', $otherRoles);
+    }
+
+    # Refactorizar estos últimos dos métodos
+    public function addRole($user_id, $role_id){
+        $user = User::findOrFail($user_id);
+        $role = Role::findOrFail($role_id);
+        $user->roles()->attach($role);
+
+        return redirect()->route('users.roles',[$user_id]);
+    }
+
+    public function removeRole($user_id, $role_id){
+        $user = User::findOrFail($user_id);
+        $role = Role::findOrFail($role_id);
+        $user->roles()->detach($role);
+
+        return redirect()->route('users.roles',[$user_id]);
     }
 }

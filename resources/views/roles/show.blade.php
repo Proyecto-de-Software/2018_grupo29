@@ -4,28 +4,47 @@
 
 @section('content')
 	
-	<h2 class="text-center">Permisos de {{ $role->name }}</h2>
-
+	<h2 class="text-center">Permisos del rol "{{ $role->name }}"</h2>
+	<br>
 	<div class="container">
 		<div class="row">
-			<ul class="list-group" style="width: 100%">
-		    	<li class="list-group-item row d-flex text-center">
-					<div class="col-sm-2 text-info">Nombre</div>
-					<div class="col-sm-8 text-info">Descripción</div>
-					<div class="col-sm-1"></div>
-					<div class="col-sm-1"></div>
-				</li>
-				@foreach ($permissions as $permission)
-				<li class="list-group-item row d-flex text-center">
-					<div class="col-sm-2">{{ $permission->name }}</div>
-					<div class="col-sm-8">{{ $permission->description }}</div>
-					<div class="col-sm-1"></div>
-					<div class="col-sm-1">
-						<button class="btn btn-danger">Borrar</button>
-					</div>
-				</li>
-				@endforeach
-			</ul>
+			<div class="col-sm-5">
+				<h4 class="text-center">Permisos actuales</h4>
+				<ul class="list-group ">
+					@foreach ($permissions as $permission)
+						<li class="list-group-item row d-flex text-center">
+							<div class="col-sm-5"> 
+								{{ $permission->name }}
+							</div>
+							<div class="col-sm-2"></div>
+							<div class="col-sm-5"> 
+								<a href="{{ route('roles.permissions.remove',[$role->id,$permission->id]) }}">
+									<button class="btn btn-danger"> Desasignar </button>
+								</a>
+							</div>
+						</li>
+					@endforeach		
+				</ul>
+			</div>
+			<div class="col-sm-2"> </div>
+			<div class="col-sm-5">
+				<h4 class="text-center">Otros roles</h4>
+				<ul class="list-group ">
+					@foreach ($other_permissions as $other_permission)
+						<li class="list-group-item row d-flex text-center">
+							<div class="col-sm-5"> 
+								{{ $other_permission->name }}
+							</div>
+							<div class="col-sm-2"></div>
+							<div class="col-sm-5"> 
+								<a href="{{ route('roles.permissions.add',[$role->id,$other_permission->id]) }}">
+									<button class="btn btn-success"> Asignar </button>
+								</a>
+							</div>
+						</li>
+					@endforeach
+				</ul>
+			</div>
 		</div>
 	</div>
 @endsection

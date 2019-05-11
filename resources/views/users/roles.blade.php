@@ -19,7 +19,9 @@
 						</div>
 						<div class="col-2"></div>
 						<div class="col-5">
-							<button class="btn btn-danger">Desasignar</button>
+							<a href="{{ route('users.roles.remove',[$user->id,$rol->id]) }}"> 
+								<button class="btn btn-danger">Desasignar</button>
+							</a>
 						</div>
 					</li>
 					@endforeach
@@ -29,15 +31,19 @@
 			<div class="col-sm-4 text-center">
 				<h4> Resto de roles </h4>
 				<ul class="list-group ">
+					@foreach ($otherRoles as $otherRol)
 					<li class="list-group-item row d-flex text-center">
 						<div class="col-5">
-							Equipo de Guardia
+							{{$otherRol->name}}
 						</div>
 						<div class="col-2"></div>
 						<div class="col-5">
-							<button class="btn btn-success">Asignar</button>
+							<a href="{{ route('users.roles.add',[$user->id,$otherRol->id]) }}">
+								<button class="btn btn-success">Asignar</button>
+							</a>
 						</div>
 					</li>
+					@endforeach
 				</ul>
 			</div>
 			<div class="col-sm-1"> </div>
