@@ -9,6 +9,7 @@ $(document).ready(function(){
             success:function(data) {
             	console.log(data);
             	var options = '';
+            	//falta armar el html desde esta funcion, pero los datos estan viniendo bien
             }
         });
     });
