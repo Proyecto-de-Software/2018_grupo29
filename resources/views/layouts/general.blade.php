@@ -53,7 +53,7 @@
 						<a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>	
 					@endpermission
 
-					<a class="dropdown-item" href="#">Reportes</a>
+					<a class="dropdown-item" href="{{ route('reports.index') }}">Reportes</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="#">Configuración</a>	
 				</div>
