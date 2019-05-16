@@ -17,12 +17,15 @@
 	                <p class="list-group-item list-group-item-action">Localidad</p>
 	                <p class="list-group-item list-group-item-action">Región sanitaria</p>
 	                <p class="list-group-item list-group-item-action">Domicilio actual</p>
+	                <p class="list-group-item list-group-item-action">Lugar de nacimiento</p>
 	                <p class="list-group-item list-group-item-action">Género</p>
 	                <p class="list-group-item list-group-item-action">¿Tiene el documento en su poder?</p>
 	                <p class="list-group-item list-group-item-action">Tipo de documento</p>
 	                <p class="list-group-item list-group-item-action">Número de documento</p>
 	                <p class="list-group-item list-group-item-action">Número de teléfono</p>
 	                <p class="list-group-item list-group-item-action">Obra social</p>
+	                <p class="list-group-item list-group-item-action">Número de historia clínica</p>
+	                <p class="list-group-item list-group-item-action">Númbero de carpeta</p>
 	            </div>
 	        </div>
 	        <div class="col-6">
@@ -33,6 +36,7 @@
 	                <p class="list-group-item list-group-item-action">{{ $localidad->nombre }}</p>
 	                <p class="list-group-item list-group-item-action">{{ $region_sanitaria->nombre }}</p>
 	                <p class="list-group-item list-group-item-action">{{ $patient->home }}</p>
+	                <p class="list-group-item list-group-item-action">&nbsp;{{ $patient->place_of_birth }}</p>
 	                <p class="list-group-item list-group-item-action">{{ $patient->gender->name }}</p>
 	                <p class="list-group-item list-group-item-action">
 	                	@if ($patient->has_document == 1)
@@ -45,6 +49,8 @@
 	                <p class="list-group-item list-group-item-action">{{ $patient->dni_number }}</p>
 	                <p class="list-group-item list-group-item-action"> &nbsp; {{ $patient->phone_number }}</p>
 	                <p class="list-group-item list-group-item-action"> &nbsp;{{ $social_work->nombre }}</p>
+	                <p class="list-group-item list-group-item-action">{{ $patient->medical_history_number }}</p>
+	                <p class="list-group-item list-group-item-action">{{ $patient->folder_number }}</p>
 	            </div>
 	        </div>
 	    </div>

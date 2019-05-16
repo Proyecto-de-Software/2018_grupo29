@@ -40,7 +40,20 @@ class StorePatient extends FormRequest
                 # Esto es para que no tire error diciendo que el dni ya esta en uso.
                 Rule::unique('patients')->ignore($id),
             ],
-            'phone_number' => 'nullable|numeric|digits_between:7,15'
+            'phone_number' => 'nullable|numeric|digits_between:7,15',
+            'medical_history_number' => [
+                'nullable',
+                'numeric',
+                'digits_between:1,6',
+                Rule::unique('patients')->ignore($id),
+            ],
+            'folder_number' => [
+                'nullable',
+                'numeric',
+                'digits_between:1,5',
+                Rule::unique('patients')->ignore($id),
+            ],
+            'location_id' => 'required',
         ];
     }
 
@@ -62,6 +75,13 @@ class StorePatient extends FormRequest
             'dni_number.unique' => 'El número de documento debe ser único',
             'phone_number.numeric' => 'El número de teléfono sólo puede tener números',
             'phone_number.digits_between' => 'El número de teléfono debe tener entre 7 y 15 dígitos',
+            'medical_history_number.numeric' => 'El número de historia clínica sólo puede tener números',
+            'medical_history_number.digits_between' => 'El número de historia clínica debe tener máximo 6 dígitos',
+            'medical_history_number.unique' => 'El número de historia clínica debe ser único',
+            'folder_number.numeric' => 'El número de carpeta sólo puede tener números',
+            'folder_number.digits_between' => 'El número de carpeta debe tener máximo 5 dígitos',
+            'folder_number.unique' => 'El número de carpeta debe ser único',
+            'location_id.required' => 'La localidad es obligatoria',
         ];
     }
 }

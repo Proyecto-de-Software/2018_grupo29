@@ -53,6 +53,9 @@
 			{!! Form::label('domicilio', 'Domicilio actual*') !!}	
 			{!! Form::text('home', null, ['class' => 'form-control', 'required']) !!}
 			<br>
+			{!! Form::label('place_of_birth', 'Lugar de nacimiento') !!}	
+			{!! Form::text('place_of_birth', null, ['class' => 'form-control']) !!}
+			<br>
 	    </div>
 			
 		<div class="form-group col-md-5">
@@ -63,7 +66,7 @@
 			{!! Form::label('tiene_documento', '¿Tiene el documento en su poder?*') !!}	
 			{!! Form::select('has_document', ['1' => 'Sí', '0' => 'No'], null, ['class' => 'form-control', 'required']) !!}
 			<br>
-			{!! Form::label('tipo_documento', 'Tipo de Documento') !!}
+			{!! Form::label('tipo_documento', 'Tipo de Documento*') !!}
 			<select name="documentation_type_id" class="form-control">
 				@foreach ($tipos_documentos as $tipo)
 					<option value="{{ $tipo->id }}"> {{ $tipo->nombre }}</option>
@@ -82,6 +85,12 @@
 			<br>
 	    	{!! Form::label('phone_number', 'Número de teléfono') !!}
 	    	{!! Form::text('phone_number', null, ['class' => 'form-control']) !!}
+	    	<br>
+	    	{!! Form::label('medical_history_number', 'Número de historia clínica') !!}
+	    	{!! Form::text('medical_history_number', null, ['class' => 'form-control']) !!}
+	    	<br>
+	    	{!! Form::label('folder_number', 'Número de carpeta') !!}
+	    	{!! Form::text('folder_number', null, ['class' => 'form-control']) !!}
 	    	<br>
 	    </div>
 	    <div class="form-group col-md-1"> </div>

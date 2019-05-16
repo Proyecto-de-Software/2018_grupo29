@@ -35,11 +35,12 @@ class PatientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        $tipos_documentos = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'));
-        $partidos = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido'));
-        $obras_sociales = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'));
-        $regiones_sanitarias = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria'));
+    {   
+        $api = 'https://api-referencias.proyecto2018.linti.unlp.edu.ar/';
+        $tipos_documentos = $this->getJSONFromExternalAPI($api.'tipo-documento');
+        $partidos = $this->getJSONFromExternalAPI($api.'partido');
+        $obras_sociales = $this->getJSONFromExternalAPI($api.'obra-social');
+        $regiones_sanitarias = $this->getJSONFromExternalAPI($api.'region-sanitaria');
 
         return view('patients.create',compact('tipos_documentos', 'partidos', 'obras_sociales','regiones_sanitarias'));
     }
@@ -66,15 +67,18 @@ class PatientController extends Controller
      * @param  \App\Patient  $patient
      * @return \Illuminate\Http\Response
      */
+
     public function show($id)
     {
         $patient = Patient::findOrFail($id);
-        $social_work = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social/'.$patient->social_work_id));
-        $tipo_documento = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento/'.$patient->documentation_type_id));
-        $localidad = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad/'.$patient->location_id));
-        $region_sanitaria = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria/'.$patient->health_region_id));
+        $api = 'https://api-referencias.proyecto2018.linti.unlp.edu.ar/';
 
-        return view('patients.show')->with('patient',$patient)->with('social_work',$social_work)->with('tipo_documento',$tipo_documento)->with('localidad',$localidad)->with('region_sanitaria',$region_sanitaria);
+        $social_work = $this->getJSONFromExternalAPIWithID($api.'obra-social/', $patient->social_work_id);
+        $tipo_documento = $this->getJSONFromExternalAPIWithID($api.'tipo-documento/', $patient->documentation_type_id);
+        $localidad = $this->getJSONFromExternalAPIWithID($api.'localidad/', $patient->location_id);
+        $region_sanitaria = $this->getJSONFromExternalAPIWithID($api.'region-sanitaria/', $patient->health_region_id);
+
+        return view('patients.show', compact('patient','social_work','tipo_documento','localidad','region_sanitaria'));
     }
 
     /**
@@ -86,11 +90,13 @@ class PatientController extends Controller
     public function edit($id)
     {
         $patient = Patient::findOrFail($id);
-        $tipos_documentos = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'));
-        $partidos = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido'));
-        $obras_sociales = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'));
-        $regiones_sanitarias = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria'));
 
+        $api = 'https://api-referencias.proyecto2018.linti.unlp.edu.ar/';
+        $tipos_documentos = $this->getJSONFromExternalAPI($api.'tipo-documento');
+        $partidos = $this->getJSONFromExternalAPI($api.'partido');
+        $obras_sociales = $this->getJSONFromExternalAPI($api.'obra-social');
+        $regiones_sanitarias = $this->getJSONFromExternalAPI($api.'region-sanitaria');
+            
         return view('patients.edit',compact('tipos_documentos', 'partidos', 'obras_sociales','regiones_sanitarias'))->with('patient',$patient);
     }
 
@@ -123,5 +129,15 @@ class PatientController extends Controller
         flash('El/La paciente ' . $patient->first_name . ' ' . $patient->last_name . ' ha sido eliminado/a')->warning();
 
         return redirect()->route('patients.index');
+    }
+
+    private function getJSONFromExternalAPI($url) {
+
+        return json_decode(file_get_contents($url));
+    }
+
+    private function getJSONFromExternalAPIWithID($url, $id) {
+
+        return json_decode(file_get_contents($url.$id));
     }
 }

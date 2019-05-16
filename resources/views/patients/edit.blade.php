@@ -62,6 +62,9 @@
 			{!! Form::label('domicilio', 'Domicilio actual*') !!}	
 			{!! Form::text('home', $patient->home, ['class' => 'form-control', 'required']) !!}
 			<br>
+			{!! Form::label('place_of_birth', 'Lugar de nacimiento') !!}	
+			{!! Form::text('place_of_birth', $patient->place_of_birth, ['class' => 'form-control']) !!}
+			<br>
 	    </div>
 			
 		<div class="form-group col-md-5">
@@ -99,6 +102,12 @@
 	    	<br>
 	    	{!! Form::label('phone_number', 'Número de teléfono') !!}
 	    	{!! Form::text('phone_number', $patient->phone_number, ['class' => 'form-control']) !!}
+	    	<br>
+	    	{!! Form::label('medical_history_number', 'Número de historia clínica') !!}
+	    	{!! Form::text('medical_history_number', $patient->medical_history_number, ['class' => 'form-control']) !!}
+	    	<br>
+	    	{!! Form::label('folder_number', 'Número de carpeta') !!}
+	    	{!! Form::text('folder_number', $patient->folder_number, ['class' => 'form-control']) !!}
 	    	<br>
 	    </div>
 	    <div class="form-group col-md-1"> </div>

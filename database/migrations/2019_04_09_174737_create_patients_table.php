@@ -26,6 +26,8 @@ class CreatePatientsTable extends Migration
             $table->boolean('has_document');
             $table->bigInteger('dni_number');
             $table->bigInteger('phone_number')->nullable();
+            $table->bigInteger('medical_history_number')->nullable();
+            $table->bigInteger('folder_number')->nullable();
 
             # Aca se definen todas las columnas que tienen claves foraneas.
             $table->bigInteger('location_id')->nullable();
