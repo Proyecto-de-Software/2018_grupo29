@@ -28,22 +28,22 @@ class CreatePatientsTable extends Migration
             $table->bigInteger('phone_number')->nullable();
 
             # Aca se definen todas las columnas que tienen claves foraneas.
-            $table->bigInteger('location_id')->unsigned()->nullable();
-            $table->bigInteger('health_region_id')->unsigned()->nullable();
+            $table->bigInteger('location_id')->nullable();
+            $table->bigInteger('health_region_id')->nullable();
             $table->bigInteger('gender_id')->unsigned();
-            $table->bigInteger('documentation_type_id')->unsigned()->nullable();
-            $table->bigInteger('social_work_id')->unsigned()->nullable();
+            $table->bigInteger('documentation_type_id')->nullable();
+            $table->bigInteger('social_work_id')->nullable();
+
+            $table->softDeletes();
             $table->timestamps();
 
         
 
              # Y aca se definen efectivamente las claves foraneas.
             
-            $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
-            $table->foreign('health_region_id')->references('id')->on('health_regions')->onDelete('cascade');
+            
             $table->foreign('gender_id')->references('id')->on('genders')->onDelete('cascade');
-            $table->foreign('documentation_type_id')->references('id')->on('documentation_types')->onDelete('cascade');
-            $table->foreign('social_work_id')->references('id')->on('social_works')->onDelete('cascade');
+           
         });
     }
 

@@ -21,10 +21,8 @@ class CreateInstitutionsTable extends Migration
             $table->string('x_coordinate');
             $table->string('y_coordinate');
             
-            $table->bigInteger('health_region_id')->unsigned();
+            $table->bigInteger('health_region_id')->nullable();
             $table->bigInteger('institution_type_id')->unsigned();
-
-            $table->foreign('health_region_id')->references('id')->on('health_regions')->onDelete('cascade');
             
             $table->foreign('institution_type_id')->references('id')->on('institutions_types')->onDelete('cascade');
             

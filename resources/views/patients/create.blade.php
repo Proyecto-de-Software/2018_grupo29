@@ -31,6 +31,13 @@
 			{!! Form::label('birthdate', 'Fecha de nacimiento*') !!}	
 			{!! Form::date('birthdate', \Carbon\Carbon::create(1990, 12, 31), ['class' => 'form-control', 'required']) !!}
 			<br>
+			{!! Form::label('partido', 'Partido') !!}
+			<select class="form-control">
+				@foreach ($partidos as $partido)
+					<option value="{{ $partido->id }}"> {{ $partido->nombre }}</option>
+				@endforeach
+			</select>
+			<br>
 			{!! Form::label('domicilio', 'Domicilio actual*') !!}	
 			{!! Form::text('home', null, ['class' => 'form-control', 'required']) !!}
 			<br>
@@ -44,9 +51,23 @@
 			{!! Form::label('tiene_documento', '¿Tiene el documento en su poder?*') !!}	
 			{!! Form::select('has_document', ['1' => 'Sí', '0' => 'No'], null, ['class' => 'form-control', 'required']) !!}
 			<br>
+			{!! Form::label('tipo_documento', 'Tipo de Documento') !!}
+			<select class="form-control">
+				@foreach ($tipos_documentos as $tipo)
+					<option value="{{ $tipo->id }}"> {{ $tipo->nombre }}</option>
+				@endforeach
+			</select>
+			<br>
 			{!! Form::label('dni_number', 'Número de documento*') !!}
 	    	{!! Form::text('dni_number', null, ['class' => 'form-control', 'required']) !!}
 	    	<br>
+	    	{!! Form::label('obra_social', 'Obra social') !!}
+			<select class="form-control">
+				@foreach ($obras_sociales as $obra_social)
+					<option value="{{ $obra_social->id }}"> {{ $obra_social->nombre }}</option>
+				@endforeach
+			</select>
+			<br>
 	    	{!! Form::label('phone_number', 'Número de teléfono') !!}
 	    	{!! Form::text('phone_number', null, ['class' => 'form-control']) !!}
 	    	<br>

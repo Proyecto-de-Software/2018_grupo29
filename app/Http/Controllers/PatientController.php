@@ -36,8 +36,11 @@ class PatientController extends Controller
      */
     public function create()
     {
+        $tipos_documentos = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'));
+        $partidos = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido'));
+        $obras_sociales = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'));
 
-        return view('patients.create');
+        return view('patients.create',compact('tipos_documentos', 'partidos', 'obras_sociales'));
     }
 
     /**
