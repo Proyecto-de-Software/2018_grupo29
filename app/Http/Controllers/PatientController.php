@@ -39,8 +39,9 @@ class PatientController extends Controller
         $tipos_documentos = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'));
         $partidos = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido'));
         $obras_sociales = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'));
+        $regiones_sanitarias = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria'));
 
-        return view('patients.create',compact('tipos_documentos', 'partidos', 'obras_sociales'));
+        return view('patients.create',compact('tipos_documentos', 'partidos', 'obras_sociales','regiones_sanitarias'));
     }
 
     /**
@@ -68,8 +69,12 @@ class PatientController extends Controller
     public function show($id)
     {
         $patient = Patient::findOrFail($id);
+        $social_work = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social/'.$patient->social_work_id));
+        $tipo_documento = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento/'.$patient->documentation_type_id));
+        $localidad = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad/'.$patient->location_id));
+        $region_sanitaria = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria/'.$patient->health_region_id));
 
-        return view('patients.show')->with('patient',$patient);
+        return view('patients.show')->with('patient',$patient)->with('social_work',$social_work)->with('tipo_documento',$tipo_documento)->with('localidad',$localidad)->with('region_sanitaria',$region_sanitaria);
     }
 
     /**
@@ -81,8 +86,12 @@ class PatientController extends Controller
     public function edit($id)
     {
         $patient = Patient::findOrFail($id);
+        $tipos_documentos = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/tipo-documento'));
+        $partidos = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/partido'));
+        $obras_sociales = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/obra-social'));
+        $regiones_sanitarias = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/region-sanitaria'));
 
-        return view('patients.edit')->with('patient',$patient);
+        return view('patients.edit',compact('tipos_documentos', 'partidos', 'obras_sociales','regiones_sanitarias'))->with('patient',$patient);
     }
 
     /**

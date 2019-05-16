@@ -32,6 +32,33 @@
 			{!! Form::label('birthdate', 'Fecha de nacimiento*') !!}	
 			{!! Form::date('birthdate', $patient->birthdate, ['class' => 'form-control', 'required']) !!}
 			<br>
+			{!! Form::label('partido', 'Partido') !!}
+			<select id="partidos" class="form-control">
+				@foreach ($partidos as $partido)
+					@if ($patient->location_id == $partido->id)
+					<option value="{{ $partido->id }}" selected=""> {{ $partido->nombre }}</option>
+					@else
+					<option value="{{ $partido->id }}"> {{ $partido->nombre }}</option>
+					@endif
+				@endforeach
+			</select>
+			<br>
+			{!! Form::label('localidad', 'Localidad') !!}
+			<select name="location_id" id="localidades" class="form-control">
+				<!-- Se cargan mediante AJAX -->
+			</select>
+			<br>
+			{!! Form::label('region_sanitaria', 'Región Sanitaria') !!}
+			<select name="health_region_id" class="form-control">
+				@foreach ($regiones_sanitarias as $region_sanitaria)
+					@if ($patient->health_region_id == $region_sanitaria->id)
+					<option value="{{ $region_sanitaria->id }}" selected=""> {{ $region_sanitaria->nombre }}</option>
+					@else
+					<option value="{{ $region_sanitaria->id }}" > {{ $region_sanitaria->nombre }}</option>
+					@endif
+				@endforeach
+			</select>
+			<br>
 			{!! Form::label('domicilio', 'Domicilio actual*') !!}	
 			{!! Form::text('home', $patient->home, ['class' => 'form-control', 'required']) !!}
 			<br>
@@ -45,8 +72,30 @@
 			{!! Form::label('tiene_documento', '¿Tiene el documento en su poder?*') !!}	
 			{!! Form::select('has_document', ['1' => 'Sí', '0' => 'No'], $patient->has_document, ['class' => 'form-control', 'required']) !!}
 			<br>
+			{!! Form::label('tipo_documento', 'Tipo de Documento') !!}
+			<select name="documentation_type_id" class="form-control">
+				@foreach ($tipos_documentos as $tipo)
+					@if ($patient->documentation_type_id == $tipo->id)
+					<option value="{{ $tipo->id }}" selected=""> {{ $tipo->nombre }}</option>
+					@else
+					<option value="{{ $tipo->id }}"> {{ $tipo->nombre }}</option>
+					@endif
+				@endforeach
+			</select>
+			<br>
 			{!! Form::label('dni_number', 'Número de documento*') !!}
 	    	{!! Form::text('dni_number', $patient->dni_number, ['class' => 'form-control', 'required']) !!}
+	    	<br>
+	    	{!! Form::label('obra_social', 'Obra social') !!}
+			<select name="social_work_id" class="form-control">
+				@foreach ($obras_sociales as $obra_social)
+					@if ($patient->social_work_id == $obra_social->id)
+					<option value="{{ $obra_social->id }}" selected="">  {{ $obra_social->nombre }}</option>
+					@else
+					<option value="{{ $obra_social->id }}">  {{ $obra_social->nombre }}</option>
+					@endif
+				@endforeach
+			</select>
 	    	<br>
 	    	{!! Form::label('phone_number', 'Número de teléfono') !!}
 	    	{!! Form::text('phone_number', $patient->phone_number, ['class' => 'form-control']) !!}
@@ -59,5 +108,9 @@
 		</div>
 		{!! Form::close() !!}
 	
-		
+<script type="text/javascript" src="{{ asset('js/ajaxPatientCreate.js') }}"></script>
+<script src="http://code.jquery.com/jquery-3.3.1.min.js"
+               integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+               crossorigin="anonymous">
+</script>	
 @endsection

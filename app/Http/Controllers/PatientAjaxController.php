@@ -19,4 +19,10 @@ class PatientAjaxController extends Controller
     {
         return (new Consultation)->consultationsOfPatient($request->id);
     }
+
+    public function getLocalidades($id) {
+        $localidades = json_decode(file_get_contents('https://api-referencias.proyecto2018.linti.unlp.edu.ar/localidad/partido/'.$id));
+
+        return $localidades;
+    }
 }

@@ -14,6 +14,7 @@
 Auth::routes();
 
 Route::get('/patient-ajax/{id}', 'PatientAjaxController@patientConsultations')->middleware('auth');
+Route::get('/patient-ajax/partido/{id}', 'PatientAjaxController@getLocalidades')->middleware('auth');
 
 Route::get('/', 'HomeController@index')->name('home');
 
