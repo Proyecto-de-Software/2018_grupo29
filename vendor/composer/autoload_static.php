@@ -392,6 +392,7 @@ class ComposerStaticInit8c0b23087d71b3eb721d3a068646c602
     );
 
     public static $classMap = array (
+        'App\\Charts\\ReasonsChart' => __DIR__ . '/../..' . '/app/Charts/ReasonsChart.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Consultation' => __DIR__ . '/../..' . '/app/Consultation.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
@@ -406,6 +407,7 @@ class ComposerStaticInit8c0b23087d71b3eb721d3a068646c602
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\PatientAjaxController' => __DIR__ . '/../..' . '/app/Http/Controllers/PatientAjaxController.php',
         'App\\Http\\Controllers\\PatientController' => __DIR__ . '/../..' . '/app/Http/Controllers/PatientController.php',
+        'App\\Http\\Controllers\\ReportController' => __DIR__ . '/../..' . '/app/Http/Controllers/ReportController.php',
         'App\\Http\\Controllers\\RoleController' => __DIR__ . '/../..' . '/app/Http/Controllers/RoleController.php',
         'App\\Http\\Controllers\\TestController' => __DIR__ . '/../..' . '/app/Http/Controllers/TestController.php',
         'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
@@ -420,6 +422,7 @@ class ComposerStaticInit8c0b23087d71b3eb721d3a068646c602
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Requests\\StorePatient' => __DIR__ . '/../..' . '/app/Http/Requests/StorePatient.php',
         'App\\Http\\Requests\\StoreUser' => __DIR__ . '/../..' . '/app/Http/Requests/StoreUser.php',
+        'App\\Institution' => __DIR__ . '/../..' . '/app/Institution.php',
         'App\\Patient' => __DIR__ . '/../..' . '/app/Patient.php',
         'App\\Permission' => __DIR__ . '/../..' . '/app/Permission.php',
         'App\\Permission_Role' => __DIR__ . '/../..' . '/app/Permission_Role.php',
@@ -1963,6 +1966,8 @@ class ComposerStaticInit8c0b23087d71b3eb721d3a068646c602
         'Illuminate\\View\\ViewFinderInterface' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewFinderInterface.php',
         'Illuminate\\View\\ViewName' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewName.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
+        'InstitutionTableSeeder' => __DIR__ . '/../..' . '/database/seeds/InstitutionTableSeeder.php',
+        'InstitutionTypeTableSeeder' => __DIR__ . '/../..' . '/database/seeds/InstitutionTypeTableSeeder.php',
         'JakubOnderka\\PhpConsoleColor\\ConsoleColor' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/ConsoleColor.php',
         'JakubOnderka\\PhpConsoleColor\\InvalidStyleException' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/InvalidStyleException.php',
         'JakubOnderka\\PhpConsoleHighlighter\\Highlighter' => __DIR__ . '/..' . '/jakub-onderka/php-console-highlighter/src/Highlighter.php',
