@@ -39,8 +39,7 @@
 		    		<div class="col-2 text-info">Apellido</div>
 		    		<div class="col-1 text-info">Género</div>
 		    		<div class="col-2 text-info">Número de documento</div>
-		    		<div class="col-1 text-info">Localidad</div>
-		    		<div class="col-2 text-info">Fecha de nacimiento</div>
+		    		<div class="col-3 text-info">Fecha de nacimiento</div>
 		    		<div class="col-1 text-info"></div>
 		    		<div class="col-1 text-info"></div>
 		    		<div class="col-1 text-info"></div>
@@ -51,8 +50,7 @@
 			    	<div class="col-2"> {{ $patient->last_name }} </div>
 			    	<div class="col-1"> {{ $patient->gender->name }} </div>
 			    	<div class="col-2"> {{ $patient->dni_number }} </div>
-			    	<div class="col-1"> Estático por ahora </div>
-			    	<div class="col-2"> {{ $patient->birthdate }}</div>
+			    	<div class="col-3"> {{ $patient->birthdate }}</div>
 
 			    	@permission('patients_show')
 			    	<div class="col-1">

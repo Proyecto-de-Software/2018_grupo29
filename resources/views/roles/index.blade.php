@@ -42,7 +42,9 @@
 
 						@permission('roles_update')
 							<div class="col-sm-1">
-								<button class="btn btn-warning">Editar</button>
+								<a href="{{ route('roles.edit', $rol->id) }}">
+									<button class="btn btn-warning">Editar</button>
+								</a>
 							</div>
 						@endpermission
 

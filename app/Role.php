@@ -14,6 +14,11 @@ class Role extends EntrustRole
     	return $this->belongsToMany('App\Permission');
     }
 
+
+    protected $fillable = [
+        'name', 'description'
+    ];
+
     public function permissionsRoleDoNotOwn(){
 
     	# Esto seguramente se puede hacer más elegante.

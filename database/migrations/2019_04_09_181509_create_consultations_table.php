@@ -31,6 +31,7 @@ class CreateConsultationsTable extends Migration
             #Este queda distinto al resto. Pero asi lo teniamos. Derivacion->Institucion
             $table->foreign('derivation_id')->references('id')->on('institutions')->onDelete('cascade');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

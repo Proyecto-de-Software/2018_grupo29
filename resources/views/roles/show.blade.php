@@ -14,7 +14,7 @@
 					@foreach ($permissions as $permission)
 						<li class="list-group-item row d-flex text-center">
 							<div class="col-sm-5"> 
-								{{ $permission->name }}
+								{{ $permission->display_name }}
 							</div>
 							<div class="col-sm-2"></div>
 							<div class="col-sm-5"> 
@@ -33,7 +33,7 @@
 					@foreach ($other_permissions as $other_permission)
 						<li class="list-group-item row d-flex text-center">
 							<div class="col-sm-5"> 
-								{{ $other_permission->name }}
+								{{ $other_permission->display_name }}
 							</div>
 							<div class="col-sm-2"></div>
 							<div class="col-sm-5"> 

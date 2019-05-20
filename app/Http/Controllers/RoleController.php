@@ -84,9 +84,11 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit($id)
     {
-        //
+        $role = Role::findOrFail($id);
+
+        return view('roles.edit')->with('role',$role);
     }
 
     /**
@@ -96,9 +98,13 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $role->update($request->all());
+        flash('El rol ' . $role->name .' ha sido actualizado correctamente')->success();
+
+        return redirect()->route('roles.index');
     }
 
     /**

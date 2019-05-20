@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+# Métodos para la API de Instituciones. 
+Route::get('instituciones','InstitutionController@index');
+Route::get('instituciones/{id}','InstitutionController@show');
+Route::post('instituciones','InstitutionController@store');
+Route::delete('instituciones/{id}','InstitutionController@destroy');
+Route::put('instituciones/{id}','InstitutionController@update');

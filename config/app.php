@@ -181,6 +181,7 @@ return [
 
         Collective\Html\HtmlServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
+        
 
     ],
 
