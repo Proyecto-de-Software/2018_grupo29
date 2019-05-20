@@ -34,6 +34,29 @@ class PermissionTableSeeder extends Seeder
             'description' => 'Permite crear un paciente',
         ]);
 
+        # PERMISOS PARA LAS CONSULTAS
+
+        DB::table('permissions')->insert([
+            'name' => 'consultations_index',
+            'description' => 'Permite acceder al listado de las consultas',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'consultations_show',
+            'description' => 'Permite acceder a la información en detalle de una consulta',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'consultations_update',
+            'description' => 'Permite actualizar la información de una consulta',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'consultations_destroy',
+            'description' => 'Permite eliminar una consulta',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'consultations_new',
+            'description' => 'Permite crear una consulta',
+        ]);
+
         # PERMISOS PARA LOS USUARIOS
 
         DB::table('permissions')->insert([

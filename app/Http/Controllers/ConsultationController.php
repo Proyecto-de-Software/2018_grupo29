@@ -27,7 +27,8 @@ class ConsultationController extends Controller
      */
     public function create()
     {
-        return view('consultations.create');
+        $patients = Patient::all('first_name','last_name','id');
+        return view('consultations.create')->with('patients',$patients);
     }
 
     /**

@@ -37,23 +37,26 @@ Route::prefix('users')->group(function () {
 		'uses' => 'UserController@unblock',
 		'as' => 'users.unblock'
 	]);
+
 	Route::get('{id}/destroy', [
 		'uses' => 'UserController@destroy',
 		'as' => 'users.destroy'
 	]);
+
 	Route::get('{id}/roles', [
 		'uses' => 'UserController@roles',
 		'as' => 'users.roles'
 	])->middleware('auth');
+
 	Route::get('{id}/roles/remove/{role_id}', [
 		'uses' => 'UserController@removeRole',
 		'as' => 'users.roles.remove'
 	])->middleware('auth');
+
 	Route::get('{id}/roles/add/{role_id}', [
 		'uses' => 'UserController@addRole',
 		'as' => 'users.roles.add'
 	])->middleware('auth');
-
 });
 
 Auth::routes();
@@ -63,6 +66,7 @@ Route::get('/patient-ajax/{id}', 'PatientAjaxController@patientConsultations')->
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('roles', 'RoleController')->middleware('auth');
+
 Route::get('roles/{id}/destroy', [
 	'uses' => 'RoleController@destroy',
 	'as' => 'roles.destroy'

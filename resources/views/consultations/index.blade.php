@@ -17,6 +17,29 @@
 			</div>
 		</div>
 	</div>
+	&nbsp;&nbsp;&nbsp;
+	<div class="container">
+		<div class="row justify-content-center">
+			<button id="toggle" class="btn btn-primary" onclick="changeButton()">Mostrar consultas</button>
+		</div>
+	</div>
+	&nbsp;&nbsp;&nbsp;
+	<div class="container">
+		<div class="row justify-content-center">
+			<div id='consultations' style="display: none;">
+				<p>Aca irian las consultas</p>					
+			</div>
+		</div>
+	</div>
+	@permission('consultations_new')
+	&nbsp;&nbsp;&nbsp;
+	<div class="container">
+		<div class="row justify-content-center">
+			<a class="btn btn-success" href="{{ route('consultations.create') }}">Crear nueva consulta</a>
+		</div>
+	</div>
+	@endpermission
 	<script type="text/javascript" src="{{ asset('js/ajaxConsultasPacientes.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/consultations.js') }}"></script>
 @endsection
 

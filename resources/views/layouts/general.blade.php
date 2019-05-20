@@ -38,9 +38,11 @@
 			      <a class="nav-link" href="{{ route('patients.index') }}">Pacientes</a>
 			    </li>
 			@endpermission
+		    @permission('consultations_index')
 		    <li class="nav-item active">
-		      <a class="nav-link" href="#">Consultas</a>
+		      <a class="nav-link" href="{{ route('consultations.index') }}">Consultas</a>
 		    </li>
+		    @endpermission
 			<li class="nav-item dropdown active">
 				<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-expanded="false">Administración</a>
 				<div class="dropdown-menu">

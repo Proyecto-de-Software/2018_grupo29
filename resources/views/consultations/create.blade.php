@@ -17,23 +17,25 @@
 	@endif
 
 	<p class="text-center"> Nota: los campos que tienen (*) son obligatorios </p>    
-	{!! Form::open(['route' => 'patients.store']) !!}
+	{!! Form::open(['route' => 'consultations.store']) !!}
 	<div class="form-row">
 		
 		<div class="form-group col-md-1"> </div>
 		<div class="form-group col-md-5">
-	    	{!! Form::label('first_name', 'Nombre*') !!}
-	    	{!! Form::text('first_name', null, ['class' => 'form-control', 'required']) !!}
-	    	<br>
 	    	{!! Form::label('last_name', 'Apellido*') !!}	
 			{!! Form::text('last_name', null, ['class' => 'form-control', 'required']) !!}
 			<br>
-			{!! Form::label('birthdate', 'Fecha de nacimiento*') !!}	
-			{!! Form::date('birthdate', \Carbon\Carbon::create(1990, 12, 31), ['class' => 'form-control', 'required']) !!}
+			{!! Form::label('date', 'Fecha de consulta*') !!}	
+			{!! Form::date('date', \Carbon\Carbon::create(2019, 05, 20), ['class' => 'form-control', 'required']) !!}
 			<br>
-			{!! Form::label('domicilio', 'Domicilio actual*') !!}	
-			{!! Form::text('home', null, ['class' => 'form-control', 'required']) !!}
+			{!! Form::label('motive', 'Motivo*') !!}	
+			{!! Form::select('motive_id', ['1' => 'Receta Médica', '2' => 'Control por Guardia', '3' => 'Consulta', '4' => 'Intento de Suicidio', '5' => 'Interconsulta', '6' => 'Otros'], null, ['class' => 'form-control', 'required']) !!}
 			<br>
+			<select id="patients" class="select-single" name="patients" style="width: 100%">
+			  	@foreach ($patients as $patient)
+			    	<option value="{{ $patient->id }}">{{ $patient->first_name }} {{ $patient->last_name }}</option>
+				@endforeach
+			</select>
 	    </div>
 			
 		<div class="form-group col-md-5">
@@ -41,8 +43,8 @@
 			{!! Form::label('gender', 'Género*') !!}	
 			{!! Form::select('gender_id', ['1' => 'Masculino', '2' => 'Femenino', '3' => 'Otro'], null, ['class' => 'form-control', 'required']) !!}
 			<br>
-			{!! Form::label('tiene_documento', '¿Tiene el documento en su poder?*') !!}	
-			{!! Form::select('has_document', ['1' => 'Sí', '0' => 'No'], null, ['class' => 'form-control', 'required']) !!}
+			{!! Form::label('was_internment', '¿Hubo internación?*') !!}	
+			{!! Form::select('was_internment', ['1' => 'Sí', '0' => 'No'], null, ['class' => 'form-control', 'required']) !!}
 			<br>
 			{!! Form::label('dni_number', 'Número de documento*') !!}
 	    	{!! Form::text('dni_number', null, ['class' => 'form-control', 'required']) !!}
