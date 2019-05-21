@@ -9,7 +9,7 @@
     <div class="container">
   		<div class="row justify-content-center">
   			<div class="col-4">
-			    <select id="patients" class="select-single" name="patients" style="width: 100%">
+			    <select id="patients" class="select-single" name="patients" style="width: 100%" onchange="modifyText()">
 				  	@foreach ($patients as $patient)
 				    	<option value="{{ $patient->id }}">{{ $patient->first_name }} {{ $patient->last_name }}</option>
 					@endforeach
@@ -32,10 +32,10 @@
 		</div>
 	</div>
 	@permission('consultations_new')
-	&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;
 	<div class="container">
 		<div class="row justify-content-center">
-			<a class="btn btn-success" href="{{ route('consultations.create') }}">Crear nueva consulta</a>
+			<a id="newConsultation" class="btn btn-success" href="{{ route('consultations.create') }}" style="display: none;">Crear nueva consulta</a>
 		</div>
 	</div>
 	@endpermission

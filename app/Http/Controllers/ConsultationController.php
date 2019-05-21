@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Consultation;
 use App\Patient;
+use App\Institution;
 use Illuminate\Http\Request;
 
 class ConsultationController extends Controller
@@ -27,8 +28,8 @@ class ConsultationController extends Controller
      */
     public function create()
     {
-        $patients = Patient::all('first_name','last_name','id');
-        return view('consultations.create')->with('patients',$patients);
+        $institutions = Institution::all();
+        return view('consultations.create')->with('institutions',$institutions);
     }
 
     /**

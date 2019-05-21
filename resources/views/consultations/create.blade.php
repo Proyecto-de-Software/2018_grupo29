@@ -3,7 +3,7 @@
 @section('title', 'Crear nueva consulta')
 
 @section('content')
-	<h2 class="text-center"> Nueva Consulta </h2>
+	<h2 class="text-center"> Nueva consulta para "inserte parametro aqui"</h2>
 
 	@if ($errors->any())
 	    <div class="alert alert-danger">
@@ -22,26 +22,26 @@
 		
 		<div class="form-group col-md-1"> </div>
 		<div class="form-group col-md-5">
-	    	{!! Form::label('last_name', 'Apellido*') !!}	
-			{!! Form::text('last_name', null, ['class' => 'form-control', 'required']) !!}
-			<br>
-			{!! Form::label('date', 'Fecha de consulta*') !!}	
-			{!! Form::date('date', \Carbon\Carbon::create(2019, 05, 20), ['class' => 'form-control', 'required']) !!}
+	    	{!! Form::label('diagnostic', 'Diagnóstico*') !!}	
+			{!! Form::textarea('diagnostic', null, ['class' => 'form-control', 'required']) !!}
 			<br>
 			{!! Form::label('motive', 'Motivo*') !!}	
 			{!! Form::select('motive_id', ['1' => 'Receta Médica', '2' => 'Control por Guardia', '3' => 'Consulta', '4' => 'Intento de Suicidio', '5' => 'Interconsulta', '6' => 'Otros'], null, ['class' => 'form-control', 'required']) !!}
 			<br>
-			<select id="patients" class="select-single" name="patients" style="width: 100%">
-			  	@foreach ($patients as $patient)
-			    	<option value="{{ $patient->id }}">{{ $patient->first_name }} {{ $patient->last_name }}</option>
+			{!! Form::label('derivation', 'Derivación*') !!}
+			<select id="institutions" class="form-control" name="institutions" style="width: 100%">
+			  	@foreach ($institutions as $institution)
+			    	<option value="{{ $institution->id }}">
+			    		{{ $institution->name }}
+			    	</option>
 				@endforeach
 			</select>
 	    </div>
 			
 		<div class="form-group col-md-5">
 
-			{!! Form::label('gender', 'Género*') !!}	
-			{!! Form::select('gender_id', ['1' => 'Masculino', '2' => 'Femenino', '3' => 'Otro'], null, ['class' => 'form-control', 'required']) !!}
+			{!! Form::label('date', 'Fecha de consulta*') !!}	
+			{!! Form::date('date', \Carbon\Carbon::create(2019, 05, 20), ['class' => 'form-control', 'required']) !!}
 			<br>
 			{!! Form::label('was_internment', '¿Hubo internación?*') !!}	
 			{!! Form::select('was_internment', ['1' => 'Sí', '0' => 'No'], null, ['class' => 'form-control', 'required']) !!}

@@ -6,3 +6,9 @@ function changeButton(){
 	}
 	$("#consultations").toggle();
 }
+
+function modifyText(){
+	$("#newConsultation").show();
+	$("#newConsultation").html("Crear una consulta para: ");
+	$("#newConsultation").append($("#patients option:selected").html());
+}

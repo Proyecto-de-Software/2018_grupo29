@@ -22,9 +22,13 @@ class CreateConsultationsTable extends Migration
             $table->longText('observations')->nullable();
 
             $table->bigInteger('patient_id')->unsigned();
+            $table->bigInteger('treatments_id')->nullable();
+            $table->bigInteger('accompanied_by_id')->nullable();
             $table->bigInteger('reason_id')->unsigned()->nullable();
             $table->bigInteger('derivation_id')->unsigned()->nullable();
 
+            //$table->foreign('treatments_id')->references('id')->on('treatments')->onDelete('cascade');
+            //$table->foreign('accompanied_by_id')->references('id')->on('accompanied_by')->onDelete('cascade');
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
             $table->foreign('reason_id')->references('id')->on('reasons')->onDelete('cascade');
 
@@ -46,3 +50,4 @@ class CreateConsultationsTable extends Migration
         Schema::dropIfExists('consultations');
     }
 }
+
