@@ -85,9 +85,23 @@ Route::prefix('users')->middleware(['auth'])->group(function () {
 });
 
 # Módulo de Reportes
+Route::prefix('reports')->middleware(['auth'])->group(function () {
 
-Route::get('reports', [
-	'uses' => 'ReportController@index',
-	'as' => 'reports.index'
-]);
+	Route::get('/all', [
+		'uses' => 'ReportController@start',
+		'as' => 'reports'
+	]);
+	Route::get('byReason', [
+		'uses' => 'ReportController@byReason',
+		'as' => 'reports.byReason'
+	]);
+	Route::get('byGender', [
+		'uses' => 'ReportController@byGender',
+		'as' => 'reports.byGender'
+	]);
+	Route::get('byLocation', [
+		'uses' => 'ReportController@byLocation',
+		'as' => 'reports.byLocation'
+	]);
 
+});

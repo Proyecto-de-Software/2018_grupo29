@@ -18,4 +18,9 @@ class Consultation extends Model
     public function consultationsOfPatient($patient_id){
     	return Consultation::where('patient_id',"$patient_id")->get();
     }
+
+    public function reason() {
+
+    	return $this->belongsTo('App\Reason');
+    }
 }

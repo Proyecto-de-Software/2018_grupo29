@@ -17,5 +17,9 @@ $factory->define(Patient::class, function (Faker $faker) {
         'phone_number' => $faker->numberBetween($min = 2210000000, $max = 2219999999),
         'dni_number' => $faker->numberBetween($min = 17000000, $max = 43999999),
         'gender_id' =>$faker->numberBetween($min = 1, $max = 3),
+        'location_id' => $faker->numberBetween($min = 1, $max = 7),
+        'social_work_id' => $faker->numberBetween($min = 1, $max = 7),
+        'documentation_type_id' => $faker->numberBetween($min = 1, $max = 5),
+        'health_region_id' => $faker->numberBetween($min = 1, $max = 5),
     ];
 });
