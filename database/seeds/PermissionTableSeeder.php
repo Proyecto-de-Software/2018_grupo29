@@ -44,22 +44,27 @@ class PermissionTableSeeder extends Seeder
         DB::table('permissions')->insert([
             'name' => 'consultations_index',
             'description' => 'Permite acceder al listado de las consultas',
+            'display_name' => 'Listado de consultas',
         ]);
         DB::table('permissions')->insert([
             'name' => 'consultations_show',
             'description' => 'Permite acceder a la información en detalle de una consulta',
+            'display_name' => 'Ver detalle de consulta',
         ]);
         DB::table('permissions')->insert([
             'name' => 'consultations_update',
             'description' => 'Permite actualizar la información de una consulta',
+            'display_name' => 'Actualizar consulta',
         ]);
         DB::table('permissions')->insert([
             'name' => 'consultations_destroy',
             'description' => 'Permite eliminar una consulta',
+            'display_name' => 'Eliminar consulta',
         ]);
         DB::table('permissions')->insert([
             'name' => 'consultations_new',
             'description' => 'Permite crear una consulta',
+            'display_name' => 'Crear consulta',
         ]);
 
         # PERMISOS PARA LOS USUARIOS
@@ -116,6 +121,22 @@ class PermissionTableSeeder extends Seeder
             'name' => 'roles_new',
             'description' => 'Permite crear un rol',
             'display_name' => 'Crear un nuevo rol',
+        ]);
+
+        # PERMISOS PARA LOS REPORTES
+
+        DB::table('permissions')->insert([
+            'name' => 'reports_index',
+            'description' => 'Permite tener acceso al listado, gráfico y al exportar',
+            'display_name' => 'Acceso al módulo de reportes',
+        ]);
+
+        # PERMISOS PARA LA CONFIGURACIÓN
+
+        DB::table('permissions')->insert([
+            'name' => 'configuration_index',
+            'description' => 'Permite acceder y modificar la configuración del sitio',
+            'display_name' => 'Acceder y modificar la configuración del sitio',
         ]);
     }
 }

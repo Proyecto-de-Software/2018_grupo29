@@ -136,7 +136,7 @@ function toPdf(){
     chart = window.chart;
     imgData = chart.canvas.toDataURL();
 
-    pdf.addImage(imgData, 'JPEG', 100, 20, 500, 180);
+    pdf.addImage(imgData, 'JPEG', 80, 20, 500, 250);
 
     var x = 20;
     var y = 160;

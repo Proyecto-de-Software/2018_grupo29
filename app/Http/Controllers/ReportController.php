@@ -12,7 +12,13 @@ use App\Gender;
 
 class ReportController extends Controller
 {
-	/*
+	public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:reports_index');
+    }
+
+    /*
 	
 	Punto de partida para el módulo.
 	El gráfico por defecto es definido en el archivo 'js/logicaGraficos.js',

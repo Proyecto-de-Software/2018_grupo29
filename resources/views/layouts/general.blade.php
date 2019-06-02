@@ -43,6 +43,8 @@
 		      <a class="nav-link" href="{{ route('consultations.index') }}">Consultas</a>
 		    </li>
 		    @endpermission
+
+		    @permission('users_index', 'roles_index', 'reports_index', 'configuration_index')
 			<li class="nav-item dropdown active">
 				<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" aria-expanded="false">Administración</a>
 				<div class="dropdown-menu">
@@ -55,11 +57,17 @@
 						<a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>	
 					@endpermission
 
-					<a class="dropdown-item" href="{{ route('reports') }}">Reportes</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Configuración</a>	
+					@permission('reports_index')
+						<a class="dropdown-item" href="{{ route('reports') }}">Reportes</a>
+					@endpermission
+					
+					@permission('configuration_index')
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#">Configuración</a>
+					@endpermission
 				</div>
 			</li>
+			@endpermission
 	    </ul>
 	    <span class="navbar-text">
 		    Bienvenido {{ Auth::user()->first_name }}
