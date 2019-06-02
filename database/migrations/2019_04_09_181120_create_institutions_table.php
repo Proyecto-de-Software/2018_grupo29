@@ -17,6 +17,7 @@ class CreateInstitutionsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('director');
+            $table->string('address');
             $table->string('phone_number');
             $table->string('x_coordinate');
             $table->string('y_coordinate');

@@ -105,3 +105,7 @@ Route::prefix('reports')->middleware(['auth'])->group(function () {
 	]);
 
 });
+
+# FRONTEND WITH VUE.JS
+
+Route::get('buscador-instituciones','InstitutionController@buscador');
