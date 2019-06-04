@@ -86,4 +86,12 @@ class InstitutionController extends Controller
             return response()->json(["message" => "Record Not Found"], 404);
         }
     }
+
+    public function getByHealthRegion($region_sanitaria_id) {
+        return response()->json(Institution::where('health_region_id', '=', $region_sanitaria_id)->get());
+    }
+
+    public function buscador() {
+        return view('vue.index');
+    }
 }

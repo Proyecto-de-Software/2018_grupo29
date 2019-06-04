@@ -20,3 +20,4 @@ Route::get('instituciones/{id}','InstitutionController@show');
 Route::post('instituciones','InstitutionController@store');
 Route::delete('instituciones/{id}','InstitutionController@destroy');
 Route::put('instituciones/{id}','InstitutionController@update');
+Route::get('instituciones/region-sanitaria/{region_sanitaria_id}', 'InstitutionController@getByHealthRegion');

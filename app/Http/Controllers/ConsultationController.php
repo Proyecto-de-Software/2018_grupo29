@@ -13,6 +13,14 @@ use Illuminate\Http\Request;
 
 class ConsultationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:consultations_index', ['only' => ['index']]);
+        $this->middleware('permission:consultations_show',   ['only' => ['show']]);
+        $this->middleware('permission:consultations_new',   ['only' => ['create', 'store']]);
+        $this->middleware('permission:consultations_destroy',   ['only' => ['delete', 'destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
