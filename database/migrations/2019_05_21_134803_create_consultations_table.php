@@ -15,17 +15,17 @@ class CreateConsultationsTable extends Migration
     {
         Schema::create('consultations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('date')->nullable();
+            $table->date('date');
             $table->longText('articulation')->nullable();
-            $table->boolean('was_internment?')->nullable();
-            $table->longText('diagnostic')->nullable();
+            $table->boolean('was_internment');
+            $table->longText('diagnostic');
             $table->longText('observations')->nullable();
 
             $table->bigInteger('patient_id')->unsigned();
-            $table->bigInteger('treatments_id')->nullable();
-            $table->bigInteger('accompanied_by_id')->nullable();
-            $table->bigInteger('reason_id')->unsigned()->nullable();
-            $table->bigInteger('derivation_id')->unsigned()->nullable();
+            $table->bigInteger('treatment_id')->nullable();
+            $table->bigInteger('accompaniment_id')->nullable();
+            $table->bigInteger('reason_id')->unsigned();
+            $table->bigInteger('derivation_id')->unsigned();
 
             //$table->foreign('treatments_id')->references('id')->on('treatments')->onDelete('cascade');
             //$table->foreign('accompanied_by_id')->references('id')->on('accompanied_by')->onDelete('cascade');

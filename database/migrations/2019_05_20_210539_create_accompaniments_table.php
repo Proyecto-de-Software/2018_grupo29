@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAccompaniedByTable extends Migration
+class CreateAccompanimentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateAccompaniedByTable extends Migration
      */
     public function up()
     {
-        Schema::create('accompanied_by', function (Blueprint $table) {
+        Schema::create('accompaniments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             
@@ -29,6 +29,6 @@ class CreateAccompaniedByTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accompanied_by');
+        Schema::dropIfExists('accompaniments');
     }
 }

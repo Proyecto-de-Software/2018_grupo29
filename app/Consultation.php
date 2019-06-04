@@ -11,11 +11,26 @@ class Consultation extends Model
     	return $this->belongsTo('App\Patient');
     }
 
-    /*public function scopeSearch($query,$patient_id){
-    	return $query->where('patient_id',"$patient_id");
-    }*/
+    public function reason(){
+
+    	return $this->belongsTo('App\Reason');
+    }
+
+    public function accompaniment(){
+
+        return $this->belongsTo('App\Accompaniment');
+    }
+
+    public function treatment(){
+
+        return $this->belongsTo('App\Treatment');
+    }
+
+    protected $fillable = [
+    	'date','articulation','was_internment','diagnostic','observations','accompaniment_id','reason_id','derivation_id','treatment_id'
+    ];
 
     public function consultationsOfPatient($patient_id){
-    	return Consultation::where('patient_id',"$patient_id")->get();
+        return Consultation::where('patient_id',$patient_id)->with(['reason'])->get();
     }
 }

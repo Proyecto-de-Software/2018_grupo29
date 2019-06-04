@@ -8,7 +8,9 @@ function changeButton(){
 }
 
 function modifyText(){
-	$("#newConsultation").show();
 	$("#newConsultation").html("Crear una consulta para: ");
 	$("#newConsultation").append($("#patients option:selected").html());
+	$("#newConsultation").attr("href",app_url + '/consultations/create/' + $("#patients option:selected").val());
+	$("#toggle").show();
+	$("#newConsultation").show();
 }

@@ -34,7 +34,7 @@
 	                <p class="list-group-item list-group-item-action">{{ $patient->last_name }}</p>
 	                <p class="list-group-item list-group-item-action">{{ $patient->birthdate }}</p>
 	                <p class="list-group-item list-group-item-action">{{ $localidad->nombre }}</p>
-	                <p class="list-group-item list-group-item-action">{{ $region_sanitaria->nombre }}</p>
+	                <p class="list-group-item list-group-item-action"></p>
 	                <p class="list-group-item list-group-item-action">{{ $patient->home }}</p>
 	                <p class="list-group-item list-group-item-action">&nbsp;{{ $patient->place_of_birth }}</p>
 	                <p class="list-group-item list-group-item-action">{{ $patient->gender->name }}</p>
@@ -45,10 +45,10 @@
 	                		No
 	                	@endif
 	                </p>
-	                <p class="list-group-item list-group-item-action">&nbsp;{{ $tipo_documento->nombre }}</p>
+	                <p class="list-group-item list-group-item-action">&nbsp;</p>
 	                <p class="list-group-item list-group-item-action">{{ $patient->dni_number }}</p>
 	                <p class="list-group-item list-group-item-action"> &nbsp; {{ $patient->phone_number }}</p>
-	                <p class="list-group-item list-group-item-action"> &nbsp;{{ $social_work->nombre }}</p>
+	                <p class="list-group-item list-group-item-action"> &nbsp;</p>
 	                <p class="list-group-item list-group-item-action">{{ $patient->medical_history_number }}</p>
 	                <p class="list-group-item list-group-item-action">{{ $patient->folder_number }}</p>
 	            </div>

@@ -11,6 +11,7 @@ class ConsultationTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Consultation::class, 10)->create();
+        factory(App\Consultation::class, 5)->create();
+        
     }
 }

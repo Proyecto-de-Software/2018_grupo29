@@ -19,7 +19,11 @@ Route::get('/patient-ajax/partido/{id}', 'PatientAjaxController@getLocalidades')
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('consultations', 'ConsultationController')->middleware('auth');
-
+Route::get('/consultations/create/{id}','ConsultationController@create')->middleware('auth');
+Route::get('consultations/{id}/destroy', [
+	'uses' => 'ConsultationController@destroy',
+	'as' => 'consultations.destroy'
+])->middleware('auth');
 
 #Módulo de Pacientes
 Route::resource('patients', 'PatientController')->middleware('auth');

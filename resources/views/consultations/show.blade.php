@@ -11,32 +11,34 @@
 	    <div class="row">
 	        <div class="col-6">
 	            <div class="list-group d-flex flex-row flex-wrap">
-	                <p class="list-group-item list-group-item-action">Nombre</p>
-	                <p class="list-group-item list-group-item-action">Apellido</p>
-	                <p class="list-group-item list-group-item-action">Fecha de nacimiento</p>
-	                <p class="list-group-item list-group-item-action">Domicilio actual</p>
-	                <p class="list-group-item list-group-item-action">Género</p>
-	                <p class="list-group-item list-group-item-action">¿Tiene el documento en su poder?</p>
-	                <p class="list-group-item list-group-item-action">Número de documento</p>
-	                <p class="list-group-item list-group-item-action">Número de teléfono</p>
+	                <p class="list-group-item list-group-item-action">Fecha de consulta</p>
+	                <p class="list-group-item list-group-item-action">Articulación</p>
+	                <p class="list-group-item list-group-item-action">Hubo internación?</p>
+	                <p class="list-group-item list-group-item-action">Diagnóstico</p>
+	                <p class="list-group-item list-group-item-action">Observaciones</p>
+	                <p class="list-group-item list-group-item-action">Acompañamiento</p>
+	                <p class="list-group-item list-group-item-action">Tratamiento</p>
+	                <p class="list-group-item list-group-item-action">Motivo</p>
+	                <p class="list-group-item list-group-item-action">Derivamiento</p>
 	            </div>
 	        </div>
 	        <div class="col-6">
 	            <div class="list-group d-flex flex-row flex-wrap">
-	                <p class="list-group-item list-group-item-action">{{ $patient->first_name }}</p>
-	                <p class="list-group-item list-group-item-action">{{ $patient->last_name }}</p>
-	                <p class="list-group-item list-group-item-action">{{ $patient->birthdate }}</p>
-	                <p class="list-group-item list-group-item-action">{{ $patient->home }}</p>
-	                <p class="list-group-item list-group-item-action">{{ $patient->gender->name }}</p>
+	                <p class="list-group-item list-group-item-action">{{ $consultation->date }}</p>
+	                <p class="list-group-item list-group-item-action">{{ $consultation->articulation }}</p>
 	                <p class="list-group-item list-group-item-action">
-	                	@if ($patient->has_document == 1)
-	                		Sí
-	                	@else
-	                		No
-	                	@endif
+		                @if ($consultation->was_internment)  
+		                	Si
+		                @else
+		                	No
+		                @endif
 	                </p>
-	                <p class="list-group-item list-group-item-action">{{ $patient->dni_number }}</p>
-	                <p class="list-group-item list-group-item-action"> &nbsp; {{ $patient->phone_number }}</p>
+	                <p class="list-group-item list-group-item-action">{{ $consultation->diagnostic }}</p>
+	                <p class="list-group-item list-group-item-action">{{ $consultation->observations }}</p>
+	                <p class="list-group-item list-group-item-action">{{ $accompaniment }}</p>
+	                <p class="list-group-item list-group-item-action">{{ $treatment }}</p>
+	                <p class="list-group-item list-group-item-action">{{ $reason->name }}</p>
+	                <p class="list-group-item list-group-item-action">{{ $institution->name }}</p>
 	            </div>
 	        </div>
 	    </div>
