@@ -18,7 +18,7 @@ class ConsultationController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('permission:consultations_index', ['only' => ['index']]);
-        $this->middleware('permission:consultations_show',   ['only' => ['show']]);
+        $this->middleware('permission:consultations_show',   ['only' => ['show','map']]);
         $this->middleware('permission:consultations_new',   ['only' => ['create', 'store']]);
         $this->middleware('permission:consultations_destroy',   ['only' => ['delete', 'destroy']]);
     }
