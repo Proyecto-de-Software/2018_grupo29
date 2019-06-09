@@ -33,4 +33,8 @@ class Consultation extends Model
     public function consultationsOfPatient($patient_id){
         return Consultation::where('patient_id',$patient_id)->with(['reason'])->get();
     }
+
+    public function institutionsOfPatient($patient_id){
+        return Consultation::where('patient_id',$patient_id)->get('derivation_id');
+    }
 }

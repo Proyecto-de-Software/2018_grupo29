@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Configuration;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -14,6 +15,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $configuration = Configuration::maintenance();
+        if($configuration[0]->value == '0'){
+        	return view('home');	
+        } else {
+        	return view('maintenance');
+        }
+        
     }
 }

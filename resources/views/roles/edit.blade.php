@@ -11,7 +11,7 @@
 			<div class="col-sm-3"> </div>
 
 			<div class="col-sm-6">
-				{!! Form::open(['route' => ['roles.update', $role->id]],) !!}
+				{!! Form::open(['route' => ['roles.update', $role->id]]) !!}
 					{{ method_field('PUT') }}
 					{!! Form::label('name', 'Nombre'); !!}
 					{!! Form::text('name',$role->name,['class' => 'form-control']) !!}

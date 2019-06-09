@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Patient;
+use App\Configuration;
 use App\Gender;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePatient;
@@ -25,7 +26,8 @@ class PatientController extends Controller
      */
     public function index(Request $request)
     {
-        $patients = Patient::search($request->first_name, $request->last_name, $request->dni_number)->paginate(3);
+        $pages = Configuration::systemPages();
+        $patients = Patient::search($request->first_name, $request->last_name, $request->dni_number)->paginate($pages[0]->value);
 
         return view('patients.index')->with('patients',$patients);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Configuration;
 use App\Role;
 use Illuminate\Http\Request;
 use Auth;
@@ -27,7 +28,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::active($request->is_active)->username($request->username)->where('id', '<>', Auth::user()->id)->paginate(3);
+        $pages = Configuration::systemPages();
+        $users = User::active($request->is_active)->username($request->username)->where('id', '<>', Auth::user()->id)->paginate($pages[0]->value);
 
         return view('users.index')->with('users', $users);
     }

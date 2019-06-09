@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Consultation;
+use App\Configuration;
 use App\Patient;
 use App\Institution;
 use App\Accompaniment;
@@ -29,8 +30,8 @@ class ConsultationController extends Controller
     public function index()
     {
         $patients = Patient::all();
-
-        return view('consultations.index')->with('patients',$patients);
+        $pagination = Configuration::systemPages()[0]->value;
+        return view('consultations.index',compact('patients','pagination'));
     }
 
     /**
@@ -88,7 +89,6 @@ class ConsultationController extends Controller
         } else {
             $treatment = 'No tiene tratamiento';
         }
-        // dd($consultation);
         return view('consultations.show',compact('consultation','institution','patient','accompaniment', 'treatment', 'reason'));
     }
 
@@ -135,5 +135,23 @@ class ConsultationController extends Controller
         flash('La consulta ha sido eliminada')->warning();
 
         return redirect()->route('consultations.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param $patient_id
+     * @return \Illuminate\Http\Response
+     */
+    public function map($id)
+    {
+        $patient = Patient::findOrFail($id);
+        $institutions_keys = (new Consultation)->institutionsOfPatient($patient->id)->unique();
+        $institutions = [];
+        foreach ($institutions_keys as $key => $value) {
+            $institutions[$key] = Institution::find($value->derivation_id);
+        }
+        // dd($institutions);
+        return view('consultations.map', compact('patient','institutions'));
     }
 }

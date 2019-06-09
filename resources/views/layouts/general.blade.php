@@ -67,7 +67,7 @@
 					
 					@permission('configuration_index')
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Configuración</a>
+						<a class="dropdown-item" href="{{ route('configurations.edit') }}">Configuración</a>
 					@endpermission
 				</div>
 			</li>

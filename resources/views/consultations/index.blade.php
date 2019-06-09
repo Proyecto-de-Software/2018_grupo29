@@ -2,6 +2,10 @@
 
 @section('title', 'Consultas')
 
+<script>
+	var app_pages='{{ $pagination }}';
+</script>
+
 @section('content')
     <h2 class="text-center">Pacientes del Hospital</h2>
     <br>
@@ -28,25 +32,46 @@
 		</div>
 	</div>
 	&nbsp;&nbsp;&nbsp;
+	<script>
+		var show=false;
+		var update=false;
+		var destroy=false;
+	</script>
+	@permission('consultations_show')
+		<script>
+			var show=true;
+		</script>
+	@endpermission
+	@permission('consultations_update')
+		<script>
+			var update=true;
+		</script>
+	@endpermission
+	@permission('consultations_destroy')
+		<script>
+			var destroy=true;
+		</script>
+	@endpermission
+
 	<div class="container">
 		<div id='consultations' style="display: none;">
 			<table id="table_id" class="display" style="width:100%">
 				   
 			</table>
-			<button class="btn-primary">Ver mapa de consultas</button>
+			<a id="map_button" href="#" class="btn-primary">Ver mapa de consultas</a>
 		</div>
 	</div>
 	@permission('consultations_new')
 	&nbsp;&nbsp;
 	<div class="container">
 		<div class="row justify-content-center">
-			<a id="newConsultation" class="btn btn-success" style="display: none;" href="{{ url('/consultations/create/') }}"></a>
+			<a id="newConsultation" class="btn btn-success" style="display: none;" href="#"></a>
 		</div>
 	</div>
 	@endpermission
 	<script type="text/javascript" src="{{ asset('js/ajaxConsultasPacientes.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/consultations.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugins/DataTables/datatables.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/dataTables.js') }}"></script>
 @endsection
 

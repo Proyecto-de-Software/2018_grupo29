@@ -20,10 +20,18 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('consultations', 'ConsultationController')->middleware('auth');
 Route::get('/consultations/create/{id}','ConsultationController@create')->middleware('auth');
-Route::get('consultations/{id}/destroy', [
+Route::get('/consultations/edit/{id}',[
+	'uses' => 'ConsultationController@edit',
+	'as' => 'consultations.edit'
+])->middleware('auth'); 
+Route::get('/consultations/destroy/{id}', [
 	'uses' => 'ConsultationController@destroy',
 	'as' => 'consultations.destroy'
 ])->middleware('auth');
+Route::get('/consultations/map/{id}', [
+	'uses' => 'ConsultationController@map',
+	'as' => 'consultations.map'
+]);
 
 #Módulo de Pacientes
 Route::resource('patients', 'PatientController')->middleware('auth');
@@ -109,6 +117,17 @@ Route::prefix('reports')->middleware(['auth'])->group(function () {
 	]);
 
 });
+
+# Modulo de configuraciones
+Route::get('configurations/edit', [
+	'uses' => 'ConfigurationController@edit',
+	'as' => 'configurations.edit'
+])->middleware('auth');
+
+Route::put('configurations/update',[
+	'uses' => 'ConfigurationController@update',
+	'as' => 'configurations.update'
+])->middleware('auth');
 
 # FRONTEND WITH VUE.JS
 

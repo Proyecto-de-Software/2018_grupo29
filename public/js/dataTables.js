@@ -41,6 +41,8 @@ $(document).ready( function () {
 		    }
 		},
 		autoWidth: false,
+		lengthChange: false,
+		pageLength: app_pages,
     } );
 } );
 

@@ -16,7 +16,7 @@ class CreateConfigurationsTable extends Migration
         Schema::create('configurations', function (Blueprint $table) {
             $table->bigIncrements('id');
             #En la BD anterior teniamos 'variable' y 'valor'. Asi queda mejor para mi
-            $table->string('key');
+            $table->string('key')->unique();
             $table->string('value');
             
             $table->timestamps();

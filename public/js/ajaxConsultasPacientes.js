@@ -7,20 +7,37 @@ $(document).ready(function(){
             url:'/patient-ajax/'+id,
             data:{'id': id},
             success:function(data) {
-                var createButton = '"><button class="btn btn-success">Ver</button></a>';
-                var updateButton = '"><button class="btn btn-warning">Modificar</button></a>';                
-                var deleteButton = '"><button class="btn btn-danger" onclick="return confirm('+"'¿Está seguro?'"+')">Borrar</button>';
                 var table = $('#table_id').DataTable();
-                var consultations_button = '<a href="'+ app_url + '/consultations/'
+                if(show){
+                    var show_button = '<a href="'+ app_url + '/consultations/';
+                    var showButton = '"><button class="btn btn-success">Ver</button></a>';
+                } else {
+                    var show_button = '<p name="';
+                    var showButton = '"></p>';
+                }
+                if(update){
+                    var update_button = '<a href="'+ app_url + '/consultations/edit/';
+                    var updateButton = '"><button class="btn btn-warning">Modificar</button></a>';
+                } else {
+                    var update_button = '<p name="';
+                    var updateButton = '"></p>';
+                }
+                if(destroy){
+                    var destroy_button = '<a href="'+ app_url + '/consultations/destroy/';
+                    var destroyButton = '"><button class="btn btn-danger" onclick="return confirm('+"'¿Está seguro?'"+')">Borrar</button>';
+                } else {
+                    var destroy_button = '<p name="';
+                    var destroyButton = '"></p>';
+                }
                 var dataToAdd = []
                 for (var i = data.length - 1; i >= 0; i--) {
                     dataToAdd[data.length-i-1] = {
                         Fecha: data[i].date,
                         Motivo: data[i].reason.name,
                         Diagnóstico: data[i].diagnostic,
-                        Detalle:  consultations_button + data[i].id + createButton,
-                        Modificar: consultations_button + data[i].id + '/edit' +  updateButton,
-                        Eliminar: consultations_button + + data[i].id + '/destroy' + deleteButton,
+                        Detalle:  show_button + data[i].id + showButton,
+                        Modificar: update_button + data[i].id +  updateButton,
+                        Eliminar: destroy_button + data[i].id + destroyButton,
                     }
                 }
                 table.clear();

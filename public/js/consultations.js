@@ -11,6 +11,7 @@ function modifyText(){
 	$("#newConsultation").html("Crear una consulta para: ");
 	$("#newConsultation").append($("#patients option:selected").html());
 	$("#newConsultation").attr("href",app_url + '/consultations/create/' + $("#patients option:selected").val());
+	$("#map_button").attr("href",app_url + '/consultations/map/' + $("#patients option:selected").val());
 	$("#toggle").show();
 	$("#newConsultation").show();
 }
