@@ -1,0 +1,5 @@
+{% if ("consulta_index" in datos.session.permisos) or ("consulta_new" in datos.session.permisos) or ("consulta_update" in datos.session.permisos) or ("consulta_destroy" in datos.session.permisos) or ("consulta_show" in datos.session.permisos) %}
+	<li class="nav-item .hidden-lg-down">
+		<a class="nav-link d-none d-xl-block" href="./index.php?action=mostrarFormularioConsulta">Consultas</a>
+	</li>
+{% endif %}

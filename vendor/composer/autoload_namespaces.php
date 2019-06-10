@@ -6,10 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
-    'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src'),
-    'Parsedown' => array($vendorDir . '/erusev/parsedown'),
-    'Mockery' => array($vendorDir . '/mockery/mockery/library'),
-    'Laracasts\\Flash' => array($vendorDir . '/laracasts/flash/src'),
-    'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
+    'Twig_' => array($vendorDir . '/twig/twig/lib'),
+    'Pimple' => array($vendorDir . '/pimple/pimple/src'),
 );

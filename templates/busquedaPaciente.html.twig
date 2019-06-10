@@ -1,0 +1,49 @@
+{% include 'home.html.twig' %}
+
+
+	<div class="row container-fluid alMedio">
+		<div class="col-sm-4"> </div>
+		<div class="col-sm-4">
+			<h1 class="alMedio text-center">Búsqueda de Pacientes</h1>
+			<br>
+			{% if datos.historiaClinicaRandom != 0 %}
+				<p>¿No puede obtener ningún dato del paciente? 
+					<form id="myform" method="post" action="./index.php?action=nuevoPacienteNN">
+  						<input type="hidden" name="historiaClinicaRandom" value="{{ datos.historiaClinicaRandom }}"> 
+ 						<a onclick="document.getElementById('myform').submit();" href="#">Ingréselo como NN con historia clínica {{ datos.historiaClinicaRandom }}</a>
+					</form>
+				</p>
+			{% endif %}
+				¿Quiere dar de alta un <a href="./index.php?action=nuevoPaciente" class="text-info">nuevo paciente</a>?
+			<p class="{{ datos.tipo_mensaje}}">{{ datos.mensaje }}</p>
+	 		<form method="POST" action="./index.php?action=buscarPaciente">
+				 <div class="form-group">
+				 	<label for="first_name">Nombre </label>
+				    <input type="text" class="form-control" name="nombre">
+				 </div>
+				 <div class="form-group">
+				    <label for="last_name">Apellido</label>
+				    <input type="text" class="form-control" name="apellido">
+				 </div>
+				 <div class="form-group">
+				 	<label for="tipo_doc">Tipo de Documento</label>
+				 	<select class="form-control" name="nombre_tipo_documento">
+				 		<option value="">No seleccionado</option>
+				 		{% for tipoDoc in datos.listaTipoDocumento %}
+				 			<option name="id_tipoDoc" value="{{ tipoDoc.id }}"> {{ tipoDoc.nombre }} </option>
+				 		{% endfor %}
+				 	</select>
+				 </div>
+				 <div class="form-group">
+				 	<label for="numero">Número de documento</label>
+				 	<input type="text" class="form-control" name="numero_documento">
+				 </div>
+				 <div class="form-group">
+				    <label for="numeroHistoriaClinica">Número de historia clínica</label>
+				    <input type="text" class="form-control" name="nro_historia_clinica">
+				 </div>
+				 <button class="btn btn-outline-primary text-black btn my-2 my-sm-0" type="submit">Buscar</button>
+			</form> 
+		</div>
+		<div class="col-sm-4">
+	</div>

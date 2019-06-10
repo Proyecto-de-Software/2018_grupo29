@@ -1,0 +1,46 @@
+{% include 'home.html.twig' %}
+
+<div class="row container-fluid alMedio">
+		<div class="col-sm-3"> </div>
+		<div class="col-sm-6">
+			<h1 class="alMedio text-center">Módulo de Configuración</h1>
+			<p class="text-center"> Nota: si no desea modificar un campo, déjelo como está </p>
+			<br>
+	 		<form method="POST" action="./index.php?action=actualizarConfiguracion">
+	 			<div class="form-group">
+				 	<label for="">Título del Hospital</label>
+				    <input type="text" class="form-control" name="{{ datos.configuraciones[0].variable }}" value="{{ datos.configuraciones[0].valor }}"> 
+				    <input type="hidden" value="{{ datos.configuraciones[0].id }}" name="id"> </input>
+				 </div>
+				 <div class="form-group">
+				 	<label for="">Mail de contacto</label>
+				    <input type="text" class="form-control" name="{{ datos.configuraciones[1].variable }}" value="{{ datos.configuraciones[1].valor }}"	> 
+				    <input type="hidden" value="{{ datos.configuraciones[1].id }}"  name="id"> </input>
+				 </div>
+				 <div class="form-group">
+				 	<label for="">Elementos por página</label>
+				    <select class="form-control" name="{{ datos.configuraciones[2].variable }}">
+				    	<option value="1" {% if datos.configuraciones[2].valor == 1 %} selected="" {% endif %}>1</option>
+				    	<option value="3" {% if datos.configuraciones[2].valor == 3 %} selected="" {% endif %}>3</option>
+				    	<option value="5" {% if datos.configuraciones[2].valor == 5 %} selected="" {% endif %}>5</option>
+				    	<option value="8" {% if datos.configuraciones[2].valor == 8 %} selected="" {% endif %}>8</option>
+				    	<option value="10" {% if datos.configuraciones[2].valor == 10 %} selected="" {% endif %}>10</option>
+				    	<option value="15" {% if datos.configuraciones[2].valor == 15 %} selected="" {% endif %}>15</option>
+				    	<option value="20" {% if datos.configuraciones[2].valor == 20 %} selected="" {% endif %}>20</option>
+				    	<option value="25" {% if datos.configuraciones[2].valor == 25 %} selected="" {% endif %}>25</option>
+				    	<input type="hidden" value="{{ datos.configuraciones[2].id }}"  name="id"> </input>
+				    </select> 
+				 </div>
+				 <div class="form-group">
+				 	<label for="">Estado del sitio</label>
+				    <select class="form-control" name="{{ datos.configuraciones[3].variable }}">
+				    	<option value="0" {% if datos.configuraciones[3].valor == 0 %} selected="" {% endif %}>Habilitado</option>
+				    	<option value="1" {% if datos.configuraciones[3].valor == 1 %} selected="" {% endif %}>Deshabilitado</option>
+				    	<input type="hidden" value="{{ datos.configuraciones[3].id }}"  name="id"> </input>
+				    </select>
+				 </div>		
+				 <button class="btn btn-outline-primary text-black btn my-2 my-sm-0" type="submit">Actualizar</button>
+			</form> 
+		</div>
+		<div class="col-sm-3">
+</div>

@@ -1,0 +1,71 @@
+{% include 'home.html.twig' %}
+
+	<h2 class="alMedio text-center"> Pacientes del Hospital</h2>
+	<br>
+	<div class="row container-fluid">
+	<ul class="list-group">
+		<li  class="list-group-item row d-flex text-center">
+			<div class="col-1 text-info">Nombre y apellido</div>
+			<div class="col-1 text-info">Fecha y lugar de nacimiento</div>
+			<div class="col-1 text-info">Localidad </div>
+			<div class="col-1 text-info">Región sanitaria</div>
+			<div class="col-1 text-info">Domicilio y teléfono</div>
+			<div class="col-1 text-info">Género</div>
+			<div class="col-1 text-info">Tipo y número de documento</div>
+			<div class="col-1 text-info">Número de historia clínica</div>
+			<div class="col-1 text-info">Número de carpeta</div>
+			<div class="col-1 text-info">Obra social</div>	
+		</li>
+  {% for paciente in datos.pacientes %}
+      <li class="list-group-item row d-flex text-center">
+  			<div class="col-1">{{paciente.apellido}} {{paciente.nombre}} </div>
+  			<div class="col-1">{{paciente.fecha_nac}} {{paciente.lugar_nac}}</div>
+  			<div class="col-1">{{paciente.nombre_localidad}}</div>		
+  			<div class="col-1">{{paciente.nombre_region_sanitaria}}</div>
+  			<div class="col-1">{{paciente.domicilio}} {{paciente.telefono}} </div>
+  			<div class="col-1">{{paciente.nombre_genero}}</div>
+  			<div class="col-1">{{paciente.nombre_tipo_documento}} {{paciente.numero}} </div>
+  			<div class="col-1">{{paciente.id_paciente}}</div>
+  			<div class="col-1">{{paciente.nro_carpeta}}</div>
+  			<div class="col-1">{{paciente.nombre_obra_social}}</div>
+  			{% if "paciente_update" in datos.session.permisos %}
+          <div class="col-1">
+    				<form method="POST" action="./index.php?action=editarPaciente">
+    					<input type="hidden" name="id_paciente" value="{{paciente.id_paciente}}">
+    					<input type="submit" name="Editar" value="Editar" class="btn btn-warning">
+    				</form>
+    			</div>
+        {% endif %}
+        {% if "paciente_destroy" in datos.session.permisos %}
+    			<div class="col-1">
+    				<form method="POST" action="./index.php?action=eliminarPaciente" onclick="return confirmacion('¿Está seguro que quiere eliminar al paciente?')">
+    					<input type="hidden" name="id_paciente" value="{{paciente.id_paciente}}">
+    					<input type="submit" name="Eliminar" value="Eliminar" class="btn btn-danger">
+    				</form>
+    			</div>			
+        {% endif %}
+  		</li>
+
+    {% endfor %}
+    </ul> 
+</div>
+<br>
+ <ul class="pagination justify-content-center">
+  {% for i in 1 .. datos.cantPaginas %}
+    <li class="page-item">
+      <form method="POST" action="./index.php?action=listarPacientes">
+        <input type="submit" class="btn btn-info" value="{{ i }}">
+        <input type="hidden" name="pagina" value="{{ i }}">
+        {% if datos.fueBusqueda == 1 %}
+          <input type="hidden" name="fueBusqueda" value="{{ datos.fueBusqueda }}">
+          <input type="hidden" name="nombre" value="{{ datos.filtros.nombre }}"> 
+          <input type="hidden" name="nombre_tipo_documento" value="{{ datos.filtros.nombre_tipo_documento }}"> 
+          <input type="hidden" name="numero_documento" value="{{ datos.filtros.numero_documento }}"> 
+          <input type="hidden" name="apellido" value="{{ datos.filtros.apellido }}"> 
+          <input type="hidden" name="nro_historia_clinica" value="{{ datos.filtros.nro_historia_clinica }}"> 
+        {% endif %}
+      </form>
+    </li>
+    &emsp;
+  {% endfor %}
+</ul> 

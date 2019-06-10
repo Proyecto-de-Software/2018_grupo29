@@ -1,0 +1,100 @@
+{% include "home.html.twig" %}
+<script type="text/javascript" src="./templates/js/jquery.js"></script>
+<script type="text/javascript" src="./templates/js/ajaxParaConsulta.js"></script>
+<script type="text/javascript" src="./templates/js/validacionesConsulta.js"></script>
+
+	<div class="row container-fluid alMedio">
+		<div class="col-sm-4"> </div>
+		<div class="col-sm-4">
+			<h1 class="alMedio text-center">Editar consulta</h1>
+			<br>
+			{% if datos.mensaje is defined %}
+				<p class="{{datos.tipo_mensaje}} text-center"> {{ datos.mensaje }}</p>
+			{% endif %}
+			<p class="text-danger text-center" id="campo_error"></p>
+		</div>
+		<div class="col-sm-4"> </div>
+	</div>
+	{% for c in datos.consulta %}
+		<div class="row container-fluid">
+				<div class="col-sm-6">
+					<form action="./index.php?action=updateConsulta" name="formularioAltaConsulta" method="POST" onsubmit="return validarFormularioConsulta()">
+					<label for="paciente"> Paciente</label>
+					<div class="form-group">
+						<input class="form-control" type="text" name="nombre_paciente" readonly="readonly" value="{{c.nombre_paciente}} {{c.apellido}}">
+					</div>
+					<label for="fecha"> Fecha de la consulta </label>
+					<div class="form-group">
+						<input class="form-control" type="date" name="fecha" value="{{c.fecha}}">
+					</div>
+					<label for="internacion"> ¿Hubo internación? </label>
+					<div class="form-group">
+						<select name="internacion" class="form-control">
+							<option value="0">No</option>
+							<option value="1">Sí</option>
+						</select>
+					</div>
+					<input type="hidden" name="id_consulta" value="{{c.id}}">
+					<label for="motivo">Motivo</label>
+					<div class="form-group">
+						<select name="motivo" class="form-control">
+							{% for motivo in datos.motivos %}
+								<option value="{{motivo.id}}"  {% if motivo.id == c.motivo_id %} selected {% endif %}>{{motivo.nombre}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<label for="articulacion">Articulación</label>
+					<div class="form-group">
+						<textarea name="articulacion" class="form-control" rows="5">{{c.articulacion_con_instituciones}}</textarea> 
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label for="diagnostico">Diagnóstico</label>
+					<div class="form-group">
+						<textarea name="diagnostico" class="form-control" rows="6">{{c.diagnostico}}</textarea> 
+					</div>
+					<label for="observaciones">Observaciones</label>
+					<div class="form-group">
+						<textarea name="observaciones" class="form-control" rows="4">{{c.observaciones}}</textarea> 
+					</div>
+					<label>Tratamiento farmacológico</label>
+					 <div class="form-group">
+					 	<select name="tratamiento_farmacologico" class="form-control">
+					 		<option value="1"{% if c.tratamiento_farmacologico_id == 1 %} selected="" {% endif %}>Mañana</option>
+					 		<option value="2"{% if c.tratamiento_farmacologico_id == 2 %} selected="" {% endif %}>Tarde</option>
+					 		<option value="3"{% if c.tratamiento_farmacologico_id == 3 %} selected="" {% endif %}>Noche</option>
+					 	</select>
+					 </div>
+					<div class="form-group">
+						<label for="acompanamiento">Acompañamiento</label>
+					 	<select name="acompanamiento" class="form-control">
+					 		<option value="1"{% if c.tratamiento_farmacologico_id == 1 %} selected="" {% endif %}>Familiar cercano</option>
+					 		<option value="2"{% if c.tratamiento_farmacologico_id == 2 %} selected="" {% endif %}>Hermanos e hijos</option>
+					 		<option value="3"{% if c.tratamiento_farmacologico_id == 3 %} selected="" {% endif %}>Pareja</option>
+					 		<option value="4"{% if c.tratamiento_farmacologico_id == 4 %} selected="" {% endif %}>Referentes vinculares</option>
+					 		<option value="5"{% if c.tratamiento_farmacologico_id == 5 %} selected="" {% endif %}>Policía</option>
+					 		<option value="6"{% if c.tratamiento_farmacologico_id == 6 %} selected="" {% endif %}>SAME</option>
+					 		<option value="7"{% if c.tratamiento_farmacologico_id == 7 %} selected="" {% endif %}>Por sus propios medios</option>
+					 	</select>
+					</div>
+					<div class="form-group">
+						<label for="derivacion">Derivación</label>
+					 	<select name="derivacion" class="form-control">
+					 		{% for derivacion in datos.derivaciones %}
+					 			<option value="{{derivacion.id}}" {% if c.derivacion_id == derivacion.id %} selected {% endif %}>{{derivacion.nombre}}</option>
+					 		{% endfor %}
+					 	</select>
+					</div>
+				</div>
+				<div class="row container-fluid">
+				 	<div class="col-sm-4"> </div>
+				 	<div class="col-sm-4 text-center">
+					 	<button class="btn btn-outline-primary text-black btn my-2 my-sm-0 btn-lg" type="submit">¡Listo!
+						</button>
+					</div>
+					<div class="col-sm-4"> </div>
+				</div>
+			</form>
+		</div>
+	{% endfor %}
+</div>

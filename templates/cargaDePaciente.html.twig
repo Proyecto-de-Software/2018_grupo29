@@ -1,0 +1,46 @@
+{% include "header.html.twig" %}
+
+<title>Pacientes</title>
+
+{% include "styles.html.twig" %}
+
+<script type="text/javascript" src="./templates/js/manejoSesiones.js"></script>
+<script type="text/javascript" src="./templates/js/jquery.js"></script>
+
+{% include "navBar.html.twig" %}
+
+<div class="row container-fluid alMedio">
+	<div class="col-sm-4"> </div>
+	<div class="col-sm-4">
+		<h1 class="alMedio text-center">Nuevo Paciente</h1>
+		<br>
+ 		<form method="POST" action="">
+			 <div class="form-group">
+			 	<label for="first_name">Nombre </label>
+			    <input type="text" class="form-control">
+			 </div>
+			 <div class="form-group">
+			    <label for="last_name">Apellido</label>
+			    <input type="text" class="form-control">
+			 </div>
+			 <div class="form-group">
+			 	<label for="tipo_doc">Tipo de Documento</label>
+			 	<select class="form-control">
+			 		{# aca deberian ir las opciones sacadas de la API que nos dan #}
+			 		<option>DNI</option>
+			 		<option>LC</option>
+			 	</select>
+			 </div>
+			 <div class="form-group">
+			 	<label for="numero">Número de documento</label>
+			 	<input type="text" class="form-control" name="numero">
+			 </div>
+			 <div class="form-group">
+			    <label for="numeroHistoriaClinica">Número de historia clínica</label>
+			    <input type="text" class="form-control">
+			 </div>
+			 <button class="btn btn-outline-primary text-black btn my-2 my-sm-0" type="submit">Buscar</button>
+		</form> 
+	</div>
+	<div class="col-sm-4">
+</div>

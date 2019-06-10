@@ -1,0 +1,131 @@
+{% include "home.html.twig" %}
+<link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+<script type="text/javascript" src="./templates/js/openLayers.js"></script>
+<script type="text/javascript" src="./templates/js/jquery.js"></script>
+<script type="text/javascript" src="./templates/js/ajaxParaConsulta.js"></script>
+<script type="text/javascript" src="./templates/js/validacionesConsulta.js"></script>
+<script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js" type="module"></script>
+	<div class="row container-fluid alMedio">
+		<div class="col-sm-4"> </div>
+		<div class="col-sm-4">
+			<h1 class="alMedio text-center">Nueva consulta</h1>
+			<br>
+			{% if datos.mensaje is defined %}
+				<p class="{{datos.tipo_mensaje}} text-center"> {{ datos.mensaje }}</p>
+			{% endif %}
+			<p class="text-danger text-center" id="campo_error"></p>
+	{% if datos.nombre_paciente is not defined %}
+			<div class="text-center">
+			<button class="btn btn-secondary" id="botonConsulta">Consultas previas</button>
+			</div>
+		</div>
+		<div class="col-sm-4"></div>
+	</div>
+	<div id='lista'>
+		
+	</div>
+	<br><br>
+
+	{% else %}
+		</div>
+	{% endif %}
+
+	<div class="row container-fluid">
+		<div class="col-sm-6">
+			<form action="./index.php?action=agregarConsulta" name="formularioAltaConsulta" method="POST" onsubmit="return validarFormularioConsulta()">
+				{% if datos.nombre_paciente is defined %}
+					 <label for="first_name">Nombre del Paciente</label>
+					 <div class="form-group">
+					    <input type="text" name="nombre_paciente" class="form-control"  value="{{datos.nombre_paciente}}"  readonly="readonly" >
+					 </div>
+					 <label for="first_name">Apellido del Paciente</label>
+					 <div class="form-group">
+					    <input type="text" name="apellido_paciente" class="form-control" {% if datos.apellido_paciente is defined %} value="{{datos.apellido_paciente}}"  readonly="readonly" {% endif %}>
+					 </div>
+					 <input type="hidden" name="id_paciente" value="{{datos.id_paciente}}">
+				{% else %}
+					<label for="pacientes">Pacientes</label>
+				 	<div class="form-group">
+				 	<select id="pacientes" name="id_paciente" class="form-control">
+				 		<option value="">Seleccionar</option>
+				 		{% for paciente in datos.pacientes %}
+				 			<option value="{{paciente.id_paciente}}">{{paciente.nombre}} {{paciente.apellido}}</option>
+				 		{% endfor %}	
+				 	</select>
+				 </div>
+				{% endif %}
+				<div class="js-user-rating" data-is-authenticated="{{"consulta_destroy" in datos.session.permisos ? 'true' : 'false' }}"></div>
+				 <label for="fecha">Fecha de consulta*</label>
+				 <div class="form-group">
+				 	<input type="date" name="fecha" class="form-control" required>	
+				 </div>
+				 <label for="motivo">Motivo*</label>
+				 <div class="form-group">
+				 	<select class="form-control" name="id_motivo">
+				 		{% for motivo in datos.motivos %}
+				 			<option value="{{motivo.id}}">{{motivo.nombre}}</option>
+				 		{% endfor %}
+				 	</select>
+				 </div>
+				 <label for="Derivacion">Derivacion</label>
+				 <div class="form-group">
+				 	<select name="derivacion" class="form-control">
+				 		{% for derivacion in datos.derivaciones %}
+				 			<option value="{{derivacion.id}}">{{derivacion.nombre}}</option>
+				 		{% endfor %}
+				 	</select>
+				 </div>
+				 <label for="articulacion">Articulacion</label>
+				 <div class="form-group">
+				 	<textarea name="articulacion" class="form-control" rows="6"></textarea> 
+				 </div>			 
+		</div>
+		<div class="col-sm-6">
+			<label>¿Hubo internación?*</label>
+			 <div class="form-group">
+			 	<select class="form-control" name="internacion">
+			 		<option value="0">No</option>
+			 		<option value="1">Sí</option>
+			 	</select>
+			 </div>
+			 <label for="Diagnostico">Diagnóstico*</label>
+			 <div class="form-group">
+			 	<textarea id="myTextArea" name="diagnostico" class="form-control" rows="7"></textarea> 
+			 </div>
+			 <label for="observaciones">Observaciones</label>
+			 <div class="form-group">
+			 	<textarea name="observaciones" class="form-control" rows="4"></textarea> 
+			 </div>
+			 <label>Tratamiento farmacológico</label>
+			 <div class="form-group">
+			 	<select name="tratamiento_farmacologico" class="form-control">
+			 		<option value="1">Mañana</option>
+			 		<option value="2">Tarde</option>
+			 		<option value="3">Noche</option>
+			 	</select>
+			 </div>
+			 <label>Acompañamiento</label>
+			 <div class="form-group">
+			 	<select name="acompanamiento" class="form-control">
+			 		<option value="1">Familiar cercano</option>
+			 		<option value="2">Hermanos e hijos</option>
+			 		<option value="3">Pareja</option>
+			 		<option value="4">Referentes vinculares</option>
+			 		<option value="5">Policía</option>
+			 		<option value="6">SAME</option>
+			 		<option value="7">Por sus propios medios</option>
+			 	</select>
+			 </div>
+		</div>
+		 <div class="row container-fluid">
+		 	<div class="col-sm-4"> </div>
+		 	<div class="col-sm-4 text-center">
+			 	<button class="btn btn-outline-primary text-black btn my-2 my-sm-0 btn-lg" type="submit">¡Listo!
+				</button>
+			</div>
+			<div class="col-sm-4"> </div>
+		</div>
+			</form> 
+		</div>
+	</div>
+</div>

@@ -1,0 +1,21 @@
+{% include 'home.html.twig' %}
+
+
+<h2 class="alMedio text-center"> Módulo de Pacientes </h2>
+
+	<div class="row container-fluid alMedio">
+		<div class="col-sm-4">
+			{% if ("paciente_new" in datos.session.permisos) %}
+				<div class="text-center"><a href="./index.php?action=nuevoPaciente" class="btn btn-primary btn-lg">Nuevo paciente</a></div>
+			{% endif %}
+		</div>
+		<div class="col-sm-4">
+			{% if ("paciente_index" in datos.session.permisos) %}
+				<div class="text-center"><a href="./index.php?action=formularioBusquedaPaciente" class="btn btn-primary btn-lg center"> Buscar paciente</a> </div>
+			{% endif %}
+		</div>
+		<div class="col-sm-4">
+			{% if ("paciente_index" in datos.session.permisos) %}
+				<div class="text-center"><a href="./index.php?action=listarPacientes" class="btn btn-primary btn-lg center"> Listado de pacientes</a> </div>
+			{% endif %}
+		</div>
