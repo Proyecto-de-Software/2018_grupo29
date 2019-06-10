@@ -1,0 +1,11 @@
+/FINAL/node_modules
+/FINAL/public/hot
+/FINAL/public/storage
+/FINAL/storage/*.key
+/FINAL/vendor
+/FINAL/.env
+/FINAL/.phpunit.result.cache
+/FINAL/Homestead.json
+/FINAL/Homestead.yaml
+/FINAL/npm-debug.log
+/FINAL/yarn-error.log
