@@ -2,8 +2,6 @@
 /Final/public/hot
 /Final/public/storage
 /Final/storage/*.key
-/Final/vendor
-/Final/.env
 /Final/.phpunit.result.cache
 /Final/Homestead.json
 /Final/Homestead.yaml
