@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Role;
 use App\Permission;
 use Illuminate\Http\Request;
+use App\Configuration;
 
 class RoleController extends Controller
 {
@@ -25,8 +26,9 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::all();
+        $title = Configuration::title();
 
-        return view('roles.index')->with('roles',$roles);
+        return view('roles.index',compact('title'))->with('roles',$roles);
     }
 
     /**
@@ -37,8 +39,9 @@ class RoleController extends Controller
     public function create()
     {
         $permissions = Permission::all();
+        $title = Configuration::title();
 
-        return view('roles.create')->with('permissions',$permissions);
+        return view('roles.create',compact('title'))->with('permissions',$permissions);
     }
 
     /**
@@ -74,8 +77,9 @@ class RoleController extends Controller
         $role = Role::findOrFail($id);
         $permissions = $role->perms;
         $other_permissions = $role->permissionsRoleDoNotOwn();
+        $title = Configuration::title();
 
-        return view('roles.show')->with('role', $role)->with('permissions', $permissions)->with('other_permissions', $other_permissions);
+        return view('roles.show',compact('title'))->with('role', $role)->with('permissions', $permissions)->with('other_permissions', $other_permissions);
     }
 
     /**
@@ -87,8 +91,9 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::findOrFail($id);
+        $title = Configuration::title();
 
-        return view('roles.edit')->with('role',$role);
+        return view('roles.edit',compact('title'))->with('role',$role);
     }
 
     /**

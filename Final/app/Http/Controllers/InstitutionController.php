@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Institution;
+use App\Configuration;
 
 
 # Métodos para la API
@@ -92,6 +93,7 @@ class InstitutionController extends Controller
     }
 
     public function buscador() {
-        return view('vue.index');
+        $title = Configuration::title();
+        return view('vue.index',compact('title'));
     }
 }

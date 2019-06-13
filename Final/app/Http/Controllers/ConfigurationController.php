@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Configuration;
+use App\Http\Requests\StoreConfiguration;
 
 
 class ConfigurationController extends Controller
@@ -23,8 +24,9 @@ class ConfigurationController extends Controller
     public function edit()
     {
         $allConfigurations = Configuration::get();
+        $title = Configuration::title();
         $currentConfiguration = ['title' => $allConfigurations[2], 'maintenance' => $allConfigurations[1], 'pagination' => $allConfigurations[0], 'email' => $allConfigurations[3]];
-        return view('configurations.edit')->with('configuration',$currentConfiguration);
+        return view('configurations.edit',compact('title'))->with('configuration',$currentConfiguration);
     }
 
     /**
@@ -33,7 +35,7 @@ class ConfigurationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(StoreConfiguration $request)
     {
         Configuration::systemPages()[0]->update(['value' => $request->pagination]);
         Configuration::maintenance()[0]->update(['value' => $request->maintenance]);

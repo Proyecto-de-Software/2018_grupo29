@@ -31,7 +31,8 @@ class ConsultationController extends Controller
     {
         $patients = Patient::all();
         $pagination = Configuration::systemPages()[0]->value;
-        return view('consultations.index',compact('patients','pagination'));
+        $title = Configuration::title();
+        return view('consultations.index',compact('patients','pagination','title'));
     }
 
     /**
@@ -43,8 +44,9 @@ class ConsultationController extends Controller
     public function create($patient_id)
     {
         $patient = Patient::findOrFail($patient_id);
+        $title = Configuration::title();
         $institutions = Institution::all();
-        return view('consultations.create',compact('institutions','patient'));
+        return view('consultations.create',compact('institutions','patient','title'));
     }
 
     /**
@@ -78,7 +80,8 @@ class ConsultationController extends Controller
         $patient = Patient::findOrFail($consultation->patient_id);
         $reason = Reason::findOrFail($consultation->reason_id);
         $accompaniment = Accompaniment::find($consultation->accompaniment_id);
-        $treatment = Treatment::find($consultation->treatment_id);   
+        $treatment = Treatment::find($consultation->treatment_id);
+        $title = Configuration::title();   
         if(isset($accompaniment)){
             $accompaniment = $accompaniment->name;
         } else {
@@ -89,7 +92,7 @@ class ConsultationController extends Controller
         } else {
             $treatment = 'No tiene tratamiento';
         }
-        return view('consultations.show',compact('consultation','institution','patient','accompaniment', 'treatment', 'reason'));
+        return view('consultations.show',compact('consultation','institution','patient','accompaniment', 'treatment', 'reason','title'));
     }
 
     /**
@@ -101,9 +104,10 @@ class ConsultationController extends Controller
     public function edit($id)
     {
         $consultation = Consultation::findOrFail($id);
+        $title = Configuration::title();
         $patient = Patient::findOrFail($consultation->patient_id);
         $institutions = Institution::all();
-        return view('consultations.edit', compact('consultation','patient','institutions'))->with('consultation',$consultation);
+        return view('consultations.edit', compact('title','consultation','patient','institutions'))->with('consultation',$consultation);
     }
 
     /**
@@ -145,6 +149,7 @@ class ConsultationController extends Controller
      */
     public function map($id)
     {
+        $title = Configuration::title();
         $patient = Patient::findOrFail($id);
         $institutions_keys = (new Consultation)->institutionsOfPatient($patient->id)->unique();
         $institutions = [];
@@ -152,6 +157,6 @@ class ConsultationController extends Controller
             $institutions[$key] = Institution::find($value->derivation_id);
         }
         // dd($institutions);
-        return view('consultations.map', compact('patient','institutions'));
+        return view('consultations.map', compact('patient','institutions','title'));
     }
 }

@@ -78,7 +78,7 @@ class AddRequestFormatsListenerTest extends TestCase
 
         $event->expects($this->any())
             ->method('getRequest')
-            ->willReturn($request);
+            ->will($this->returnValue($request));
 
         return $event;
     }

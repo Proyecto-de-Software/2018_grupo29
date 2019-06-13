@@ -123,7 +123,7 @@ class KernelTest extends TestCase
         $kernel = $this->getKernel(['initializeBundles', 'initializeContainer', 'getBundles']);
         $kernel->expects($this->once())
             ->method('getBundles')
-            ->willReturn([$bundle]);
+            ->will($this->returnValue([$bundle]));
 
         $kernel->boot();
     }
@@ -178,7 +178,7 @@ class KernelTest extends TestCase
         $kernel = $this->getKernel(['getBundles']);
         $kernel->expects($this->any())
             ->method('getBundles')
-            ->willReturn([$bundle]);
+            ->will($this->returnValue([$bundle]));
 
         $kernel->boot();
         $kernel->shutdown();
@@ -201,7 +201,7 @@ class KernelTest extends TestCase
         $kernel = $this->getKernel(['getHttpKernel']);
         $kernel->expects($this->once())
             ->method('getHttpKernel')
-            ->willReturn($httpKernelMock);
+            ->will($this->returnValue($httpKernelMock));
 
         $kernel->handle($request, $type, $catch);
     }
@@ -219,7 +219,7 @@ class KernelTest extends TestCase
         $kernel = $this->getKernel(['getHttpKernel', 'boot']);
         $kernel->expects($this->once())
             ->method('getHttpKernel')
-            ->willReturn($httpKernelMock);
+            ->will($this->returnValue($httpKernelMock));
 
         $kernel->expects($this->once())
             ->method('boot');
@@ -381,7 +381,7 @@ EOF;
         $kernel
             ->expects($this->once())
             ->method('getBundle')
-            ->willReturn($this->getBundle(__DIR__.'/Fixtures/Bundle1Bundle'))
+            ->will($this->returnValue($this->getBundle(__DIR__.'/Fixtures/Bundle1Bundle')))
         ;
 
         $kernel->locateResource('@Bundle1Bundle/config/routing.xml');
@@ -393,7 +393,7 @@ EOF;
         $kernel
             ->expects($this->once())
             ->method('getBundle')
-            ->willReturn($this->getBundle(__DIR__.'/Fixtures/Bundle1Bundle'))
+            ->will($this->returnValue($this->getBundle(__DIR__.'/Fixtures/Bundle1Bundle')))
         ;
 
         $this->assertEquals(__DIR__.'/Fixtures/Bundle1Bundle/foo.txt', $kernel->locateResource('@Bundle1Bundle/foo.txt'));
@@ -405,7 +405,7 @@ EOF;
         $kernel
             ->expects($this->once())
             ->method('getBundle')
-            ->willReturn($this->getBundle(__DIR__.'/Fixtures/Bundle1Bundle'))
+            ->will($this->returnValue($this->getBundle(__DIR__.'/Fixtures/Bundle1Bundle')))
         ;
 
         $this->assertEquals(
@@ -420,7 +420,7 @@ EOF;
         $kernel
             ->expects($this->once())
             ->method('getBundle')
-            ->willReturn($this->getBundle(__DIR__.'/Fixtures/FooBundle', null, null, 'FooBundle'))
+            ->will($this->returnValue($this->getBundle(__DIR__.'/Fixtures/FooBundle', null, null, 'FooBundle')))
         ;
 
         $this->assertEquals(
@@ -435,7 +435,7 @@ EOF;
         $kernel
             ->expects($this->exactly(2))
             ->method('getBundle')
-            ->willReturn($this->getBundle(__DIR__.'/Fixtures/FooBundle', null, null, 'FooBundle'))
+            ->will($this->returnValue($this->getBundle(__DIR__.'/Fixtures/FooBundle', null, null, 'FooBundle')))
         ;
 
         $this->assertEquals(
@@ -451,7 +451,7 @@ EOF;
         $kernel
             ->expects($this->exactly(2))
             ->method('getBundle')
-            ->willReturn($this->getBundle(__DIR__.'/Fixtures/Bundle1Bundle', null, null, 'Bundle1Bundle'))
+            ->will($this->returnValue($this->getBundle(__DIR__.'/Fixtures/Bundle1Bundle', null, null, 'Bundle1Bundle')))
         ;
 
         $this->assertEquals(
@@ -514,7 +514,7 @@ EOF;
         $kernel = $this->getKernel(['getHttpKernel']);
         $kernel->expects($this->exactly(2))
             ->method('getHttpKernel')
-            ->willReturn($httpKernelMock);
+            ->will($this->returnValue($httpKernelMock));
 
         $kernel->boot();
         $kernel->terminate(Request::create('/'), new Response());
@@ -640,19 +640,19 @@ EOF;
         $bundle
             ->expects($this->any())
             ->method('getName')
-            ->willReturn(null === $bundleName ? \get_class($bundle) : $bundleName)
+            ->will($this->returnValue(null === $bundleName ? \get_class($bundle) : $bundleName))
         ;
 
         $bundle
             ->expects($this->any())
             ->method('getPath')
-            ->willReturn($dir)
+            ->will($this->returnValue($dir))
         ;
 
         $bundle
             ->expects($this->any())
             ->method('getParent')
-            ->willReturn($parent)
+            ->will($this->returnValue($parent))
         ;
 
         return $bundle;
@@ -678,7 +678,7 @@ EOF;
         ;
         $kernel->expects($this->any())
             ->method('registerBundles')
-            ->willReturn($bundles)
+            ->will($this->returnValue($bundles))
         ;
         $p = new \ReflectionProperty($kernel, 'rootDir');
         $p->setAccessible(true);

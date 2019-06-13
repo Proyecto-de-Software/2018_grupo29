@@ -187,7 +187,7 @@ class OutputFormatterStyle implements OutputFormatterStyleInterface
         $unsetCodes = [];
 
         if (null === $this->handlesHrefGracefully) {
-            $this->handlesHrefGracefully = 'JetBrains-JediTerm' !== getenv('TERMINAL_EMULATOR') && !getenv('KONSOLE_VERSION');
+            $this->handlesHrefGracefully = 'JetBrains-JediTerm' !== getenv('TERMINAL_EMULATOR');
         }
 
         if (null !== $this->foreground) {

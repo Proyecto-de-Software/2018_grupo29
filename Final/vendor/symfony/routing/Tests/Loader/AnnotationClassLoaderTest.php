@@ -233,12 +233,12 @@ class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
         $reader
             ->expects($this->exactly(1))
             ->method('getClassAnnotations')
-            ->willReturn([new RouteAnnotation($classRouteData1), new RouteAnnotation($classRouteData2)])
+            ->will($this->returnValue([new RouteAnnotation($classRouteData1), new RouteAnnotation($classRouteData2)]))
         ;
         $reader
             ->expects($this->once())
             ->method('getMethodAnnotations')
-            ->willReturn([])
+            ->will($this->returnValue([]))
         ;
         $loader = new class($reader) extends AnnotationClassLoader {
             protected function configureRoute(Route $route, \ReflectionClass $class, \ReflectionMethod $method, $annot)
@@ -319,7 +319,7 @@ class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
         $reader
             ->expects($this->once())
             ->method('getMethodAnnotations')
-            ->willReturn([new RouteAnnotation($methodRouteData)])
+            ->will($this->returnValue([new RouteAnnotation($methodRouteData)]))
         ;
 
         $loader = new class($reader) extends AnnotationClassLoader {

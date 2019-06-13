@@ -99,7 +99,7 @@
 	<br> <br> <br>
 	<footer class="footer bg-dark">
       <div class="container">
-        <span class="text-light">Hospital Dr. Alejandro Korn</span>
+        <span class="text-light">{{$title[0]->value}}</span>
         <span class="text-light float-right">v.3.0</span>
       </div>
     </footer>

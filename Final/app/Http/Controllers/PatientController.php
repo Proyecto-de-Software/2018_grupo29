@@ -27,9 +27,10 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         $pages = Configuration::systemPages();
+        $title = Configuration::title();
         $patients = Patient::search($request->first_name, $request->last_name, $request->dni_number)->paginate($pages[0]->value);
 
-        return view('patients.index')->with('patients',$patients);
+        return view('patients.index',compact('title'))->with('patients',$patients);
     }
 
     /**
@@ -44,8 +45,9 @@ class PatientController extends Controller
         $partidos = ApiController::getJSONFromExternalAPI($api.'partido');
         $obras_sociales = ApiController::getJSONFromExternalAPI($api.'obra-social');
         $regiones_sanitarias = ApiController::getJSONFromExternalAPI($api.'region-sanitaria');
+        $title = Configuration::title();
 
-        return view('patients.create',compact('tipos_documentos', 'partidos', 'obras_sociales','regiones_sanitarias'));
+        return view('patients.create',compact('title','tipos_documentos', 'partidos', 'obras_sociales','regiones_sanitarias'));
     }
 
     /**
@@ -75,12 +77,12 @@ class PatientController extends Controller
     {
         $patient = Patient::findOrFail($id);
         $api = 'https://api-referencias.proyecto2018.linti.unlp.edu.ar/';
-
+        $title = Configuration::title();
         $social_work = ApiController::getJSONFromExternalAPIWithID($api.'obra-social/', $patient->social_work_id);
         $tipo_documento = ApiController::getJSONFromExternalAPIWithID($api.'tipo-documento/', $patient->documentation_type_id);
         $localidad = ApiController::getJSONFromExternalAPIWithID($api.'localidad/', $patient->location_id);
         $region_sanitaria = ApiController::getJSONFromExternalAPIWithID($api.'region-sanitaria/', $patient->health_region_id);
-        return view('patients.show', compact('patient','social_work','tipo_documento','localidad','region_sanitaria'));
+        return view('patients.show', compact('title','patient','social_work','tipo_documento','localidad','region_sanitaria'));
     }
 
     /**
@@ -92,14 +94,14 @@ class PatientController extends Controller
     public function edit($id)
     {
         $patient = Patient::findOrFail($id);
-
+        $title = Configuration::title();
         $api = 'https://api-referencias.proyecto2018.linti.unlp.edu.ar/';
         $tipos_documentos = ApiController::getJSONFromExternalAPI($api.'tipo-documento');
         $partidos = ApiController::getJSONFromExternalAPI($api.'partido');
         $obras_sociales = ApiController::getJSONFromExternalAPI($api.'obra-social');
         $regiones_sanitarias = ApiController::getJSONFromExternalAPI($api.'region-sanitaria');
             
-        return view('patients.edit',compact('tipos_documentos', 'partidos', 'obras_sociales','regiones_sanitarias'))->with('patient',$patient);
+        return view('patients.edit',compact('title','tipos_documentos', 'partidos', 'obras_sociales','regiones_sanitarias'))->with('patient',$patient);
     }
 
     /**

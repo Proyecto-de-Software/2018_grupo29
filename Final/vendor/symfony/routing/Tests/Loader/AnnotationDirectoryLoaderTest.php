@@ -34,13 +34,13 @@ class AnnotationDirectoryLoaderTest extends AbstractAnnotationLoaderTest
         $this->reader
             ->expects($this->any())
             ->method('getMethodAnnotations')
-            ->willReturn([])
+            ->will($this->returnValue([]))
         ;
 
         $this->reader
             ->expects($this->any())
             ->method('getClassAnnotations')
-            ->willReturn([])
+            ->will($this->returnValue([]))
         ;
 
         $this->loader->load(__DIR__.'/../Fixtures/AnnotatedClasses');
@@ -58,13 +58,13 @@ class AnnotationDirectoryLoaderTest extends AbstractAnnotationLoaderTest
         $this->reader
             ->expects($this->any())
             ->method('getMethodAnnotations')
-            ->willReturn([])
+            ->will($this->returnValue([]))
         ;
 
         $this->reader
             ->expects($this->any())
             ->method('getClassAnnotations')
-            ->willReturn([])
+            ->will($this->returnValue([]))
         ;
 
         $this->loader->load(__DIR__.'/../Fixtures/AnnotatedClasses');
@@ -93,7 +93,7 @@ class AnnotationDirectoryLoaderTest extends AbstractAnnotationLoaderTest
         $this->reader
             ->expects($this->any())
             ->method('getMethodAnnotations')
-            ->willReturn([])
+            ->will($this->returnValue([]))
         ;
 
         $this->loader->load(__DIR__.'/../Fixtures/AnnotatedClasses/FooClass.php');

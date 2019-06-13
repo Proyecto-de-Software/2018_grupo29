@@ -149,7 +149,7 @@ class LoggerTest extends TestCase
         }
         $dummy->expects($this->atLeastOnce())
             ->method('__toString')
-            ->willReturn('DUMMY');
+            ->will($this->returnValue('DUMMY'));
 
         $this->logger->warning($dummy);
 

@@ -9,6 +9,7 @@ use App\Consultation;
 use DB;
 use App\Reason;
 use App\Gender;
+use App\Configuration;
 
 class ReportController extends Controller
 {
@@ -26,8 +27,9 @@ class ReportController extends Controller
 	
 	*/
     public function start() {
+		$title = Configuration::title();
 
-		return view('reports.index');
+		return view('reports.index',compact('title'));
     }
 
     public function byReason() {

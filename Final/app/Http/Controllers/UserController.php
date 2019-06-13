@@ -29,9 +29,10 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $pages = Configuration::systemPages();
+        $title = Configuration::title();
         $users = User::active($request->is_active)->username($request->username)->where('id', '<>', Auth::user()->id)->paginate($pages[0]->value);
 
-        return view('users.index')->with('users', $users);
+        return view('users.index',compact('title'))->with('users', $users);
     }
 
     /**
@@ -41,8 +42,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        
-        return view('users.create');
+        $title = Configuration::title();
+
+        return view('users.create',compact('title'));
     }
 
     /**
@@ -77,8 +79,9 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+        $title = Configuration::title();
 
-        return view('users.edit')->with('user', $user);
+        return view('users.edit',compact('title'))->with('user', $user);
     }
 
     /**
@@ -137,8 +140,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $roles = $user->roles;
         $otherRoles = $user->rolesUserDoNotOwn();
+        $title = Configuration::title();
 
-        return view('users.roles')->with('user', $user)->with('roles', $roles)->with('otherRoles', $otherRoles);
+        return view('users.roles',compact('title'))->with('user', $user)->with('roles', $roles)->with('otherRoles', $otherRoles);
     }
 
     # Refactorizar estos últimos dos métodos

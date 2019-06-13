@@ -156,11 +156,11 @@ class HttpKernelBrowserTest extends TestCase
         /* should be modified when the getClientSize will be removed */
         $file->expects($this->any())
             ->method('getSize')
-            ->willReturn(INF)
+            ->will($this->returnValue(INF))
         ;
         $file->expects($this->any())
             ->method('getClientSize')
-            ->willReturn(INF)
+            ->will($this->returnValue(INF))
         ;
 
         $client->request('POST', '/', [], [$file]);

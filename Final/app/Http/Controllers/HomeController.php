@@ -16,10 +16,11 @@ class HomeController extends Controller
     public function index()
     {
         $configuration = Configuration::maintenance();
+        $title = Configuration::title();
         if($configuration[0]->value == '0'){
-        	return view('home');	
+        	return view('home',compact('title'));	
         } else {
-        	return view('maintenance');
+        	return view('maintenance',compact('title'));
         }
         
     }
