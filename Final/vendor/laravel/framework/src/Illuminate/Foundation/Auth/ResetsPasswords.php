@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
+use App\Configuration;
+
 
 trait ResetsPasswords
 {
@@ -24,7 +26,8 @@ trait ResetsPasswords
      */
     public function showResetForm(Request $request, $token = null)
     {
-        return view('auth.passwords.reset')->with(
+        $title = Configuration::title();
+        return view('auth.passwords.reset',compact('title'))->with(
             ['token' => $token, 'email' => $request->email]
         );
     }
