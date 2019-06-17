@@ -37,6 +37,12 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    public function showLoginForm()
+    {
+        $title = Configuration::title();
+        return view('auth.login',compact('title'));
+    }
+
     public function login(\Illuminate\Http\Request $request) {
         $this->validateLogin($request);
 
