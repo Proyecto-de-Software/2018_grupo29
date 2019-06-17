@@ -1,6 +1,4 @@
 
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<script src="{{ asset('js/logicaGraficos.js')}}"></script>
 
 <body onload="first()"> 
 
@@ -10,6 +8,8 @@
 
 @section('content')
 
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<script src="{{ asset('js/logicaGraficos.js')}}"></script>
 	<script src="https://code.highcharts.com/highcharts.js"></script>
 	<script src="https://code.highcharts.com/modules/exporting.js"></script>
 
