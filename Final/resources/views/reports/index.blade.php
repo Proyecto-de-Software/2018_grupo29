@@ -15,9 +15,6 @@
 	<script src="https://code.highcharts.com/highcharts.js"></script>
 	<script src="http://code.highcharts.com/modules/exporting.js"></script>
 	<script src="https://code.highcharts.com/modules/exporting.js"></script>
-	<!-- optional -->
-	<script src="http://code.highcharts.com/modules/offline-exporting.js"></script>
-	<script src="http://code.highcharts.com/modules/export-data.js"></script>
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.debug.js"></script>
