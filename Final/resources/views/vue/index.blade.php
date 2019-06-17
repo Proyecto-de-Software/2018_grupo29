@@ -68,8 +68,7 @@
         	buscarInstituciones(id) {
         		console.log(id)
         		axios
-        		/* SE DEBE CAMBIAR CUANDO PASEMOS A PRODUCCIÓN */
-		      	.get('http://localhost:8000/api/instituciones/region-sanitaria/'+id)
+		      	.get('https://grupo29.proyecto2018.linti.unlp.edu.ar/Final/public/api/instituciones/region-sanitaria/'+id)
 		      	.then(response => (this.instituciones = response.data))
         	} 
     	},
