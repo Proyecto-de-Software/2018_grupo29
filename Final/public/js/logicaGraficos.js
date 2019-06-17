@@ -64,7 +64,7 @@ function first() {
             $.each(data['listado'], generarListado);
         }
     });
-}
+};
 
 $(document).ready(function(){ 
     $('#byGender').click(function () {
