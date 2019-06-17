@@ -1,4 +1,4 @@
- <script src="http://code.jquery.com/jquery-3.3.1.min.js"
+ <script src="https://code.jquery.com/jquery-3.3.1.min.js"
                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
                crossorigin="anonymous"> </script>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -13,7 +13,6 @@
 @section('content')
 
 	<script src="https://code.highcharts.com/highcharts.js"></script>
-	<script src="http://code.highcharts.com/modules/exporting.js"></script>
 	<script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
