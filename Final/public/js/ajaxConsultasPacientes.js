@@ -4,7 +4,7 @@ $(document).ready(function(){
 		$.ajax({
             
             type:'GET',
-            url:'/patient-ajax/'+id,
+            url: app_url +'/patient-ajax/'+id,
             data:{'id': id},
             success:function(data) {
                 var table = $('#table_id').DataTable();
