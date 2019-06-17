@@ -4,14 +4,13 @@ $(document).ready(function(){
 		console.log(id);
 		$.ajax({           
             type:'GET',
-            url:'/patient-ajax/partido/'+id,
+            url: app_url + '/patient-ajax/partido/'+id,
             data:{'id': id},
             success:function(data) {
             	console.log(data);
             	var options = '';
             	for (localidades in data) {
             		options += '<option value=" ' + data[localidades].id + '"'
-                    if 
                     options += '> ' + data[localidades].nombre + ' </option>';
             	}
             	$("#localidades").html(options);
