@@ -54,7 +54,7 @@ function dibujar(data) {
 function first() {
    $.ajax({           
         type:'GET',
-        url:'https://grupo29.proyecto2018.linti.unlp.edu.ar/Final/public/reports/byGender',
+        url: app_url + '/reports/byGender',
         success:function(data) {
             dibujar(data['data']);
             $("#byGender").hide();
@@ -70,7 +70,7 @@ $(document).ready(function(){
     $('#byGender').click(function () {
         $.ajax({           
             type:'GET',
-            url:'https://grupo29.proyecto2018.linti.unlp.edu.ar/Final/public/reports/byGender',
+            url:app_url + '/reports/byGender',
             success:function(data) {
                 dibujar(data['data']);
                 $("#byGender").hide();
@@ -87,7 +87,7 @@ $(document).ready(function(){
     $('#byLocation').click(function () {
         $.ajax({           
             type:'GET',
-            url:'https://grupo29.proyecto2018.linti.unlp.edu.ar/Final/public/reports/byLocation',
+            url:app_url + '/reports/byLocation',
             success:function(data) {
                 dibujar(data['data']);
                 $("#byGender").show();
@@ -104,7 +104,7 @@ $(document).ready(function(){
     $('#byReason').click(function () {
         $.ajax({           
             type:'GET',
-            url:'https://grupo29.proyecto2018.linti.unlp.edu.ar/Final/public/reports/byReason',
+            url:app_url + '/reports/byReason',
             success:function(data) {
                 dibujar(data['data']);
                 $("#byGender").show();

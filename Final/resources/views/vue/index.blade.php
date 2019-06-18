@@ -66,9 +66,9 @@
 		      	})
         	},
         	buscarInstituciones(id) {
-        		console.log(id)
+        		console.log(app_url)
         		axios
-		      	.get('https://grupo29.proyecto2018.linti.unlp.edu.ar/Final/public/api/instituciones/region-sanitaria/'+id)
+		      	.get(app_url + '/api/instituciones/region-sanitaria/'+id)
 		      	.then(response => (this.instituciones = response.data))
         	} 
     	},

@@ -1,10 +1,6 @@
- <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-               integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-               crossorigin="anonymous"> </script>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<script src="{{ asset('js/logicaGraficos.js')}}"></script>
 
- <body onload="first()"> 
+
+<body onload="first()"> 
 
 @extends('layouts.general')
 
@@ -12,10 +8,11 @@
 
 @section('content')
 
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<script src="{{ asset('js/logicaGraficos.js')}}"></script>
 	<script src="https://code.highcharts.com/highcharts.js"></script>
 	<script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.debug.js"></script>
 
 

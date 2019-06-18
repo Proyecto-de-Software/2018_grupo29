@@ -4,7 +4,6 @@ $(document).ready(function(){
             type:'GET',
             url:'/reports/byGender',
             success:function(data) {
-            	console.log(data);
             	var options = '';
             	for (localidades in data) {
             		options += '<option value=" ' + data[localidades].id +'"> ' + data[localidades].nombre + ' </option>';
