@@ -99,7 +99,13 @@
 	<br> <br> <br>
 	<footer class="footer bg-dark">
       <div class="container">
-        <span class="text-light">{{$title[0]->value}}</span>
+        <span class="text-light">
+        	@if(empty($title[0]->value))
+        		Hospital Dr. Alejandro Korn
+        	@else
+        		{{$title[0]->value}}
+        	@endif
+        </span>
         <span class="text-light float-right">v.3.0</span>
       </div>
     </footer>
