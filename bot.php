@@ -45,7 +45,7 @@ switch ($cmd) {
         break;
 
     case '/instituciones':
-        $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones"));
+        $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/Final/public/api/instituciones"));
         if (count($instituciones)==0) {
             $msg['text'] = 'No hay instituciones con ese parametro.';
         } else {
@@ -53,16 +53,16 @@ switch ($cmd) {
             $msg['text'] .= ''.PHP_EOL;
         }
         foreach ($instituciones as $institucion) {
-            $msg['text'] .= 'Nombre de institucion: '.$institucion->nombre.PHP_EOL;
+            $msg['text'] .= 'Nombre de institucion: '.$institucion->name.PHP_EOL;
             $msg['text'] .= 'Director: '.$institucion->director.PHP_EOL;
-            $msg['text'] .= 'Telefono: '.$institucion->telefono.PHP_EOL;
+            $msg['text'] .= 'Telefono: '.$institucion->phone_number.PHP_EOL;
             $msg['text'] .= ''.PHP_EOL;
         }
         $msg['reply_to_message_id'] = null;
         break;
 
     case '/institucionesRegionSanitaria':
-        $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/api.php/instituciones/region-sanitaria/".$cmd_params));
+        $instituciones = json_decode(file_get_contents("https://grupo29.proyecto2018.linti.unlp.edu.ar/Final/public/api/instituciones/region-sanitaria/".$cmd_params));
         if (count($instituciones)==0) {
             $msg['text'] = 'No hay instituciones con ese parametro.';
         } else {
@@ -70,9 +70,9 @@ switch ($cmd) {
             $msg['text'] .= ''.PHP_EOL;
         }
         foreach ($instituciones as $institucion) {
-            $msg['text'] .= 'Nombre de institucion: '.$institucion->nombre.PHP_EOL;
+            $msg['text'] .= 'Nombre de institucion: '.$institucion->name.PHP_EOL;
             $msg['text'] .= 'Director: '.$institucion->director.PHP_EOL;
-            $msg['text'] .= 'Telefono: '.$institucion->telefono.PHP_EOL;
+            $msg['text'] .= 'Telefono: '.$institucion->phone_number.PHP_EOL;
             $msg['text'] .= ''.PHP_EOL;
         }
         $msg['reply_to_message_id'] = null;
